@@ -21,7 +21,7 @@ int     ft_find_format(va_list *ap, const char *string)
     else if (*string == '%')
         return (write(1, "%", 1));
     else 
-        return (write(1, &string, 1));      // -1리턴?
+        return (write(1, string, 1));      // -1리턴?
 }
 
 int     ft_printf(const char *string, ...)
@@ -43,7 +43,7 @@ int     ft_printf(const char *string, ...)
                 count = count + tmp_count;
         }
         else
-            count = count + tmp_count;
+            count = count + write(1, string, 1);
         string++;
     }
     va_end(ap);

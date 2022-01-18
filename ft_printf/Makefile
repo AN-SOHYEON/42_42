@@ -1,39 +1,25 @@
-SRC		:=	ft_printf.c ft_format_char.c ft_format_hex.c ft_format_int.c 
-OBJS    :=	$(SRC:.c=.o)
+NAME	:= libftprintf.a
+CC		:= gcc
+FLG		:= -Wall -Wextra -Werror
 
-NAME	:=	libftprintf.a
-RLIB    :=	ranlib
-CC		:=	clang
-LIB		:=	ar rcs
+SRC		:= ft_printf.c ft_format_char.c ft_format_hex.c ft_format_int.c
+OBJ		:= $(SRC:.c=.o)
 
-CFLAGS	+=	-Wall -Wextra -Werror
-LFLAGS	+=	-I.
-RM		:=	rm -rf
+.SUFFIXES: .c .o
+.PHONY: all clean fclean re bonus
 
-LIBFT	:=	libft
-LIBFT_L :=	libft/libft.a
+all: $(NAME)
 
-all:		libft $(NAME)
+$(NAME): $(OBJ)
+	ar r $(NAME) $^
 
 .c.o:
-			$(CC) $(CFLAGS) -c $< -o $@ $(LFLAGS)/$(LIBFT)
-
-$(NAME):	$(OBJS)
-			cp ./libft/libft.a $(NAME)
-			$(LIB) $(NAME) $(OBJS)
-			$(RLIB) $(NAME)
+	$(CC) $(FLG) -c $<
 
 clean:
-			$(MAKE) -C $(LIBFT) clean
-			$(RM) $(OBJS)
+	rm -f $(OBJ) $(BOBJ) ft_printf.h.gch
 
-fclean: 	clean
-			$(MAKE) -C $(LIBFT) fclean
-			$(RM) $(NAME)
+fclean: clean
+	rm -f $(NAME)
 
-libft:
-			$(MAKE) -C $(LIBFT)
-
-re: 		fclean all
-
-.PHONY: 	all clean fclean re libft
+re: fclean all

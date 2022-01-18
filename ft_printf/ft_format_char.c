@@ -5,8 +5,8 @@ int ft_printf_pointer(void *p)
     int count;
 
     count = write(1, "0x", 2);
-    count = count + ft_printf_hex((unsigned long)p, 'x');
-    return (2 + count);
+    count = count + ft_printf_num((unsigned long)p, 16, 0);
+    return (count);
 }
 
 int ft_printf_char(char c)
