@@ -1,32 +1,21 @@
-
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
+
+# include <unistd.h>
 # include <stdarg.h>
-# include <stdio.h>
-# include <string.h>
 # include <stdlib.h>
 
 
-int		ft_printf(const char *format, ...);
-
-int		send_output(char *string);
-
-int		write_ap(char **string, va_list args);
-
-int		write_char(va_list ap);
-
-
-int		write_str(va_list ap);
-
-int		write_int(va_list ap);
-
-int		write_uint(va_list ap);
+int	ft_ptf_putnbr(unsigned long l, unsigned int base, char caseflag);
+int     ft_printf_string(char *s);
+int ft_printf_char(char c);
+int ft_printf_pointer(void *p);
+int ft_printf_int(int i);
+int ft_printf_uint(unsigned long ui);
+int ft_printf_hex(unsigned long h, char format);
+char    *ul_to_hex(unsigned long string);
 
 
-int		write_ptr(va_list ap);
-
-int		write_hex(char converter, va_list ap);
-
-int		write_percent(void);
+int	ft_printf(const char *fmt, ...);
 
 #endif

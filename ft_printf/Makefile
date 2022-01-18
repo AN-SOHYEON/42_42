@@ -1,5 +1,4 @@
-SRC		:=	ft_printf.c ft_char.c ft_hex.c ft_int.c ft_tag.c
-
+SRC		:=	ft_printf.c ft_format_char.c ft_format_hex.c ft_format_int.c 
 OBJS    :=	$(SRC:.c=.o)
 
 NAME	:=	libftprintf.a
