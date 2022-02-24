@@ -20,7 +20,7 @@ void ft_handler(int signum, siginfo_t *info, void *m)
     itochar = 0;
     if (g_pid != info->si_pid)
         reset(&bit_length, &message_char, info->si_pid);
-    message_char = message_char * 2;
+    message_char = message_char << 1;
     if (signum == SIGUSR1)
         message_char = message_char + 1;
     else
@@ -29,7 +29,7 @@ void ft_handler(int signum, siginfo_t *info, void *m)
     if (bit_length == 8)
     {
 	    itochar = (char)message_char;
-        write (1, &itochar, 1);
+        write(1, &itochar, 1);
         reset(&bit_length, &message_char, info->si_pid);
     }
 }

@@ -5,7 +5,6 @@
 
 void send_signal(int pid, int bit)
 {
-
     if (bit == 1)
         kill(pid, SIGUSR1);
     else
@@ -33,6 +32,7 @@ void msgchar_to_bit(int pid, int msgchar_int)
     }
     while (++i < 8)
         send_signal(pid, bit[i]);
+    free(bit);
 }
 
 void send_message(int pid, char* message)
@@ -45,12 +45,10 @@ void send_message(int pid, char* message)
     while (message[i])
     {
         msgchar_int = (int)message[i];
-        printf("message[i] : %c\n", message[i]);
-        printf("msgchar_int : %d\n", msgchar_int);
         msgchar_to_bit(pid, msgchar_int);
         i++;
     }
-    //127  send
+    msgchar_to_bit(pid, 10);
 }
 
 int main (int ac, char **argv)
@@ -61,6 +59,5 @@ int main (int ac, char **argv)
         return (0);
     pid = ft_atoi(argv[1]);
     send_message(pid, argv[2]);
-            write(1, "finish\n",7);
     return (0);
 }
