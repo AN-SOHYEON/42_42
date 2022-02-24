@@ -1,4 +1,4 @@
-NAME = minitalk
+NAME = 
 CLIENT = client
 SERVER = server
 
@@ -11,14 +11,7 @@ OBG_SERVER = $(SRC_SERVER:.c=.o)
 GCC_FLAGS = -Wall -Wextra -Werror
 CC = gcc
 
-all : $(NAME)
-
-$(NAME) : $(OBG_CLIENT) $(OBG_SERVER)
-	$(CC) $(GCC_FLAGS) -o $(CLIENT) $(OBG_CLIENT) 
-	$(CC) $(GCC_FLAGS) -o $(SERVER) $(OBG_SERVER)
-
-%.o : %.c
-	$(CC) $(GCC_FLAGS) -c $<
+all : $(SERVER) $(CLIENT)
 
 clean :
 	rm -f $(OBG_SERVER) $(OBG_CLIENT) 
@@ -27,3 +20,14 @@ fclean : clean
 	rm -f $(CLIENT) $(SERVER)
 
 re : fclean all
+
+$(CLIENT) : $(OBG_CLIENT) 
+	$(CC) $(GCC_FLAGS) -o $(CLIENT) $(OBG_CLIENT) 
+
+$(SERVER) : $(OBG_SERVER)
+	$(CC) $(GCC_FLAGS) -o $(SERVER) $(OBG_SERVER)
+
+%.o : %.c
+	$(CC) $(GCC_FLAGS) -c $<
+
+.PHONY : clean fclean all re
