@@ -1,6 +1,6 @@
-SRC_CLIENT = client.c ft_atoi.c ft_putnbr.c ft_bzero.c #ft_putchar.c
+SRC_CLIENT = client.c ft_atoi.c ft_putnbr.c ft_bzero.c
 
-SRC_SERVER = ft_atoi.c  server.c ft_putnbr.c ft_bzero.c #ft_putchar.c
+SRC_SERVER = ft_atoi.c  server.c ft_putnbr.c ft_bzero.c
 
 OBG_CLIENT = $(SRC_CLIENT:.c=.o)
 
