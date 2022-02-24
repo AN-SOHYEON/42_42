@@ -1,20 +1,15 @@
-SRC_CLIENT = client.c ft_atoi.c ft_putnbr.c ft_bzero.c
+NAME = minitalk
+CLIENT = client
+SERVER = server
 
-SRC_SERVER = ft_atoi.c  server.c ft_putnbr.c ft_bzero.c
+SRC_CLIENT = client.c ft_atoi.c ft_putnbr.c ft_bzero.c
+SRC_SERVER = server.c ft_atoi.c ft_putnbr.c ft_bzero.c
 
 OBG_CLIENT = $(SRC_CLIENT:.c=.o)
-
 OBG_SERVER = $(SRC_SERVER:.c=.o)
 
 GCC_FLAGS = -Wall -Wextra -Werror
-
-CC = cc
-
-CLIENT = client
-
-SERVER = server
-
-NAME = client_server
+CC = gcc
 
 all : $(NAME)
 
