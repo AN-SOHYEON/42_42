@@ -35,7 +35,24 @@ int         ft_dlstsize(t_Dnode *node);
 void    ft_dlstdel_one(t_Dnode *node);
 void    ft_dlstdel_all(t_Dnode **stack);
 
+//operation_s
+void    ft_sa(t_stack *stack);
+void    ft_sb(t_stack *stack);
+void    ft_ss(t_stack *stack);
 
+//operation_p
+void    ft_pa(t_stack *stack);
+void    ft_pb(t_stack *stack);
+
+//operation_r
+void    ft_ra(t_stack *stack);
+void    ft_rb(t_stack *stack);
+void    ft_rr(t_stack *stack);
+
+//operation_rr
+void    ft_rra(t_stack *stack);
+void    ft_rrb(t_stack *stack);
+void    ft_rrr(t_stack *stack);
 
 
 

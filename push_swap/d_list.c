@@ -35,22 +35,34 @@ void    ft_dlst_addback(t_Dnode **stack, t_Dnode *newnode)
     {
         last = ft_dlstlast(*stack);
         newnode->left = last;
+        newnode->right = NULL;
         last->right = newnode;
     }
     else  // 스택이 아예비어있으면
-        *stack = newnode;   //  이거 쩜 이해 안가네 아  마치 addfront랑 같은 역할
+    {
+        newnode->left = NULL;
+        newnode->right = NULL;
+        *stack = newnode;   //  이거 쩜 이해 안가네
+    }
 }
 
 void    ft_dlst_addfront(t_Dnode **stack, t_Dnode *newnode)
 {
+    if (!newnode)
+        exit(15); //이거 꼭해야하는 부분인가?
     if (*stack)
     {
         newnode->right = *stack;
         (*stack)->left = newnode;
+        newnode->left = NULL;
         *stack = newnode;
     }
-    else 
+    else
+    {
+        newnode->left = NULL;
+        newnode->right = NULL;
         *stack = newnode;
+    }
 }
 
 

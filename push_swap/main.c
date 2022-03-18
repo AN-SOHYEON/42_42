@@ -45,6 +45,22 @@ t_stack	*create_stack(int ac, char **argv)
 	return (stack);
 }
 
+//
+void    sa(t_stack *stack)
+{
+    int temp_data;
+    t_Dnode *temp_node;
+
+    if (ft_dlstsize(stack->stack_a) < 2)
+        return ;
+    temp_node = ft_dlstlast(stack->stack_a);
+    temp_data = temp_node->data;
+    temp_node->data = temp_node->left->data;
+    temp_node->left->data = temp_data;
+    write(1, "sa\n", 3);
+}
+
+//
 #include <stdio.h>
 void	print_node(t_Dnode *head)
 {
@@ -65,7 +81,10 @@ int main(int ac, char **argv)
         return (1);
     valid_args(ac, argv);
 	stack =	create_stack(ac, argv);	
-	//print_node(stack->stack_a);	//여기까지 잘나옴
+	
+	printf("원본\n");//
+	print_node(stack->stack_a);	//여기까지 잘나옴
+	
 //	index = find_pivot(stack);
 //	sort(index, stack);
 //  ft_dlstdel_allstack(stack);
