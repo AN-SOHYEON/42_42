@@ -23,8 +23,20 @@ int ft_is_not_num(char *argv);
 int ft_is_over_int(long long num);
 int ft_is_duplicate(int ac, char **argv);
 
-//libft
+//libft0
 int	ft_atoi(const char *str);
+size_t	ft_strlen(const char *str);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+void	ft_bzero(void *s, size_t n);
+void	*ft_calloc(size_t len, size_t size);
+
+//libft1
+static char        **mem_free(char **answer);
+static size_t        count_word(char *s_temp, char c);
+static char            **find_word(char **answer, char *s, char c, size_t s_len);
+char                **ft_split(char const *s, char c);
+
+
 
 //d_list
 t_Dnode     *ft_dlstnew(char *data);
