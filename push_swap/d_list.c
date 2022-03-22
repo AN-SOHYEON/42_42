@@ -42,7 +42,7 @@ void    ft_dlst_addback(t_Dnode **stack, t_Dnode *newnode)
     {
         newnode->left = NULL;
         newnode->right = NULL;
-        *stack = newnode;   //  이거 쩜 이해 안가네
+        *stack = newnode;   //  스택의 (새로운)시작을 정해주기
     }
 }
 

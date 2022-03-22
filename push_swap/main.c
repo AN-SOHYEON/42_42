@@ -77,7 +77,7 @@ int main(int ac, char **argv)
 {
 	t_stack	*stack;
 
-    if (ac < 3)	//여기 왜 3으로 했지?
+    if (ac < 3)	//여기 2일때는 스플릿으로 받는걸로 하기
         return (1);
     valid_args(ac, argv);
 	stack =	create_stack(ac, argv);	
@@ -90,3 +90,4 @@ int main(int ac, char **argv)
 //  ft_dlstdel_allstack(stack);
     return (0);
 }
+

@@ -1,44 +1,75 @@
 
 #include "push_swap.h"
 
-int find_middle(int size, t_Dnode *stack_a, int rank)
+void    swap(int *a, int *b)
 {
-    int index;
-    t_Dnode *temp;
-    t_Dnode *cmp_temp;
-    int small;
+    int t;
 
-    index = 0;
-    temp = stack_a;
-    while (temp)
+    t = *a;
+    *a = *b;
+    *b = t;
+}
+
+int partition(int *arr, int begin, int end)
+{
+    int pivot;
+    int left;
+    int right;
+
+    pivot = (begin + end) / 2 + 1;
+    left = begin;
+    right = end;
+    while (left < right)
     {
-        small = 0;
-        cmp_temp = temp->right;
-        while (cmp_temp)
-        {
-            if ((temp->data) > (cmp_temp->data))
-                small++;
-            cmp_temp = cmp_temp->right;
-        }
-        if (small == rank)
-            break;
-        temp = temp->right;
-        index++;
+        while ((arr[left] < arr[pivot]) && (left < right))
+            left++;
+        while ((arr[pivot] <= arr [right]) && (left < right))
+            right--;
+        if (left < right)
+            swap(arr[left], arr[right]);
+            if (left = pivot)
+                pivot = right;
     }
-    return (index);
+    swap(arr[pivot], arr[right]);
+    return (right);
+}
+
+void    quick_sort(int *arr, int begin, int end)
+{
+    int pivot;
+
+    if (begin < end)
+    {
+        pivot = partition(arr, begin, end);
+        quick_sort(arr, begin, pivot - 1);
+        quick_sort(arr, pivot + 1, end);
+    }
+}
+
+int find_middle(int size, t_Dnode *stack_a, int begin, int end)
+{
+    int *arr;
+
+    arr = (int *)malloc(sizeof(int) * size);
+    if (!arr)
+        exit(1);
+    while (begin <= end)
+    {
+        arr[]
+
+    }
+    
+
 }//   이거 큌소트 사용하는 걸로 바꾸기
 
-int find_pivot(t_stack *stack)
+int find_best_pivot(t_stack *stack)
 {
-    int index;
+    int middle;
     int size;
-    int rank;
+ 
 
     size = ft_dlstsize(stack->stack_a);
-    if ((size % 2) == 0)
-        rank = size / 2;
-    if ((size % 2) == 1)
-        rank = (size / 2) + 1;
-    index = find_middle(size, stack->stack_a, rank);
-    return (index);
+
+    middle = find_middle(size, stack->stack_a, 0, size - 1);
+    return (middle);
 }

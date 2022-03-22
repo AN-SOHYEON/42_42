@@ -38,4 +38,3 @@ void    ft_dlstdel_all(t_Dnode **stack)
     }
 }
 
-// 이것이 필요한가 void    ft_dlstdel_front
