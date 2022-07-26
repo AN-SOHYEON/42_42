@@ -1,48 +1,58 @@
 
 
-#include <iostream>
 
 
-class	Contact
+#include "main.hpp"
+
+class PhoneBook
 {
-private:
-	std::string name_f;
-	std::string name_l;
-	std::string nickname;
-	std::string number;
-	std::string secret;
-public:
-	Contact(){};
-	void	show();
-	void	set();
+	private:
+		Contact *pb = new Contact[8];
+		int		old_contact;
+		int		is_max; // 지워도 될듯
+		void	get_contact(int index);
+
+	public:
+		PhoneBook();	//Constructor
+		~PhoneBook();	//Destructor    delete 해야하나?
+		Contact *ft_add();
+		void	ft_search();
 };
 
-
-
-
-
-int main ()
+PhoneBook::PhoneBook()
 {
-	Contact pb[8];
-	int		i;
-	std::string command;
+	old_contact = -1;
+	is_max = 0;			// mean number of pb
+}
 
-	while (command.compare("EXIT") != 0)
+void	PhoneBook::get_contact(int index)	// search에서 원하는 index의 contact를 출력하도록 한다. 
+{
+	pb[index - 1].show_all();
+}
+
+Contact	*PhoneBook::ft_add()
+{
+	// if (is_max == 8)	// max면 old_contact에 정보 갈아끼우기 
+	// {
+		pb[old_contact].set_all();
+		old_contact = (old_contact + 1) % 8;
+	// }
+		if (is_max < 8)
+			is_max++;
+
+}
+
+void	PhoneBook::ft_search()
+{
+	int	i;
+	int	index;
+
+	i = 0;
+	while (i < is_max)
 	{
-		std::cin >> command;
-		if (command.compare("ADD") == 0)
-		{
-
-		}
-		else if(command.compare("SEARCH"))
-		{
-
-		}
-		else
-		{
-			/*지정되지 얺은 명령어가 들어왔을 떄  code */
-		}
-		
+		std::cout << i + 1;
+		pb[i].show_for_search();
 	}
-
+	std::cin >> index;
+	pb[index + 1].show_all();
 }
