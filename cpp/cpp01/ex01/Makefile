@@ -6,7 +6,7 @@ NAME	=	Horde
 FLAGS	=	-Wall -Wextra -Werror -std=c++98
 CC		=	c++
 
-SRC		=	main.cpp Zombie.cpp newZombie.cpp randomChump.cpp
+SRC		=	main.cpp Zombie.cpp zombieHorde.cpp
 
 OBJ		=	${SRC:%.cpp=%.o}
 
