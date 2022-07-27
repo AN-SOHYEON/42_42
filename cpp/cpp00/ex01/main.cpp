@@ -10,36 +10,69 @@ void	ft_exit()
 	std::cout << "delete AWESOME PHONEBOOK" << std::endl;
 }
 
+std::string	low_to_up(std::string str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		str[i] = toupper(str[i]);
+		i++;
+	}
+	return (str);
+}
+
+int	commandType(std::string comm)
+{
+	int	i;
+
+	i = 0;
+	while (comm[i])
+	{
+		comm[i] = toupper(comm[i]);
+		i++;
+	}
+	if (comm == "ADD" || comm == "1")
+		return (1);
+	else if (comm == "SEARCH" || comm == "2")
+		return (2);
+	else if (comm == "EXIT" || comm == "3")
+		return (3);
+	else
+		return (4);
+}
 
 int main ()
 {
 	PhoneBook pb;
-	// int		i;
-	std::string command;
+	std::string comm;
+	int			command;
 
 	while (1)
 	{
-		std::cout << "[AWESOME PHONEBOOK] | put your command |  1.ADD  2.SEARCH  3.EXIT " << std::endl;
-		std::cin >> command;
-		if (command == "ADD" || command == "1")
+		std::cout << "~~AWESOME PHONEBOOK~~" << std::endl;
+		std::cout << " put your command |  1.ADD  2.SEARCH  3.EXIT " << std::endl;
+
+		std::cin >> comm;
+		command = commandType(comm);
+
+		if (command == 1)
 		{
-			pb.ft_add();
+			pb.addContact();
 		}
-		else if(command == "SEARCH" || command == "2")
+		else if(command == 2)
 		{
-			pb.ft_search();
+			pb.searchPhoneBook();
 		}
-		else if (command == "EXIT" || command == "3")
+		else if (command == 3)
 		{
 			break;
 		}
 		else
 		{
-			std::cout << "cannot found command : " << command << std::endl;
-		}
-		
+			std::cout << "cannot found command : " << comm << std::endl;
+		}	
 	}
-	if (command == "EXIT" || command == "3")
-		ft_exit();
 	return (0);
 }

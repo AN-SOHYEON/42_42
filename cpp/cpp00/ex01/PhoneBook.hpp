@@ -12,6 +12,6 @@ class PhoneBook
 	public:
 		PhoneBook();	//Constructor
 		~PhoneBook();	//Destructor    delete 해야하나?
-		Contact *ft_add();
-		void	ft_search();
+		Contact *addContact();
+		void	searchPhoneBook();
 };
