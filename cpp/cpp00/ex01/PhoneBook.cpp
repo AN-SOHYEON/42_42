@@ -20,9 +20,11 @@
 
 PhoneBook::PhoneBook()
 {
-	old_contact = -1;
-	is_max = 0;			// mean number of pb
+	old_contact = 0;
+	is_max = 0;			// mean number of pb	
 }
+
+PhoneBook::~PhoneBook(){}
 
 void	PhoneBook::get_contact(int index)	// search에서 원하는 index의 contact를 출력하도록 한다. 
 {
@@ -51,9 +53,11 @@ void	PhoneBook::ft_search()
 	i = 0;
 	while (i < is_max)
 	{
-		std::cout << i + 1;
+		std::cout << std::setw(10) << i + 1 << ".";
 		pb[i].show_for_search();
+		i++;
 	}
+	std::cout << "choose index : ";	
 	std::cin >> index;
-	pb[index + 1].show_all();
+	pb[index - 1].show_all();
 }

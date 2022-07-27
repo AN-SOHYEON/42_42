@@ -7,26 +7,31 @@
 
 void	ft_exit()
 {
-	std::cout << "exit" << std::endl;
+	std::cout << "delete AWESOME PHONEBOOK" << std::endl;
 }
 
 
 int main ()
 {
-	PhoneBook pb ;
+	PhoneBook pb;
 	// int		i;
 	std::string command;
 
-	while (command.compare("EXIT") != 0)
+	while (1)
 	{
+		std::cout << "[AWESOME PHONEBOOK] | put your command |  1.ADD  2.SEARCH  3.EXIT " << std::endl;
 		std::cin >> command;
-		if (command.compare("ADD") == 0)
+		if (command == "ADD" || command == "1")
 		{
 			pb.ft_add();
 		}
-		else if(command.compare("SEARCH"))
+		else if(command == "SEARCH" || command == "2")
 		{
 			pb.ft_search();
+		}
+		else if (command == "EXIT" || command == "3")
+		{
+			break;
 		}
 		else
 		{
@@ -34,7 +39,7 @@ int main ()
 		}
 		
 	}
-	if (command.compare("EXIT") == 0)
+	if (command == "EXIT" || command == "3")
 		ft_exit();
 	return (0);
 }
