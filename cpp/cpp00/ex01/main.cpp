@@ -7,14 +7,14 @@
 
 void	ft_exit()
 {
-	
+	std::cout << "exit" << std::endl;
 }
 
 
 int main ()
 {
 	PhoneBook pb ;
-	int		i;
+	// int		i;
 	std::string command;
 
 	while (command.compare("EXIT") != 0)
@@ -30,7 +30,7 @@ int main ()
 		}
 		else
 		{
-			/*지정되지 얺은 명령어가 들어왔을 떄  code */
+			std::cout << "cannot found command : " << command << std::endl;
 		}
 		
 	}
