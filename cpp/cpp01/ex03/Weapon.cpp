@@ -12,7 +12,7 @@ Weapon::Weapon(std::string type)
 
 Weapon::~Weapon()
 {
-	std::cout << "delete Wapon" << std::endl;
+	std::cout << "delete Wapon that type is " << this->type << std::endl;
 }
 
 const std::string	&Weapon::getType()
