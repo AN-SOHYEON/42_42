@@ -1,9 +1,18 @@
-
-
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: san <san@student.42seoul.kr>               +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/07/28 13:50:07 by san               #+#    #+#              #
+#    Updated: 2022/07/28 13:52:28 by san              ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
 NAME	=	megaphone
 
-FLAGS	=	-Wall -Wextra -Werror -std=c++98
+FLAGS	=	-Wall -Wextra -Werror -std=c++98 -MD
 CC		=	c++
 
 SRC		=	megaphone.cpp
@@ -28,3 +37,4 @@ re:			fclean all
 
 .PHONY:		all clean fclean re
 
+-include ${SRC:%.cpp=%.d}

@@ -1,27 +1,21 @@
-
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   PhoneBook.cpp                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/28 13:57:59 by san               #+#    #+#             */
+/*   Updated: 2022/07/28 13:58:04 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "main.hpp"
-
-// class PhoneBook
-// {
-// 	private:
-// 		Contact *pb = new Contact[8];
-// 		int		old_contact;
-// 		int		is_max; // 지워도 될듯
-// 		void	get_contact(int index);
-
-// 	public:
-// 		PhoneBook();	//Constructor
-// 		~PhoneBook();	//Destructor    delete 해야하나?
-// 		Contact *ft_add();
-// 		void	ft_search();
-// };
 
 PhoneBook::PhoneBook()
 {
 	old_contact = 0;
-	is_max = 0;			// mean number of pb	
+	is_max = 0;
 }
 
 PhoneBook::~PhoneBook()
@@ -29,7 +23,7 @@ PhoneBook::~PhoneBook()
 	std::cout << "GoodBye AWESOME PHONEBOOK" << std::endl;
 }
 
-void	PhoneBook::get_contact(int index)	// search에서 원하는 index의 contact를 출력하도록 한다. 
+void	PhoneBook::get_contact(int index)
 {
 	pb[index - 1].show_all();
 }
@@ -48,11 +42,11 @@ void	PhoneBook::searchPhoneBook()
 	int	i;
 	int	index;
 
-	std::cout << std::setw(10) << std::left << "index" << "|" << std::setw(10) << std::left << "firstname" << "|" << std::setw(10) << std::left << "lastname" << "|" << std::setw(10) << std::left << "nickname" << std::endl;
+	std::cout << std::setw(10) << std::right << "index" << "|" << std::setw(10) << std::right << "firstname" << "|" << std::setw(10) << std::right << "lastname" << "|" << std::setw(10) << std::right << "nickname" << std::endl;
 	i = 0;
 	while (i < is_max)
 	{
-		std::cout << std::setw(10) << std::left << i + 1 << "|";
+		std::cout << std::setw(10) << std::right << i + 1 << "|";
 		pb[i].show_for_search();
 		i++;
 	}
@@ -60,8 +54,18 @@ void	PhoneBook::searchPhoneBook()
 	{
 		std::cout << "choose index : ";	
 		std::cin >> index;
+		if (std::cin.fail())
+		{
+			std::cin.clear();
+			std::cin.ignore(1000, '\n');
+			std::cout << "you can choose 1 to 8" << std::endl;
+			continue;
+		}
 		if (index > 0 && index < 9)
+		{
+			std::cin.ignore(1000, '\n');
 			break;
+		}
 		std::cout << "you can choose 1 to 8" << std::endl;
 	}
 	pb[index - 1].show_all();
