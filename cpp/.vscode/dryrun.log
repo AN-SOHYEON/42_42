@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/san/born2code/san_git/cpp'
+make: Leaving directory `/Users/san/born2code/san_git/cpp'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+
