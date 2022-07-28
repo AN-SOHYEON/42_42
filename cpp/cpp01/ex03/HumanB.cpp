@@ -2,15 +2,14 @@
 
 #include "HumanB.hpp"
 
-HumanB::HumanB(){}
-
-HumanB::HumanB(std::string name, Weapon &weapon)
-    : name(name), weapon(&weapon) {
+HumanB::HumanB(std::string name)
+{
+	this->name = name;
 }
 
 HumanB::~HumanB()
 {
-	std::cout << name << "says GOODBYE" << std::endl;
+	std::cout << name << " says GOODBYE" << std::endl;
 }
 
 void	HumanB::attack()

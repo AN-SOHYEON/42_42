@@ -1,12 +1,11 @@
 
 
-
 NAME	=	sed
 
 FLAGS	=	-Wall -Wextra -Werror -std=c++98
 CC		=	c++
 
-SRC		=	main.cpp Sed.cpp
+SRC		=	main.cpp Replace.cpp
 
 OBJ		=	${SRC:%.cpp=%.o}
 

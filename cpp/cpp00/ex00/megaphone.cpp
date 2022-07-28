@@ -1,13 +1,23 @@
-
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   megaphone.cpp                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/28 13:52:53 by san               #+#    #+#             */
+/*   Updated: 2022/07/28 13:53:20 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <iostream>
+#include <cctype>
 
 class	Megaphone 
 {
-public:
-	void	low_to_up(char *text);
-	void	loud(char *text);
+	public:
+		void	low_to_up(char *text);
+		void	loud(char *text);
 };
 
 void	Megaphone::low_to_up(char *text)
@@ -28,7 +38,6 @@ void	Megaphone::loud(char *text)
 	std::cout << text;
 }
 
-
 int	main(int ac, char **av)
 {
 	int	i;
@@ -40,7 +49,7 @@ int	main(int ac, char **av)
 	}
 	else
 	{
-		Megaphone	mega;
+		Megaphone mega;
 		while (i < ac)
 		{
 			mega.loud(av[i]);

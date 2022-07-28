@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Contact.hpp                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/28 13:56:34 by san               #+#    #+#             */
+/*   Updated: 2022/07/28 13:57:15 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#ifndef CONTACT_HPP
+# define CONTACT_HPP
 
-
-
-#include "main.hpp"
+# include "main.hpp"
 
 class	Contact
 {
@@ -19,3 +30,5 @@ class	Contact
 		void	show_for_search();
 		void	set_all();
 };
+
+#endif

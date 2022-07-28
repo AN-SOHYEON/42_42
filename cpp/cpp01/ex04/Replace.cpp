@@ -1,14 +1,16 @@
 #include "Replace.hpp"
 
-bool read_file(std::string& file_contents, const char* filepath) {
-  std::ifstream ifs(filepath);
-  std::string line;
+int	readFile(std::string& file_contents, const char* filename) 
+{
+	std::ifstream	rdfile(filename);
+	std::string		line;
 
-  if (!ifs.is_open()) {
-    std::cerr << "failed to open source file." << std::endl;
-    return false;
-  }
-  while (std::getline(ifs, line)) {
+	if (!rdfile.is_open()) 
+	{
+		std::cerr << "failed to open source file." << std::endl;
+		return (1);
+	}
+  while (std::getline(rdfile, line)) {
     file_contents += line;
     file_contents.push_back('\n');
   }
@@ -27,11 +29,11 @@ bool output_file(const std::string& file_contents, const char* filepath) {
   return true;
 }
 
-bool sed(const char* filepath, const char* search, const char* replace) {
+bool replace(const char* filepath, const char* search, const char* replace) {
   std::string file_contents;
   std::size_t i;
 
-  if (!read_file(file_contents, filepath))
+  if (!readFile(file_contents, filepath))
     return false;
   i = 0;
   while (1) {

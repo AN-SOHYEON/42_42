@@ -1,7 +1,14 @@
-
-
-
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/28 13:54:14 by san               #+#    #+#             */
+/*   Updated: 2022/07/28 13:54:32 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "main.hpp"
 
@@ -43,7 +50,7 @@ int	commandType(std::string comm)
 		return (4);
 }
 
-int main ()
+int main (void)
 {
 	PhoneBook pb;
 	std::string comm;
@@ -54,7 +61,7 @@ int main ()
 		std::cout << "~~AWESOME PHONEBOOK~~" << std::endl;
 		std::cout << " put your command |  1.ADD  2.SEARCH  3.EXIT " << std::endl;
 
-		std::cin >> comm;
+		getline(std::cin, comm, '\n');
 		command = commandType(comm);
 
 		if (command == 1)

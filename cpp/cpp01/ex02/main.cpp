@@ -9,9 +9,10 @@ int	main(void)
 	std::string	&stringREF = brain;
 
 	std::cout << "string address : " << &brain << std::endl;
-	std::cout << "string address held by ptr : " << stringPTR << std::endl;
+	std::cout << "string address held by ptr : " << &stringPTR << std::endl;
 	std::cout << "string address held by ref : " << &stringREF << std::endl;
 	std::cout << std::endl;
+
 	std::cout << "string value : " << brain << std::endl;
 	std::cout << "string value pointed to by ptr : " << *stringPTR << std::endl;
 	std::cout << "string value pointed to by ref : " << stringREF << std::endl;

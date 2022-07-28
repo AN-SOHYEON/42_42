@@ -1,11 +1,12 @@
+
 #ifndef REPLACE_HPP
-#define REPLACE_HPP
+# define REPLACE_HPP
 
-#include <cstring>
-#include <fstream>
-#include <iostream>
-#include <string>
+# include <cstring>
+# include <fstream>
+# include <iostream>
+# include <string>
 
-bool sed(const char* filepath, const char* search, const char* replace);
+bool replace(const char* file, const char* search, const char* replace);
 
 #endif
