@@ -1,50 +1,56 @@
 #include "Replace.hpp"
 
-int	readFile(std::string& file_contents, const char* filename) 
+int	inputFile(std::string& content, const char* filename) 
 {
-	std::ifstream	rdfile(filename);
+	std::ifstream	in(filename);
 	std::string		line;
 
-	if (!rdfile.is_open()) 
+	if (!in.is_open()) 
 	{
-		std::cerr << "failed to open source file." << std::endl;
+		std::cerr << "faile to open file" << std::endl;
 		return (1);
 	}
-  while (std::getline(rdfile, line)) {
-    file_contents += line;
-    file_contents.push_back('\n');
-  }
-  return true;
+	while (std::getline(in, line))
+	{
+		content = content + line;
+		content.push_back('\n');
+	}
+	return (0);
 }
 
-bool output_file(const std::string& file_contents, const char* filepath) {
-  std::string output_path;
-  output_path = std::string(filepath) + ".replace";
-  std::ofstream ofs(output_path.c_str());
-  if (!ofs.is_open()) {
-    std::cerr << "failed to open output file." << std::endl;
-    return false;
-  }
-  ofs << file_contents;
-  return true;
+int	outputFile(const std::string& content, const char* filename)
+{
+	std::string		filename_re;
+	filename_re = std::string(filename) + ".replace";
+
+	std::ofstream	out(filename_re.c_str());
+	if (!out.is_open())
+	{
+		std::cerr << "faile to open new file." << std::endl;
+		return (1);
+	}
+	out << content;
+	return (0);
 }
 
-bool replace(const char* filepath, const char* search, const char* replace) {
-  std::string file_contents;
-  std::size_t i;
+int replace(const char* filename, const char* search, const char* replace)
+{
+	std::string content;
+	std::size_t i;
 
-  if (!readFile(file_contents, filepath))
-    return false;
-  i = 0;
-  while (1) {
-    i = file_contents.find(search, i);
-    if (i == std::string::npos)
-      break;
-    file_contents.erase(i, strlen(search));
-    file_contents.insert(i, replace);
-    i += strlen(replace);
-  }
-  if (!output_file(file_contents, filepath))
-    return false;
-  return true;
+	if (!inputFile(content, filename))
+		return false;
+	i = 0;
+	while (1)
+	{
+		i = content.find(search, i);
+		if (i == std::string::npos)
+			break;
+		content.erase(i, strlen(search));
+		content.insert(i, replace);
+		i  = i + strlen(replace);
+	}
+	if (!outputFile(content, filename))
+		return false;
+	return true;
 }

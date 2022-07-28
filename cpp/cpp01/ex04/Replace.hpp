@@ -7,6 +7,6 @@
 # include <iostream>
 # include <string>
 
-bool replace(const char* file, const char* search, const char* replace);
+int	replace(const char* filename, const char* search, const char* replace);
 
 #endif
