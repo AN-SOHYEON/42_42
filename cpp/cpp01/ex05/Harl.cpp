@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Harl.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/29 12:49:35 by san               #+#    #+#             */
+/*   Updated: 2022/07/29 12:49:38 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 
 #include "Harl.hpp"
@@ -9,32 +21,26 @@ Harl::~Harl() {}
 void	Harl::debug(void) 
 {
 	std::cout << "[DEBUG]" << std::endl 
-				<< "I love to get extra bacon for my 7XL-double-cheese-triple-pickle-special-ketchup burger.\n "
-				<< "I just love it!" << std::endl;
+				<< "I love having extra bacon for my 7XL-double-cheese-triple-pickle-specialketchup burger. I really do!" << std::endl;
 }
 
 void	Harl::info(void)
 {
 	std::cout << "[INFO]" << std::endl
-		<< "I cannot believe adding extra bacon cost more money.\n"
-		<< "You don’t put enough! If you did I would not have to ask for it!" << std::endl;
+		<< "I cannot believe adding extra bacon costs more money. You didnt put enough bacon in my burger! If you did, I wouldnt be asking for more!" << std::endl;
 }
 
 void Harl::warning(void)
 {
 	std::cout << "[WARNING]" << std::endl
-			<< "I think I deserve to have some extra bacon for free.\n"
-			<< "I’ve been coming here for years and you just started working here last month." << std::endl;
+			<< "I think I deserve to have some extra bacon for free. Ive been coming for years whereas you started working here since last month." << std::endl;
 }
 
 void Harl::error(void)
 {
 	std::cout << "[ERROR]" << std::endl
-			<< "This is unacceptable, I want to speak to the manager now." << std::endl;
+			<< "This is unacceptable! I want to speak to the manager now." << std::endl;
 }
-
-// const Harl::level Harl::LEVELS[] = {
-//     &Harl::debug, &Harl::info, &Harl::warning, &Harl::error};
 
 void Harl::complain(std::string level) 
 {

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Replace.cpp                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/29 12:48:54 by san               #+#    #+#             */
+/*   Updated: 2022/07/29 12:48:55 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Replace.hpp"
 
 int	inputFile(std::string& content, const char* filename) 
@@ -14,7 +26,7 @@ int	inputFile(std::string& content, const char* filename)
 	{
 		std::getline(in, line);
 		content = content + line;
-		content.push_back('\n');
+		content.push_back('\n'); // 개행생김 -> 한글자씩 읽어오는 방법도 있음
 	}
 	in.close();
 	return (1);

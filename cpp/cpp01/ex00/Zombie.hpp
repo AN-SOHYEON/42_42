@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Zombie.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/29 12:45:34 by san               #+#    #+#             */
+/*   Updated: 2022/07/29 12:45:35 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef ZOMBIE_HPP
 # define ZOMBIE_HPP
@@ -18,6 +28,6 @@ class	Zombie
 };
 
 void	randomChump(std::string name);
-Zombie  *newZombie(std::string name);
+Zombie	*newZombie(std::string name);
 
 #endif
