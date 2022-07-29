@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Fixed.cpp                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/29 16:40:47 by san               #+#    #+#             */
+/*   Updated: 2022/07/29 16:40:57 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "Fixed.hpp"
 #include <cmath>
@@ -15,30 +26,29 @@ Fixed::~Fixed()
 	std::cout << "Destructor called" << std::endl;
 }
 
-Fixed::Fixed(const Fixed& ob)
+Fixed::Fixed(const Fixed& fixed)
 {
-	// *this = ob;
+	this -> fixed_point = fixed.getRawBits();
 	std::cout << "Copy constructor called" << std::endl;
-	*this = ob;
 }
+
 
 Fixed::Fixed(int num)
 {
-	std::cout << "Int constructor called" << std::endl;
 	this->fixed_point = num * (1 << frac_bit);
+	std::cout << "Int constructor called" << std::endl;
 }
 
 Fixed::Fixed(float num)
 {
-	std::cout << "Float constructor called" << std::endl;
 	this->fixed_point = static_cast<int>(roundf(num * (1 << frac_bit)));
+	std::cout << "Float constructor called" << std::endl;
 }
 
-Fixed	&Fixed::operator=(const Fixed& ob)
+Fixed	&Fixed::operator=(const Fixed& fixed)
 {
-	// this->setRawBits(ob.getRawBits());
+	this->setRawBits(fixed.getRawBits());
 	std::cout << "Copy assignment operator called" << std::endl;
-	this->setRawBits(ob.getRawBits());
 	return (*this);
 }
 
