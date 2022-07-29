@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Fixed.hpp                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/29 16:40:17 by san               #+#    #+#             */
+/*   Updated: 2022/07/29 16:40:20 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 
 #ifndef FIXED_HPP
@@ -13,9 +25,9 @@ class Fixed
 	public:
 		Fixed();
 		~Fixed();
-		Fixed(const Fixed& ob);
+		Fixed(const Fixed& fixed);
 
-		Fixed&	operator=(const Fixed& a);
+		Fixed&	operator=(const Fixed& fixed);
 		int		getRawBits(void) const;
 		void	setRawBits(int const raw);
 };

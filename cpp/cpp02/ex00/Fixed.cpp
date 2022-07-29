@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Fixed.cpp                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/29 16:40:07 by san               #+#    #+#             */
+/*   Updated: 2022/07/29 16:40:11 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #include "Fixed.hpp"
 
@@ -14,18 +26,16 @@ Fixed::~Fixed()
 	std::cout << "Destructor called" << std::endl;
 }
 
-Fixed::Fixed(const Fixed& ob)
+Fixed::Fixed(const Fixed& fixed)
 {
-	// *this = ob;
+	this -> fixed_point = fixed.getRawBits();
 	std::cout << "Copy constructor called" << std::endl;
-	*this = ob;
 }
 
-Fixed	&Fixed::operator=(const Fixed& ob)
+Fixed	&Fixed::operator=(const Fixed& fixed)
 {
-	// this->setRawBits(ob.getRawBits());
+	this->setRawBits(fixed.getRawBits());
 	std::cout << "Copy assignment operator called" << std::endl;
-	this->setRawBits(ob.getRawBits());
 	return (*this);
 }
 
