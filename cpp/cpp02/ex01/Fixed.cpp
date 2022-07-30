@@ -32,7 +32,6 @@ Fixed::Fixed(const Fixed& fixed)
 	std::cout << "Copy constructor called" << std::endl;
 }
 
-
 Fixed::Fixed(int num)
 {
 	this->fixed_point = num * (1 << frac_bit);
@@ -78,11 +77,8 @@ int		Fixed::toInt( void ) const
 	return (i);
 }
 
-std::ostream &operator<<(std::ostream &stream, const Fixed &value)
+std::ostream	&operator<<(std::ostream &stream, const Fixed &value)
 {
 	stream << value.toFloat();
 	return (stream);
 }
-
-
-//순서에 주의 
