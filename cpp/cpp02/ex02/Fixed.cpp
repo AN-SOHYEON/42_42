@@ -13,7 +13,7 @@
 #include "Fixed.hpp"
 #include <cmath>
 
-//const int Fixed::frac_bit = 8;
+const int Fixed::frac_bit = 8;
 
 Fixed::Fixed()
 {
@@ -69,10 +69,10 @@ int		Fixed::toInt( void ) const
 	return (i);
 }
 
-std::ostream &operator<<(std::ostream &stream, const Fixed &value)
+std::ostream	&operator<<(std::ostream &out, const Fixed &fixed)
 {
-	stream << value.toFloat();
-	return (stream);
+	out << fixed.toFloat();
+	return (out);
 }
 
 Fixed	Fixed::operator+(const Fixed &fixed) const

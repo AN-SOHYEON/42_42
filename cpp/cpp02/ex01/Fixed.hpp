@@ -19,7 +19,7 @@ class Fixed
 {
 	private:
 		int					fixed_point;
-		static const int	frac_bit = 8;
+		static const int	frac_bit; //= 8;
 	public:
 		Fixed();
 		~Fixed();
@@ -34,6 +34,6 @@ class Fixed
 		int		toInt( void ) const;
 };
 
-std::ostream	&operator<<(std::ostream &stream, const Fixed &value);
+std::ostream	&operator<<(std::ostream &out, const Fixed &fixed);
 
 #endif

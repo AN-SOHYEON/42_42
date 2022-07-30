@@ -13,7 +13,7 @@
 
 #include "Fixed.hpp"
 
-//const int Fixed::frac_bit = 8;
+const int Fixed::frac_bit = 8;
 
 Fixed::Fixed()
 {
