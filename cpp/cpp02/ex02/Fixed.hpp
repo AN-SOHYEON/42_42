@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
 #ifndef FIXED_HPP
 # define FIXED_HPP
 
@@ -25,36 +23,39 @@ class Fixed
 	public:
 		Fixed();
 		~Fixed();
-		Fixed(const Fixed& ob);
+		Fixed(const Fixed& fixed);
 		Fixed(int num);
 		Fixed(float num);
-		Fixed&	operator=(const Fixed& a);
+		Fixed	&operator=(const Fixed& fixed);
 
-		bool operator>(const Fixed &a) const;
-		bool operator<(const Fixed &a) const;
-		bool operator>=(const Fixed &a) const;
-		bool operator<=(const Fixed &a) const;
-		bool operator==(const Fixed &a) const;
-		bool operator!=(const Fixed &a) const;
+		Fixed	operator+(const Fixed &fixed) const;
+		Fixed	operator-(const Fixed &fixed) const;
+		Fixed	operator*(const Fixed &fixed) const;
+		Fixed	operator/(const Fixed &fixed) const;
+		
+		bool	operator>(const Fixed &fixed) const;
+		bool	operator<(const Fixed &fixed) const;
+		bool	operator>=(const Fixed &fixed) const;
+		bool	operator<=(const Fixed &fixed) const;
+		bool	operator==(const Fixed &fixed) const;
+		bool	operator!=(const Fixed &fixed) const;
 
-		Fixed operator+(const Fixed &a) const;
-		Fixed operator-(const Fixed &a) const;
-		Fixed operator*(const Fixed &a) const;
-		Fixed operator/(const Fixed &a) const;
-
-		Fixed &operator++();
-		Fixed operator++(int);
-		Fixed &operator--();
-		Fixed operator--(int);
+		Fixed	&operator++();
+		Fixed	&operator--();
+		Fixed	operator++(int i);
+		Fixed	operator--(int i);
 
 		int		getRawBits(void) const;
 		void	setRawBits(int const raw);
 		float	toFloat( void ) const;
 		int		toInt( void ) const;
 
-		
+		static Fixed	&min(Fixed &f1, Fixed &f2);
+		static const Fixed	&min(const Fixed &f1, const Fixed &f2);
+		static Fixed	&max(Fixed &f1, Fixed &f2);
+		static const Fixed	&max(const Fixed &f1, const Fixed &f2);
 };
 
-std::ostream &operator<<(std::ostream &stream, const Fixed &value);
+std::ostream	&operator<<(std::ostream &stream, const Fixed &value);
 
 #endif
