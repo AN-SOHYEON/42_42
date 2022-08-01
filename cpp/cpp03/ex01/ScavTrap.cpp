@@ -29,7 +29,7 @@ ScavTrap::ScavTrap(const ScavTrap &scavTrap)
 	this->energy_point = scavTrap.energy_point;
 	this->attack_damage = scavTrap.attack_damage;
 
-	std::cout << "Copy constructor of claptrap called" << std::endl;
+	std::cout << "Copy constructor of scavtrap called" << std::endl;
 }
 
 ScavTrap::~ScavTrap()
