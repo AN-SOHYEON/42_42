@@ -9,6 +9,8 @@ int main(void)
 	ScavTrap san2("SAN-2");
 	FragTrap san3("SAN-3");	
 
+	san3.highFivesGuys();
+
 	san2.attack("SAN-3");
 	san3.takeDamage(20);
 

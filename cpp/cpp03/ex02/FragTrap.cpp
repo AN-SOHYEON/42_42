@@ -50,7 +50,8 @@ void	FragTrap::highFivesGuys(void)
 {
 	if (hit_point == 0 || energy_point == 0)
 	{
-		std::cout << "\nTrap " << name << " is already DEAD\n" << std::endl;
+		std::cout << "\nTrap " << name << " is already DEAD" << std::endl;
+		std::cout << "so you cant get " << name << "'s highfive\n" << std::endl;
 		return ;
 	}
 	std::cout << name << " 의 하이파이브를 받아라 ㅎ" << std::endl;
