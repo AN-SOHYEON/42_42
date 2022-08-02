@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   WrongAnimal.hpp                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/02 16:14:59 by san               #+#    #+#             */
+/*   Updated: 2022/08/02 16:15:00 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 
 #ifndef WRONGANIMAL_HPP
@@ -14,11 +26,11 @@ class WrongAnimal
 		WrongAnimal();
 		WrongAnimal(std::string type);
 		WrongAnimal(const WrongAnimal &wrongAnimal);
-		virtual		~WrongAnimal();
+		~WrongAnimal();
 		WrongAnimal	&operator=(const WrongAnimal &wrongAnimal);
 
 		std::string	getType() const;
-		void		makeSound() const; //const 이유?
+		void		makeSound() const;
 };
 
 #endif

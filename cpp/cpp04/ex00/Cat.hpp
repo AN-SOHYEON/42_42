@@ -1,5 +1,14 @@
-
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Cat.hpp                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/02 16:14:02 by san               #+#    #+#             */
+/*   Updated: 2022/08/02 16:14:06 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef CAT_HPP
 # define CAT_HPP
@@ -14,7 +23,7 @@ class Cat : public Animal
 		virtual	~Cat();
 		Cat	&operator=(const Cat &cat);
 
-		void	makeSound() const; //const 이유?
+		virtual void	makeSound() const;
 };
 
 #endif

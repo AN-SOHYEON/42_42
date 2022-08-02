@@ -1,5 +1,14 @@
-
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Dog.hpp                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/02 16:14:26 by san               #+#    #+#             */
+/*   Updated: 2022/08/02 16:14:30 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef DOG_HPP
 # define DOG_HPP
@@ -14,7 +23,7 @@ class Dog : public Animal
 		virtual	~Dog();
 		Dog	&operator=(const Dog &dog);
 
-		void	makeSound() const; //const 이유?
+		virtual void	makeSound() const;
 };
 
 #endif

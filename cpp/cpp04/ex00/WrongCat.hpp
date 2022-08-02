@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   WrongCat.hpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/02 16:15:14 by san               #+#    #+#             */
+/*   Updated: 2022/08/02 16:15:15 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 
 #ifndef WRONGCAT_HPP
@@ -10,10 +22,10 @@ class WrongCat : public WrongAnimal
 	public:
 		WrongCat();
 		WrongCat(const WrongCat &wrongCat);
-		virtual	~WrongCat();
+		~WrongCat();
 		WrongCat	&operator=(const WrongCat &wrongCat);
 
-		void	makeSound() const; //const 이유?
+		void	makeSound() const;
 };
 
 #endif

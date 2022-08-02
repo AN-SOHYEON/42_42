@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Animal.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/02 16:21:31 by san               #+#    #+#             */
+/*   Updated: 2022/08/02 16:21:33 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 
 #ifndef ANIMAL_HPP
@@ -18,7 +30,7 @@ class Animal
 		Animal	&operator=(const Animal &animal);
 
 		std::string		getType() const;
-		virtual void	makeSound() const; //const 이유?
+		virtual void	makeSound() const;
 };
 
 #endif

@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Dog.cpp                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/02 16:22:03 by san               #+#    #+#             */
+/*   Updated: 2022/08/02 16:22:04 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "Dog.hpp"
 
-Dog::Dog()
+Dog::Dog() : Animal()
 {
 	this->type = "DOG";
 	this->brain = new Brain("I AM DOG");
@@ -9,13 +20,9 @@ Dog::Dog()
 	std::cout << "Default constructor of Dog called." << std::endl;
 }
 
-Dog::Dog(const Dog &dog)
+Dog::Dog(const Dog &dog) : Animal()
 {
 	this->type = dog.getType();
-	if (!this->brain)
-	{
-		delete brain;
-	}
 	this->brain = new Brain(*dog.getBrain());
 
 	std::cout << "Copy constructor of Dog called" << std::endl;
@@ -31,7 +38,9 @@ Dog::~Dog()
 Dog	&Dog::operator=(const Dog &dog)
 {
 	this->type = dog.getType();
-	this->brain = dog.getBrain();
+	if (this->brain != NULL)
+		delete this->brain;
+	this->brain = new Brain(*dog.getBrain());
 
 	std::cout << "Copy assignment operator of Dog called" << std::endl;
 	return (*this);

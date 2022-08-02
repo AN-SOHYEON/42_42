@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Cat.hpp                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/02 16:21:57 by san               #+#    #+#             */
+/*   Updated: 2022/08/02 16:21:59 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 
 
@@ -17,7 +29,7 @@ class Cat : public Animal
 		virtual	~Cat();
 		Cat	&operator=(const Cat &cat);
 
-		void	makeSound() const; //const 이유?
+		void	makeSound() const;
 		void	printAllBrain() const;
 		void	printBrain(int i) const;
 		void	setBrain(std::string str, int i);

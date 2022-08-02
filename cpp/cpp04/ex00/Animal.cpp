@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Animal.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/02 16:02:17 by san               #+#    #+#             */
+/*   Updated: 2022/08/02 16:02:54 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "Animal.hpp"
 
@@ -39,8 +50,7 @@ std::string		Animal::getType() const
 {
 	return (this->type);
 }
-
-
+ 
 void	Animal::makeSound() const
 {
 	std::cout << "... I don't know my sound yet.. ㅠㅡㅜ" << std::endl;

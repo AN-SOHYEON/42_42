@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Cat.cpp                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/02 16:21:51 by san               #+#    #+#             */
+/*   Updated: 2022/08/02 16:21:52 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #include "Cat.hpp"
 
-Cat::Cat()
+Cat::Cat() : Animal()
 {
 	this->type = "Cat";
 	this->brain = new Brain("I AM CAT");
@@ -9,13 +21,9 @@ Cat::Cat()
 	std::cout << "Default constructor of Cat called." << std::endl;
 }
 
-Cat::Cat(const Cat &cat)
+Cat::Cat(const Cat &cat) : Animal()
 {
 	this->type = cat.getType();
-	if (!this->brain)
-	{
-		delete brain;
-	}
 	this->brain = new Brain(*cat.getBrain());
 
 	std::cout << "Copy constructor of Cat called" << std::endl;
@@ -31,7 +39,9 @@ Cat::~Cat()
 Cat	&Cat::operator=(const Cat &cat)
 {
 	this->type = cat.getType();
-	this->brain = cat.getBrain();
+	if (this->brain != NULL)
+		delete this->brain;
+	this->brain = new Brain(*cat.getBrain());
 
 	std::cout << "Copy assignment operator of Cat called" << std::endl;
 	return (*this);
