@@ -12,9 +12,9 @@ Bureaucrat::~Bureaucrat() {}
 Bureaucrat::Bureaucrat(std::string name, int grade) : name(name)
 {
 	if (grade < 1)
-		throw GradeTooHighException();
+		throw GradeOverHighException();
 	else if (grade > 150)
-		throw GradeTooLowException();
+		throw GradeOverLowException();
 	else
 	{
 		this->grade = grade;
@@ -28,8 +28,7 @@ Bureaucrat::Bureaucrat(const Bureaucrat &bureaucrat) : name(bureaucrat.getName()
 
 Bureaucrat	&Bureaucrat::operator=(const Bureaucrat &bureaucrat)
 {
-	// this->name = bureaucrat.getName();
-	*(const_cast<std::string *>(&this->name)) = bureaucrat.getName();
+	//*(const_cast<std::string *>(&this->name)) = bureaucrat.getName();
 	this->grade = bureaucrat.getGrade();
 
 	return (*this);
@@ -47,30 +46,30 @@ int	Bureaucrat::getGrade() const
 
 void	Bureaucrat::upGrade()
 {
+	if (this->grade < 2)
+		throw GradeOverHighException();
 	this->grade--;
-	if (grade < 1)
-		throw GradeTooHighException();
 }
 
 void	Bureaucrat::downGrade()
 {
+	if (this->grade > 149)
+		throw GradeOverLowException();
 	this->grade++;
-	if (grade > 150)
-		throw GradeTooLowException();
 }
 
-const char *Bureaucrat::GradeTooHighException::what() const throw() 
+const char	*Bureaucrat::GradeOverHighException::what() const throw() 
 {
-  return "Grade is over range (High)";
+	return "Grade is over range (High)";
 }
 
-const char *Bureaucrat::GradeTooLowException::what() const throw() 
+const char	*Bureaucrat::GradeOverLowException::what() const throw() 
 {
-  return "Grade is over range (Low)";
+	return "Grade is over range (Low)";
 }
 
 std::ostream	&operator<<(std::ostream &out, const Bureaucrat &bureaucrat)
 {
-	out << bureaucrat.getName() << ", bureaucrat grade is " << bureaucrat.getGrade();
+	out << "Bureaucrat " << bureaucrat.getName() << ", bureaucrat grade is " << bureaucrat.getGrade();
 	return (out);
 }

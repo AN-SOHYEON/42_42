@@ -1,11 +1,10 @@
 
+
 #ifndef BUREAUCRAT_HPP
 # define BUREAUCRAT_HPP
 
-
 # include <iostream>
 # include <string>
-
 
 class Bureaucrat
 {
@@ -24,13 +23,13 @@ class Bureaucrat
 		void				upGrade();
 		void				downGrade();
 
-		class	GradeTooHighException : public std::exception
+		class	GradeOverHighException : public std::exception
 		{
 			public:
 				const char	*what() const throw();
 		};
 		
-		class	GradeTooLowException : public std::exception
+		class	GradeOverLowException : public std::exception
 		{
 			public:
 				const char	*what() const throw();
