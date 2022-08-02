@@ -12,9 +12,9 @@ Bureaucrat::~Bureaucrat() {}
 Bureaucrat::Bureaucrat(std::string name, int grade) : name(name)
 {
 	if (grade < 1)
-		throw GradeOverHighException();
+		throw GradeTooHighException();
 	else if (grade > 150)
-		throw GradeOverLowException();
+		throw GradeTooLowException();
 	else
 	{
 		this->grade = grade;
@@ -47,23 +47,23 @@ int	Bureaucrat::getGrade() const
 void	Bureaucrat::upGrade()
 {
 	if (this->grade < 2)
-		throw GradeOverHighException();
+		throw GradeTooHighException();
 	this->grade--;
 }
 
 void	Bureaucrat::downGrade()
 {
 	if (this->grade > 149)
-		throw GradeOverLowException();
+		throw GradeTooLowException();
 	this->grade++;
 }
 
-const char	*Bureaucrat::GradeOverHighException::what() const throw() 
+const char	*Bureaucrat::GradeTooHighException::what() const throw() 
 {
 	return "Grade is over range (High)";
 }
 
-const char	*Bureaucrat::GradeOverLowException::what() const throw() 
+const char	*Bureaucrat::GradeTooLowException::what() const throw() 
 {
 	return "Grade is over range (Low)";
 }

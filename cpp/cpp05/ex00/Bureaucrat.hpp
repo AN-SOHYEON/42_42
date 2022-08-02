@@ -23,13 +23,13 @@ class Bureaucrat
 		void				upGrade();
 		void				downGrade();
 
-		class	GradeOverHighException : public std::exception
+		class	GradeTooHighException : public std::exception
 		{
 			public:
 				const char	*what() const throw();
 		};
 		
-		class	GradeOverLowException : public std::exception
+		class	GradeTooLowException : public std::exception
 		{
 			public:
 				const char	*what() const throw();
