@@ -24,7 +24,7 @@ int	main()
 		}
 	}
 	{
-		std::cout << "================= over(high) level ==================" << std::endl;
+		std::cout << "================= over(high) level in form ==================" << std::endl;
 
 		try {
 
@@ -37,8 +37,7 @@ int	main()
 		}
 	}
 	{
-		std::cout << "================= over(low) level ==================" << std::endl;
-
+		std::cout << "================= over(low) level in form ==================" << std::endl;
 		try {
 
 			Bureaucrat b("SAN", 180);
@@ -50,7 +49,7 @@ int	main()
 		}
 	}
 	{
-		std::cout << "================= over upGrade ==================" << std::endl;
+		std::cout << "================= try signed by invalid level ==================" << std::endl;
 
 		try {
 
@@ -68,7 +67,7 @@ int	main()
 		}
 	}
 	{
-		std::cout << "================= over downGrade ==================" << std::endl;
+		std::cout << "================= try executed by invalid level ==================" << std::endl;
 
 		try {
 

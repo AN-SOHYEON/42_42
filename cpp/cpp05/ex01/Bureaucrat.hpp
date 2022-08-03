@@ -1,11 +1,11 @@
 
+
 #ifndef BUREAUCRAT_HPP
 # define BUREAUCRAT_HPP
 
-
 # include <iostream>
 # include <string>
-
+# include "Form.hpp"
 
 class Bureaucrat
 {
@@ -23,6 +23,7 @@ class Bureaucrat
 		int					getGrade() const;
 		void				upGrade();
 		void				downGrade();
+		void				signForm(Form &form);
 
 		class	GradeTooHighException : public std::exception
 		{

@@ -2,8 +2,7 @@
 #ifndef FORM_HPP
 # define FORM_HPP
 
-# include <iostream>
-# include <string>
+# include "Bureaucrat.hpp"
 
 class	Form
 {
@@ -15,14 +14,15 @@ class	Form
 	public:
 		Form();
 		~Form();
-		Form(std::string name, int grade);
-		Form(const Form &bureaucrat);
-		Form	&operator=(const Form &bureaucrat);
+		Form(std::string name, bool is_signed, int sign_grade, int exe_grade);
+		Form(const Form &form);
+		Form	&operator=(const Form &form);
 
 		const std::string	getName() const;
 		bool				getIsSigned() const;
 		int					getSignGrade() const;
-
+		int					getExeGrade() const;
+		void				beSigned(Bureaucrat &form);
 
 		class	GradeTooHighException : public std::exception
 		{
@@ -38,6 +38,6 @@ class	Form
 
 };
 
-std::ostream	&operator<<(std::ostream &out, const Form &bureaucrat);
+std::ostream	&operator<<(std::ostream &out, const Form &form);
 
 #endif
