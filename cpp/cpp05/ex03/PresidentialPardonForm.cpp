@@ -4,7 +4,7 @@
 #include "PresidentialPardonForm.hpp"
 
 PresidentialPardonForm::PresidentialPardonForm() 
-	: Form("Robot Request Form", false, 25, 5) 
+	: Form("Presidential Pardon Form", false, 25, 5) 
 {
 	t_name = "default";
 }
@@ -12,7 +12,7 @@ PresidentialPardonForm::PresidentialPardonForm()
 PresidentialPardonForm::~PresidentialPardonForm() {}
 
 PresidentialPardonForm::PresidentialPardonForm(std::string target) 
-	: Form("Robot Request Form", false, 25, 5) 
+	: Form("Presidential Pardon Form", false, 25, 5) 
 {
 	t_name = target;
 }

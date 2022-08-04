@@ -41,6 +41,7 @@ Form	*Intern::makeForm(std::string name, std::string target)
 	Form	*(Intern::*fp[3])(std::string t);
 	Form	*tmp;
 
+	tmp = NULL;
 	fp[0] = &Intern::_robot;
 	fp[1] = &Intern::_shrubbery;
 	fp[2] = &Intern::_president;
@@ -55,7 +56,7 @@ Form	*Intern::makeForm(std::string name, std::string target)
 	}
 	if (!tmp)
 		throw (Intern::InternFailToCreateForm());
-	std::cout << "Intern creates " << std::endl;
+	std::cout << "Intern creates " << tmp->getName() << std::endl;
 	return (tmp);
 }
 

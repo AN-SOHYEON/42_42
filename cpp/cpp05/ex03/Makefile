@@ -5,7 +5,7 @@ NAME	=	burea03
 FLAGS	=	-Wall -Wextra -Werror -std=c++98
 CC		=	c++
 
-SRC		=	main.cpp Bureaucrat.cpp Form.cpp PresidentialPardonForm.cpp ShrubberyCreationForm.cpp RobotomyRequestForm.cpp Intern.hpp
+SRC		=	main.cpp Bureaucrat.cpp Form.cpp PresidentialPardonForm.cpp ShrubberyCreationForm.cpp RobotomyRequestForm.cpp Intern.cpp
 
 OBJ		=	${SRC:%.cpp=%.o}
 

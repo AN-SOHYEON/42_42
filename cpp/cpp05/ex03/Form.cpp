@@ -8,6 +8,8 @@ Form::Form() : name("FORM")
 	this->exe_grade = 150;
 }
 
+Form::~Form() {}
+
 Form::Form(std::string name, bool is_signed, int sign_grade, int exe_grade)
 	: name(name)
 {

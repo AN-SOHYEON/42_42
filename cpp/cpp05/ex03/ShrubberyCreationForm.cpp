@@ -11,7 +11,7 @@ ShrubberyCreationForm::ShrubberyCreationForm()
 ShrubberyCreationForm::~ShrubberyCreationForm() {}
 
 ShrubberyCreationForm::ShrubberyCreationForm(std::string target) 
-	: Form("Robot Request Form", false, 145, 137) 
+	: Form("Shrubbery Creation Form", false, 145, 137) 
 {
 	t_name = target;
 }
