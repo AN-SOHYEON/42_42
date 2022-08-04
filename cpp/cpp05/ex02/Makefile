@@ -1,11 +1,11 @@
 
 
-NAME	=	burea01
+NAME	=	burea02
 
 FLAGS	=	-Wall -Wextra -Werror -std=c++98
 CC		=	c++
 
-SRC		=	main.cpp Bureaucrat.cpp Form.cpp
+SRC		=	main.cpp Bureaucrat.cpp Form.cpp PresidentialPardonForm.cpp ShrubberyCreationForm.cpp RobotomyRequestForm.cpp
 
 OBJ		=	${SRC:%.cpp=%.o}
 

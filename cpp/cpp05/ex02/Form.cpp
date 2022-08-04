@@ -1,9 +1,11 @@
 
 #include "Form.hpp"
 
-Form::Form() //: name("FORM")
+Form::Form() : name("FORM")
 {
-	Form("FORM", false, 1, 150);
+	this->is_signed =  false;
+	this->sign_grade = 1;
+	this->exe_grade = 150;
 }
 
 Form::Form(std::string name, bool is_signed, int sign_grade, int exe_grade)
@@ -60,7 +62,7 @@ int Form::getExeGrade() const
 void	Form::beSigned(Bureaucrat &bureaucrat)
 {
 	if (bureaucrat.getGrade() > sign_grade)
-		throw GradeTooLowException();
+		throw Form::GradeTooLowException();
 	if (is_signed == true)
 		std::cout << name << " is aleady signed" << std::endl;
 	else
@@ -75,6 +77,16 @@ const char *Form::GradeTooHighException::what() const throw()
 const char	*Form::GradeTooLowException::what() const throw() 
 {
 	return "Grade is over range (Low)";
+}
+
+const char	*Form::FormIsNotSigned::what() const throw() 
+{
+	return "Form did not get permit";
+}
+
+const char	*Form::FailToExecute::what() const throw() 
+{
+	return "Fail to Execute. please try again.";
 }
 
 std::ostream	&operator<<(std::ostream &out, const Form &form)
