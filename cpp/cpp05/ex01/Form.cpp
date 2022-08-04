@@ -6,6 +6,8 @@ Form::Form() //: name("FORM")
 	Form("FORM", false, 1, 150);
 }
 
+Form::~Form() {}
+
 Form::Form(std::string name, bool is_signed, int sign_grade, int exe_grade)
 	: name(name)
 {
