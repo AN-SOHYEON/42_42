@@ -41,20 +41,28 @@ void	RobotomyRequestForm::execute(const Bureaucrat &bureaucrat) const
 	{
 		throw (Form::GradeTooLowException());
 	}
+
 	int	rand_num;
+
 	srand(time(NULL));
-	for (int i = 0; i < 10; i++)
+	rand_num = rand() % 100 + 1;
+
+	// for (int i = 0; i < 10; i++)
+	// {
+	// 	rand_num = rand() % 100 + 1;
+	// 	if (rand_num > 50)
+	// 		break;
+	// }
+
+	if (rand_num >= 50)
 	{
-		rand_num = rand() % 100 + 1;
-		if (rand_num >= 50)
-		{
-			std::cout << t_name << " has been robotomized successfully." << std::endl;
-			std::cout << "This Form is executed by bureaucrat " << bureaucrat.getName() << std::endl;
-		}
-		else 
-		{
-			throw (Form::FailToExecute());
-		}
+		std::cout << "dddrilll..." << rand_num << std::endl;
+		std::cout << t_name << " has been robotomized successfully." << std::endl;
+		std::cout << "This Form is executed by bureaucrat " << bureaucrat.getName() << std::endl;
+	}
+	else 
+	{
+		throw (Form::FailToExecute());
 	}
 }
 
