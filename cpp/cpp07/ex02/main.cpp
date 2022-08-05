@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
 #include "Array.hpp"
 
 #define MAX_VAL 750
@@ -25,12 +24,11 @@ int main(int, char**)
         numbers[i] = value;
         mirror[i] = value;
     }
-    //SCOPE
+        //SCOPE
     {
         Array<int> tmp = numbers;
         Array<int> test(tmp);
     }
-
     for (int i = 0; i < MAX_VAL; i++)
     {
         if (mirror[i] != numbers[i])
@@ -39,7 +37,7 @@ int main(int, char**)
             return 1;
         }
     }
-    try
+        try
     {
         numbers[-2] = 0;
     }
@@ -47,7 +45,7 @@ int main(int, char**)
     {
         std::cerr << e.what() << '\n';
     }
-    try
+        try
     {
         numbers[MAX_VAL] = 0;
     }
@@ -55,12 +53,59 @@ int main(int, char**)
     {
         std::cerr << e.what() << '\n';
     }
-
     for (int i = 0; i < MAX_VAL; i++)
     {
         numbers[i] = rand();
     }
-
+    std::cout << "==================deepcopy=====================" << std::endl;
+    for (int i = 0; i < 20; i++)
+    {
+        std::cout << numbers[i] << " || " << mirror[i] << std::endl;
+    }
     delete [] mirror;//
+
+    std::cout << "==================san test for deep copy=====================" << std::endl;
+
+    Array<char> ch(10);
+    for (int i = 0; i < 10; i++)
+    {
+        int   value;
+        while (1)
+        {
+            value = rand() % 130;
+            if (value > 33 && value < 126)
+                break;
+        }
+        ch[i] = value;
+    }
+    Array<char> tt(ch);
+    Array<char> oo = ch;
+
+    std::cout << "==========after copy=========" << std::endl;
+
+    for (int i = 0; i < 5; i++)
+    {
+        std::cout << ch[i] << " || " << tt[i] << " || " << oo[i] << std::endl;
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        int   value;
+        while (1)
+        {
+            value = rand() % 130;
+            if (value > 33 && value < 120)
+                break;
+        }
+        tt[i] = value;
+        oo[i] = value + 2;
+    }
+
+    std::cout << "==========after change=========" << std::endl;
+    for (int i = 0; i < 5; i++)
+    {
+        std::cout << ch[i] << " || " << tt[i] << " || " << oo[i] << std::endl;
+    }
+
+
     return 0;
 }

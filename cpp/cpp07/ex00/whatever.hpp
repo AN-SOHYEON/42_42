@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef WHATEVER_HPP
 # define WHATEVER_HPP
 
@@ -40,8 +39,7 @@ T	max(T a, T b)
 	if (a > b)
 		return (a);
 	else 
-		return (a);
+		return (b);
 }
-
 
 #endif

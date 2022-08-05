@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef ARRAY_HPP
 # define ARRAY_HPP
 
@@ -28,7 +27,7 @@ class Array
 		Array(const Array<T> &array);
 		~Array();
 		Array	&operator=(const Array<T> &array);
-		T		&operator[](const unsigned int i);
+		T		&operator[](int i);
 
 		unsigned int	size() const;
 
@@ -53,27 +52,26 @@ Array<T>::Array(unsigned int n)
 	arr = new T[len];
 	for (unsigned int i = 0; i < len; i++)
 	{
-		arr[i] = T();
+		arr[i] = 0;
 	}
 }
 
 template <typename T>
 Array<T>::Array(const Array<T> &array)
 {
-	if (this->arr)
-		delete [] this->arr;
 	this->len = array.size();
 	this->arr = new T[len];
 	for (unsigned int i = 0; i < len; i++)
 	{
-		this->arr[i] = array[i];
+		this->arr[i] = array.arr[i];
 	}
 }
 
 template <typename T>
 Array<T>::~Array()
 {
-	delete [] arr;
+	if (this->arr[0])
+		delete [] arr;
 }
 
 template <typename T>
@@ -85,16 +83,15 @@ Array<T>	&Array<T>::operator=(const Array<T> &array)
 	this->arr = new T[len];
 	for (unsigned int i = 0; i < len; i++)
 	{
-		this->arr[i] = array[i];
+		this->arr[i] = array.arr[i];
 	}
 	return (*this);
 }
 
 template <typename T>
-T	&Array<T>::operator[](const int i)
+T	&Array<T>::operator[](int i)
 {
-	unsigned
-	if (i > len || i < 0)
+	if (i >= static_cast<int>(len) || i < 0)
 		throw (IndexOutOfBound());
 	return (arr[i]);
 }
