@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Bureaucrat.cpp                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/05 10:11:09 by san               #+#    #+#             */
+/*   Updated: 2022/08/05 10:11:11 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
 
@@ -28,7 +38,7 @@ Bureaucrat::Bureaucrat(const Bureaucrat &bureaucrat) : name(bureaucrat.getName()
 
 Bureaucrat	&Bureaucrat::operator=(const Bureaucrat &bureaucrat)
 {
-	//*(const_cast<std::string *>(&this->name)) = bureaucrat.getName();
+	//const_cast can change this->name
 	this->grade = bureaucrat.getGrade();
 
 	return (*this);
