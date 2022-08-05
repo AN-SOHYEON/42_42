@@ -15,7 +15,7 @@ NAME	=	cast02
 FLAGS	=	-Wall -Wextra -Werror -std=c++98
 CC		=	c++
 
-SRC		=	main.cpp Base.cpp A.cpp B.cpp C.cpp
+SRC		=	main.cpp Base.cpp
 
 OBJ		=	${SRC:%.cpp=%.o}
 
