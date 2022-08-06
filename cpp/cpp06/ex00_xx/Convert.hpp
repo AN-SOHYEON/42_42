@@ -20,26 +20,36 @@
 class Convert
 {
 	private:
+		char		type;
 		std::string	value;
+
+		std::string c;
+		int			i;
+		float		f;
+		double		d;
 
 	public:
 		Convert();
-		Convert(std::string value);
+		Convert(char type, std::string value);
 		Convert(const Convert &convert);
 		~Convert();
 		Convert	&operator=(const Convert &convert);
 
 		void	conversion();
-		void	convertChar(double d);
-		void	convertInt(double d);
-		void	convertFloat(double d);
-		void	convertDouble(double d);
+		void	convertChar();
+		void	convertInt();
+		void	convertFloat();
+		void	convertDouble();
 
-		bool	intBound(double d);
-		bool	isNanInf();
-		int		findd(char c);
+		bool	IntBound();
 
-		std::string getValue() const;
+		
+	class	NoTypeException : public std::exception
+	{
+		public :
+			const char	*what() const throw();
+	};
+
 };
 
 #endif

@@ -10,12 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
-
-
 #include "Data.hpp"
-#include <stdint.h>	// uintptr_t
+#include <cstdint>
 
 static uintptr_t	serialize(Data *ptr)
 {
@@ -30,13 +26,14 @@ static Data	*deserialize(uintptr_t raw)
 int	main()
 {
 	Data	data;
+
 	data.setD("sansan");
 
 	uintptr_t	san = serialize(&data);
-
 	Data	*san_de = deserialize(san);
-	std::cout << "result of se->dese : " << san_de->getD() << std::endl;
 
+	std::cout << std::endl;
+	std::cout << "result of se->dese : " << san_de->getD() << std::endl;
 	std::cout << std::endl;
 	std::cout << "=================  ==================" << std::endl;
 	std::cout << "data add   : " << &data << std::endl;
@@ -45,6 +42,7 @@ int	main()
 
 	std::cout << "data value   : " << data.getD() << std::endl;
 	std::cout << "san_de value : " << san_de->getD() << std::endl;
-
 	std::cout << std::endl;
+
+	return (0);
 }

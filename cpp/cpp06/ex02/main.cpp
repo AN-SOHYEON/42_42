@@ -36,20 +36,17 @@ Base	*generate(void)
 	return (NULL);
 }
 
-// - A, B, C를 랜덤하게 초기화하고 base 포인터를 리턴해라. 
-
-
 void identify(Base* p)
 {
-	if (dynamic_cast<A*>(p))
+	if (dynamic_cast<A *>(p))
 	{
 		std::cout << "A" << std::endl;
 	}
-	else if (dynamic_cast<B*>(p))
+	else if (dynamic_cast<B *>(p))
 	{
 		std::cout << "B" << std::endl;
 	}
-	else if (dynamic_cast<C*>(p)) 
+	else if (dynamic_cast<C *>(p)) 
 	{
 		std::cout << "C" << std::endl;
 	}
@@ -63,24 +60,24 @@ void identify(Base& p)
 {
 	try
 	{
-		(void)dynamic_cast<A&>(p);
+		(void)dynamic_cast<A &>(p);
 		std::cout << "A" << std::endl;
 	}
-	catch (const std::exception&)
+	catch (const std::exception &e)
 	{
 		try
 		{
-			(void)dynamic_cast<B&>(p);
+			(void)dynamic_cast<B &>(p);
 			std::cout << "B" << std::endl;
 		}
-		catch (const std::exception&)
+		catch (const std::exception &e)
 		{
 			try
 			{
-				(void)dynamic_cast<C&>(p);
+				(void)dynamic_cast<C &>(p);
 				std::cout << "C" << std::endl;
 			}
-			catch (const std::exception&)
+			catch (const std::exception &e)
 			{
 				std::cout << "Base" << std::endl;
 			}
@@ -90,10 +87,16 @@ void identify(Base& p)
 
 int main()
 {
-	Base* random_instance = generate();
-	std::cout << "Check 'void identify(Base* p)': ";
-	identify(random_instance);
-	std::cout << "Check 'void identify(Base& p)': ";
-	identify(*random_instance);
-	delete random_instance;
+	Base	*ran = generate();
+
+	std::cout << "=================  ==================" << std::endl;
+	std::cout << "(Base* p)->type : ";
+	identify(ran);
+	std::cout << "(Base& p)->type : ";
+	identify(*ran);
+	std::cout << "=================  ==================" << std::endl;
+
+	delete ran;
+
+	return (0);
 }
