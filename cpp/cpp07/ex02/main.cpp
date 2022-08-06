@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "Array.hpp"
+# include <cstdlib>
+# include <ctime>
 
 #define MAX_VAL 750
 int main(int, char**)
@@ -106,6 +108,17 @@ int main(int, char**)
         std::cout << ch[i] << " || " << tt[i] << " || " << oo[i] << std::endl;
     }
 
+    std::cout << "==========out of bound=========" << std::endl;
+    try
+    {
+        std::cout << ch[11] << std::endl;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << e.what() << std::endl;
+    }
+    
 
+    system("leaks tem02");
     return 0;
 }

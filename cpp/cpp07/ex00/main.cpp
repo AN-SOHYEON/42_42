@@ -40,5 +40,6 @@ int main( void )
 	::swap(e, f);
 	std::cout << "e = " << e << ", f = " << f << std::endl;
 
+	system("leaks tem00");
 	return 0;
 }

@@ -20,5 +20,6 @@ int main( void )
 	iter(arr1, 10, ptl);
 	iter(arr2, 7, ptl);
 	
+	system("leaks tem01");
 	return (0);
 }
