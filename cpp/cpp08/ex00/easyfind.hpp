@@ -1,14 +1,24 @@
-
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   easyfind.hpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: san <san@student.42seoul.kr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/06 12:48:26 by san               #+#    #+#             */
+/*   Updated: 2022/08/06 12:48:26 by san              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef EASYFIND_HPP
 # define EASYFIND_HPP
 
 # include <iostream>
+# include <iterator>
 # include <algorithm>
 
 template <typename T> 
-int	easyfind(T const &t, int i)
+int	easyfind(T &t, int i)
 {
 	typename T::iterator it;
 
