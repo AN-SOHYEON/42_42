@@ -1,4 +1,54 @@
 
 
+version: "3"
+
+services:
+
+  mariadb:
+    container_name: mariadb
+    expose:
+      - "3306"
+    # volumes:
+    #   -
+    env_file: 
+      - .env
+    # environment:
+    #   - name=value
+    networks:
+      - inception_net
+    restart: always
+    tty: true
 
 
+  nginx:
+    container_name: nginx
+    build:
+      context: ./requirements/nginx/
+    ports:
+      - "443:443"
+    # volumes:
+    #   -
+    networks:
+      - inception_net
+    tty: true
+
+  wordpress:
+    container_name: wordpress
+    restart: always
+    expose:
+      - "9000"
+    networks:
+      - inception_nets
+    tty: true
+
+networks:
+  inception_net:
+    driver: bridge
+
+
+# https://nirsa.tistory.com/80 
+# https://seorenn.github.io/note/docker-compose-devenv.html 
+# 명령어 세트와 환경변수 등의 여러 도커를 실행시키는 방법에 대한 것을 스크립트화시켜서 자동화하는 목적의 도구
+
+# network
+# https://www.daleseo.com/docker-compose-networks/
