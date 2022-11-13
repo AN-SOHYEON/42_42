@@ -29,3 +29,25 @@ RUN apt-get -y install mariadb-client
 
 # php-fpm : https://server-talk.tistory.com/329 
 # 도커를 이용한 프로젝트 진행 참고 자료 : https://velog.io/@du0928/42DoProject-%EA%B0%9C%EB%B0%9C%EC%9D%BC%EC%A7%80
+
+
+
+# https://conory.com/blog/42956
+# https://velog.io/@du0928/PHP-fpm
+# https://stackoverflow.com/questions/37313780/how-can-i-start-php-fpm-in-a-docker-container-by-default
+# https://stackoverflow.com/questions/57741106/run-php-php7-3-fpm-sock-is-missing-in-docker-debian-container
+# https://www.digitalocean.com/community/tutorials/understanding-and-implementing-fastcgi-proxying-in-nginx
+
+# https://www.digitalocean.com/community/tutorials/understanding-and-implementing-fastcgi-proxying-in-nginx
+# https://myjeeva.com/php-fpm-configuration-101.html#pool-directives
+
+
+
+#########3순서
+# - apt update && upgrade
+# - php, php-mysql, php-fpm 설치
+# - wordpress.tar 파일 add
+# - wordpress 디렉토리 nginx 유저이름으로 권한 설정
+# - wp-config 파일 (wordpress 설정파일) copy
+# - www.config 파일 (php-fpm 설정파일) copy
+# - php-fpm 실행

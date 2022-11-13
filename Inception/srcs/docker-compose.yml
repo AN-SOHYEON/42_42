@@ -1,15 +1,20 @@
 
 
 version: "3"
+# 도커 compose의 버전을 명시
+# 버전별로 파일의 작성법이 달라지며 docker-compose 파일 빌드시 명시된 버전에 맞게 빌드된다.
 
 services:
+# docker composer up 시, 빌드되는 컨테이너 목록
+# 컨테이너의 이름은 도커 DNS서버에 컨테이너의 IP 주소와 매핑되어 등록되므로 컨테이너 내부에서 해당 이름을 도메인으로 사용할 수 있다. 
 
   mariadb:
     container_name: mariadb
+    build: ./requirements/mariadb
     expose:
-      - "3306"
-    # volumes:
-    #   -
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
     env_file: 
       - .env
     # environment:
@@ -20,30 +25,60 @@ services:
     tty: true
 
 
-  nginx:
-    container_name: nginx
-    build:
-      context: ./requirements/nginx/
-    ports:
-      - "443:443"
-    # volumes:
-    #   -
-    networks:
-      - inception_net
-    tty: true
+#   nginx:
+#     container_name: nginx
+#     build:
+#     # 컨테이너 빌드시 사용될 dockerfile의 경로 설정
+#     # build: 바로 옆에 적어도 되고, context에 적어도 된다.
+#       context: ./requirements/nginx/
+#       # 어기에 적을 경우 URL도 가능하다.
+#       # args: 를 사용해서 dockerfile 내부에서 사용될 환경변수를 정의할 수 있다. 
+# #    depends_on:
+#       # - mariadb
+#       # 서비스 간의 종속성을 나타낼 때 사용
+#       # up시에 - 에 쓰인 서비스가 먼저 실행되고 down 시에 먼저 종료된다.
 
-  wordpress:
-    container_name: wordpress
-    restart: always
-    expose:
-      - "9000"
-    networks:
-      - inception_nets
-    tty: true
+#     ports:
+#       - "443:443"
+#     # volumes:
+#     #   -
+#     networks:
+#       - inception_net
+#     tty: true
+
+#   wordpress:
+#     container_name: wordpress
+#     restart: always
+#     expose:
+#       - "9000"
+#     networks:
+#       - inception_nets
+#     tty: true
+
+#  redis:
+#    image: redis 
+#     image: 컨테이너 빌드시 사용될 이미지의 이름 
 
 networks:
   inception_net:
     driver: bridge
+
+volumes:
+# 호스트와 컨테이너 간에 공유할 경로를 설정하는 명령어
+  # Just specify a path and let the Engine create a volume
+  #  - /var/lib/mysql
+  mariadb_data: {}
+  # # Specify an absolute path mapping
+  # - /opt/data:/var/lib/mysql
+
+  # # Path on the host, relative to the Compose file
+  # - ./cache:/tmp/cache
+
+  # # User-relative path
+  # - ~/configs:/etc/configs/:ro
+
+  # # Named volume
+  # - datavolume:/var/lib/mysql
 
 
 # https://nirsa.tistory.com/80 
@@ -52,3 +87,44 @@ networks:
 
 # network
 # https://www.daleseo.com/docker-compose-networks/
+
+
+
+
+######순서
+# 1. nginx
+#   - 빌드할 이미지 설정
+#   - 컨테이너 이름 설정
+#   - 네트워크 설정
+#   - 포트 설정
+#   - 볼륨 설정
+#   - .env 파일 설정
+#   - restart 설정
+
+# 2. 데이터베이스
+#   - 빌드할 이미지 설정 
+#   - 컨테이너 이름 설정
+#   - 네트워크 설정
+#   - 포트 설정
+#   - 볼륨 설정
+#   - .env 파일 설정
+#   - restart 설정
+
+# 3. 워드프레스
+#   - depends_on 서비스 설정
+#   - 빌드할 이미지 설정 
+#   - 컨테이너 이름 설정
+#   - 네트워크 설정
+#   - 포트 설정
+#   - 볼륨 설정
+#   - .env 파일 설정
+#   - restart 설정
+
+# 클라이언트가 https로 index.html을 서버에 요청
+# 서버의 443포트에 대기중이던 nginx프로세스가 클라이언트릐 요청 수신
+# nginx precess는 config파일에 기재된 파일을 클라이언트에 반환
+  # 만약 php파일일 경유, config 파일에 기재된 php-fpm프로세스의 포트로 Php를 넘김
+  # php-fpm은 php템플릿 엔진을 이용하여 php파일을 html파일로 변환
+    # index.php파일에 inmport된 wp-config.php파일에 기재된 내용을 이용하여 필요시 mysql에 접근하여 데이터를 가져옴
+  # php-fpm은 html파일을 엔진엑스에게 넘겨줌
+  # 엔진엑스는 클라이언트에게 index.html피일을 반혼
