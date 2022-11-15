@@ -1,21 +1,22 @@
 
-FROM alpine:3.15
+FROM debian:buster
 
-RUN	apk update
-RUN apk upgrade
-RUN apk add mariadb mariadb-client dumb-init
-
-RUN echo "download fin"
-
+RUN	apt-get update
+RUN apt-get upgrade
+RUN apt-get install -y mariadb-server dumb-init
+# RUN apk add mariadb mariadb-client dumb-init
 RUN			chmod +x /usr/bin/dumb-init
 
-RUN echo "hihi"
 
-WORKDIR		/
+WORKDIR	/
 
-RUN			mkdir -p /var/run/mysqld
-RUN			chown -R mysql:mysql /var/run/mysqld
-RUN			chmod 777 /var/run/mysqld
+RUN	mkdir -p /var/run/mysqld
+RUN	chown -R mysql:mysql /var/run/mysqld
+# chown user:group /file/path
+RUN	chmod 777 /var/run/mysqld
+
+RUN 		mkdir -p /var/lib/mysql
+RUN			chown -R mysql:mysql /var/lib/mysql
 
 COPY ./conf/init_mariadb.sql ./init_mariadb.sql
 COPY ./tools/start_mariadb.sh ./start_mariadb.sh
@@ -24,12 +25,10 @@ RUN chmod +x ./start_mariadb.sh
 
 #ENTRYPOINT [ "sh", "-c", "./start_mariadb.sh" ]
 # ENTRYPOINT [ "sh", "./start_mariadb.sh" ]
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-RUN echo "after entry"
+ENTRYPOINT ["/usr/bin/dumb-init", "--", "bash", "./start_mariadb.sh"]
 
-CMD ["bash", "./start_mariadb.sh"]
-
-
+# CMD ["bash", "./start_mariadb.sh"]
+CMD ["mysqld", "--bind-addresss=0.0.0.0"]
 
 
 

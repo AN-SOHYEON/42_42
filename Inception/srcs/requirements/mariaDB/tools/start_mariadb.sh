@@ -1,20 +1,14 @@
 #!/bin/sh
 
 echo "in start_mariadb.sh"
-if [ ! -d "/run/mysqld" ]; then
-	mkdir -p /run/mysqld
-	chown -R mysql:mysql /run/mysqld
-fi
-
 
 service mysql start
 
-if [ -d "/var/lib/mariadb/$MARIADB_DATABASE" ]
-# -d : 파일이 디렉토리면 참
-then 
-	echo -e "$MARIADB_DATABASE already exists"
-else
+if ! [ -d "/var/lib/mysql/$MARIADB_DATABASE" ]; then
+	echo "Creating $MARIADB_DATABASE...."
 	eval "echo \"$(cat ./init_mariadb.sql)\"" | mariadb
+else
+	echo "$MARIADB_DATABASE already exists"
 fi
 
 service mysql stop

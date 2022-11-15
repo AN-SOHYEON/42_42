@@ -1,9 +1,9 @@
 
 
-FROM alpine:3.15
+FROM debian:buster
 
 RUN apt-get update -y 
-RUN apt-get -y install php7.3 php-fpm php-cli wget curl php-mysql php-mbstring php-xml sendmail vim
+RUN apt-get install -y php7.3 php-fpm php-cli wget curl php-mysql php-mbstring php-xml sendmail vim
 
 # php7.3 
 # php-fpm 
