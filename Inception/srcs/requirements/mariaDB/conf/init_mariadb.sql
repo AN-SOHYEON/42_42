@@ -10,6 +10,3 @@ GRANT ALL PRIVILEGES ON $MARIADB_DATABASE.* TO '$MARIADB_USER'@'%' WITH GRANT OP
 
 -- Apply
 FLUSH PRIVILEGES;
-
-
---  Docker compose로 mysql/mariadb 세팅하기 https://int-i.github.io/sql/2020-12-31/mysql-docker-compose/ 

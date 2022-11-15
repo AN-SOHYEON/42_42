@@ -1,14 +1,18 @@
-#!/bin/sh
+#!/bin/bash
 
-echo "in start_mariadb.sh"
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+RESET='\033[0m'
 
 service mysql start
 
-if ! [ -d "/var/lib/mysql/$MARIADB_DATABASE" ]; then
-	echo "Creating $MARIADB_DATABASE...."
-	eval "echo \"$(cat ./init_mariadb.sql)\"" | mariadb
+#Check if the database exists
+
+if [ -d "/var/lib/mysql/$MARIADB_DATABASE" ]
+then
+	echo -e "${RED} Database [$MARIADB_DATABASE] already exists ${RESET}"
 else
-	echo "$MARIADB_DATABASE already exists"
+	eval "echo \"$(cat ./init_mariadb.sql)\"" | mariadb
 fi
 
 service mysql stop

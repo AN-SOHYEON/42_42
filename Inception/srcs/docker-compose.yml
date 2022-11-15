@@ -11,17 +11,105 @@ services:
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
-    expose:
-      - "3306:3306"
-    volumes:
-      # - mariadb_data:/var/lib/mysql
-      - /Users/ansohyeon/Desktop/SAN/data:/var/lib/mysql
-    env_file: 
-      - .env
-    # networks:
-      # - inception_net
     restart: always
+    env_file:
+        - .env
+    ports:
+      - "3308:3306"
+    image: mariadb
+    volumes:
+      - mariadb:/var/lib/mysql
+    networks:
+      - inception
     tty: true
+
+    # mariadb:
+  #   container_name: mariadb
+  #   build: ./requirements/mariadb
+  #   expose:
+  #     - "3306:3306"
+  #   volumes:
+  #     # - mariadb_data:/var/lib/mysql
+  #     - /Users/ansohyeon/Desktop/SAN/data:/var/lib/mysql
+  #   env_file: 
+  #     - .env
+  #   # networks:
+  #     # - inception_net
+  #   restart: always
+  #   tty: true
+
+#   nginx:
+#     container_name: nginx
+#     build: ./requirements/nginx/
+#     depends_on:
+#       - mariadb
+#     ports: # 포트포워딩을 위한 옵션
+#       - "443:443"
+#     volumes:
+#       - wordpress_data:/var/www/wordpress
+#     env_file: 
+#       - .env
+#     networks:
+#       - inception_net
+#     restart: always
+#     tty: true
+
+#   wordpress:
+#     container_name: wordpress
+#     build: ./requirements/wordpress
+#     depends_on:
+#       - mariadb
+#     expose: 
+#       - "9000"
+#     volumes:
+#       - wordpress_data:/var/www/wordpress
+#     env_file:
+#       - .env
+#     networks:
+#       - inception_nets
+#     restart: always
+#     tty: true
+
+
+networks:
+  my_docker:
+    driver: bridge
+
+volumes:
+  # wordpress:
+  #   driver: local
+  #   driver_opts:
+  #     type: volume
+  #     o: bind
+  #     device: /home/sichoi/data/wordpress
+  mariadb:
+    driver: local
+    driver_opts:
+      type: volume
+      o: bind
+      device: /Users/ansohyeon/Desktop/SAN/data/mariadb
+  # hugo:
+  #   driver: local
+  #   driver_opts:
+  #     type: volume
+  #     o: bind
+  #     device: /home/sichoi/data/hugo
+
+
+  # mariadb:
+  #   container_name: mariadb
+  #   build: ./requirements/mariadb
+  #   expose:
+  #     - "3306:3306"
+  #   volumes:
+  #     # - mariadb_data:/var/lib/mysql
+  #     - /Users/ansohyeon/Desktop/SAN/data:/var/lib/mysql
+  #   env_file: 
+  #     - .env
+  #   # networks:
+  #     # - inception_net
+  #   restart: always
+  #   tty: true
 
 #   nginx:
 #     container_name: nginx
