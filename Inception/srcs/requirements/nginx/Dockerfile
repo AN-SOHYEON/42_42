@@ -1,28 +1,26 @@
 # 엔진엑스를 다운받아주는 패키지를 다운받는 것부터 시작하는 쉘스크립트를 만들어라 
 
 FROM debian:buster
+
 RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -y nginx
 # sudo add-apt-repository ppa:ondrej/nginx-stable -y && sudo apt update
 # sudo apt install nginx-core nginx-common nginx nginx-full
 # https://ko.linuxcapable.com/how-to-install-nginx-with-lets-encrypt-tls-ssl-on-ubuntu-20-04/
-RUN apt-get -y install openssl
+RUN apt-get -y install openssl dumb-init
+
+RUN chmod +x /usr/bin/dumb-init
 
 # ssl 인증서 생성
-RUN	openssl req -newkey rsa:4096 -days 365 -nodes -x509 -subj "/C=KR/ST=Seoul/L=Seoul/O=42Seoul/OU=san/CN=localhost" -keyout localhost.dev.key -out localhost.dev.crt
+RUN	openssl req -newkey rsa:2048 -days 365 -nodes -x509 \
+	-subj "/C=KR/ST=Seoul/L=Seoul/O=42Seoul/OU=san/CN=san.42.fr" \
+	#-keyout localhost.dev.key -out localhost.dev.crt
+	-keyout /etc/ssl/private/server.key -out /etc/ssl/certs/server.crt
 
 # config 파일과 sh 파일 컨테이너 내부로 copy
+COPY  ./conf/nginx.conf ./etc/nginx/conf.d/nginx.conf
 
-# 로그 처리
-# ln -sf /dev/stdout /var/log/nginx/access.log 
-# ln -sf /dev/stderr /var/log/nginx/error.log
-
-# nginx, -g, demon off
-
-# RUN	apt install dump-init
-
-COPY ./conf/nginx.conf /etc/nginx/sites-available/default
 
 # ENTRYPOINT [ "/usr/bin/dumb-init", "--", "/my/script " ]
 

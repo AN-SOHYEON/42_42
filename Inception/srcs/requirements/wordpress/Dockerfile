@@ -3,28 +3,34 @@
 FROM debian:buster
 
 RUN apt-get update -y 
-RUN apt-get install -y php7.3 php-fpm php-cli wget curl php-mysql php-mbstring php-xml sendmail vim
-
-# php7.3 
-# php-fpm 
-# php-cli 
-# wget 
-# curl 
-# php-mysql 
-# php-mbstring 
-# php-xml 
+RUN apt-get upgrade -y
+RUN apt-get install -y php7.3 php-fpm php-cli wget curl vim php-mysql dumb-init
+	#php-mbstring php-xml sendmail 
 
 
+RUN			chmod +x /usr/bin/dumb-init
 
-RUN wget https://wordpress.org/latest.tar.gz && \
-tar -xvf latest.tar.gz && \
-mv /wordpress/* /var/www/html/ && \
-chown -R www-data:www-data /var/www/html && \ 
-rm -r /wordpress latest.tar.gz
+RUN			mkdir -p /var/www/wordpress
+RUN			mkdir -p /run/php
+RUN			mkdir -p /var/www/html
 
-RUN apt-get -y install mariadb-client
+RUN			wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+# RUN			mv wp-cli.phar /usr/bin/wp
+RUN chmod +x wp-cli.phar && mv wp-cli.phar /usr/bin/wp
 
+RUN			chmod +x /usr/bin/wp
 
+WORKDIR		/var/www/wordpress
+
+COPY		./conf/init.sh /tmp/init.sh
+
+RUN			chmod +x /tmp/init.sh
+
+EXPOSE		9000
+
+RUN apt-get install -y mariadb-client
+
+ENTRYPOINT	["/usr/bin/dumb-init", "--", "bash", "/tmp/init.sh"]
 # 출처: https://epicarts.tistory.com/159
 
 # php-fpm : https://server-talk.tistory.com/329 
