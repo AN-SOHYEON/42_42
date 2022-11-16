@@ -1,23 +1,19 @@
-FROM		debian:buster
+FROM	debian:buster
 
-RUN			apt-get update -y
-RUN			apt-get upgrade -y
-RUN			apt-get -y install mariadb-server vim sudo procps dumb-init
+RUN		apt-get update -y && apt-get upgrade -y && \
+		apt-get install -y mariadb-server dumb-init 
+		# vim sudo procps
 
-RUN			chmod +x /usr/bin/dumb-init
+RUN		chmod +x /usr/bin/dumb-init && \
+		mkdir -p /var/run/mysqld && \
+		chown -R mysql:mysql /var/run/mysqld && \
+		chmod 777 /var/run/mysqld
 
-WORKDIR		/
+COPY	./tools/start_mariadb.sh ./start_mariadb.sh
+COPY	./conf/init_mariadb.sql ./init_mariadb.sql	
 
-RUN			mkdir -p /var/run/mysqld
-RUN			chown -R mysql:mysql /var/run/mysqld
-RUN			chmod 777 /var/run/mysqld
+RUN		chmod +x ./start_mariadb.sh
 
-COPY		./tools/start_mariadb.sh ./start_mariadb.sh
-COPY		./conf/init_mariadb.sql ./init_mariadb.sql
-
-RUN			chmod +x ./start_mariadb.sh
-
-# Handle Every Signal Correctly by Dumb Init to PID 1
 ENTRYPOINT	["/usr/bin/dumb-init", "--", "bash", "./start_mariadb.sh"]
 
 CMD			["mysqld", "--bind-address=0.0.0.0"]

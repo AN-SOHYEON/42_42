@@ -6,13 +6,12 @@ RESET='\033[0m'
 
 service mysql start
 
-#Check if the database exists
-
 if [ -d "/var/lib/mysql/$MARIADB_DATABASE" ]
 then
 	echo -e "${RED} Database [$MARIADB_DATABASE] already exists ${RESET}"
 else
 	eval "echo \"$(cat ./init_mariadb.sql)\"" | mariadb
+	# mysqladmin -u root password $MARIADB_ROOT_PASSWORD
 fi
 
 service mysql stop
