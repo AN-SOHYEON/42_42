@@ -2,13 +2,8 @@
 
 FROM debian:buster
 
-RUN apt-get update
-RUN apt-get upgrade -y
-RUN apt-get install -y nginx
-# sudo add-apt-repository ppa:ondrej/nginx-stable -y && sudo apt update
-# sudo apt install nginx-core nginx-common nginx nginx-full
-# https://ko.linuxcapable.com/how-to-install-nginx-with-lets-encrypt-tls-ssl-on-ubuntu-20-04/
-RUN apt-get -y install openssl dumb-init
+RUN apt-get update && apt-get upgrade -y && \
+	apt-get install -y nginx openssl dumb-init
 
 RUN chmod +x /usr/bin/dumb-init
 
