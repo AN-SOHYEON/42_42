@@ -15,34 +15,34 @@
 # COMPOSE_FILE = srcs/docker-compose.yml
 
 # $(NAME) :
-# 	sudo docker-compose -f $(COMPOSE_FILE) up --force-recreate --build -d
+# 	docker-compose -f $(COMPOSE_FILE) up --force-recreate --build -d
 
 # all : $(NAME)
 
 # up :
-# 	sudo docker-compose -f $(COMPOSE_FILE) up --build -d
+# 	docker-compose -f $(COMPOSE_FILE) up --build -d
 
 # down :
-# 	sudo docker-compose -f $(COMPOSE_FILE) down
+# 	docker-compose -f $(COMPOSE_FILE) down
 
 # restart	:
-# 	sudo docker-compose -f $(COMPOSE_FILE) restart
+# 	docker-compose -f $(COMPOSE_FILE) restart
 
 # ps :
-# 	sudo docker-compose -f $(COMPOSE_FILE) ps
+# 	docker-compose -f $(COMPOSE_FILE) ps
 
 # logs :
-# 	sudo docker-compose -f $(COMPOSE_FILE) logs
+# 	docker-compose -f $(COMPOSE_FILE) logs
 
 
 # clean :
-# 	sudo docker-compose -f $(COMPOSE_FILE) down --remove-orphans --rmi all --volumes
+# 	docker-compose -f $(COMPOSE_FILE) down --remove-orphans --rmi all --volumes
 
 # fclean : clean
 # 	rm -rf /Users/ansohyeon/Desktop/SAN/data
-# 	sudo docker network prune --force
+# 	docker network prune --force
 # 	sodo docker volume prune --force
-# 	sudo docker system prune --all --force --volumes
+# 	docker system prune --all --force --volumes
 
 # re :
 # 	@$(MAKE) fclean
@@ -52,49 +52,50 @@
 
 NAME = inception
 SET_DOMAIN = .set_domain
+LOCAL_VOLUME = /Users/ansohyeon/Desktop/SAN
 
 $(NAME) :
 ifeq ("$(wildcard $(SET_DOMAIN))", "")
-	sudo chmod 777 /etc/hosts
-	sudo echo "127.0.0.1 san.42.fr" >> /etc/hosts
+	chmod 777 /etc/hosts
+	echo "127.0.0.1 san.42.fr" >> /etc/hosts
 	touch $(SET_DOMAIN)
 endif
-	sudo mkdir -p ${HOME}/data/wordpress ${HOME}/data/mariadb ${HOME}/data/hugo
+	mkdir -p ${LOCAL_VOLUME}/data/wordpress ${LOCAL_VOLUME}/data/mariadb
 	sudo docker-compose -f srcs/docker-compose.yml up --force-recreate --build -d
 
 all : $(NAME)
 
 up :
-	sudo docker-compose -f srcs/docker-compose.yml up --build -d
+	docker-compose -f srcs/docker-compose.yml up --build -d
 
 down :
-	sudo docker-compose -f srcs/docker-compose.yml down
+	docker-compose -f srcs/docker-compose.yml down
 
 .PHONY : restart
 restart	:
-	sudo docker-compose -f srcs/docker-compose.yml restart
+	docker-compose -f srcs/docker-compose.yml restart
 
 .PHONY : ps
 ps :
-	sudo docker-compose -f srcs/docker-compose.yml ps
+	docker-compose -f srcs/docker-compose.yml ps
 
 .PHONY : log
 log :
-	sudo docker-compose -f srcs/docker-compose.yml logs -f ${ct}
+	docker-compose -f srcs/docker-compose.yml logs -f ${ct}
 
 .PHONY : exec
 exec :
-	sudo docker-compose -f srcs/docker-compose.yml exec ${ct} /bin/bash
+	docker-compose -f srcs/docker-compose.yml exec ${ct} /bin/bash
 
 clean :
-	sudo docker-compose -f srcs/docker-compose.yml down --remove-orphans --rmi all --volumes
+	docker-compose -f srcs/docker-compose.yml down --remove-orphans --rmi all --volumes
 
 fclean : clean
-	sudo rm -rf ${HOME}/data
-	sudo docker network prune --force
-	sudo docker volume prune --force
-	sudo docker system prune --all --force --volumes
-	sudo rm -f $(SET_DOMAIN)
+	rm -rf ${LOCAL_VOLUME}/data/*
+	docker network prune --force
+	docker volume prune --force
+	docker system prune --all --force --volumes
+	rm -f $(SET_DOMAIN)
 
 re :
 	@$(MAKE) fclean
