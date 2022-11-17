@@ -9,6 +9,8 @@ RUN		chmod +x /usr/bin/dumb-init && \
 		chown -R mysql:mysql /var/run/mysqld && \
 		chmod 777 /var/run/mysqld
 
+RUN 	mkdir -p /var/lib/mysql
+
 COPY	./tools/start_mariadb.sh ./start_mariadb.sh
 COPY	./conf/init_mariadb.sql ./init_mariadb.sql	
 

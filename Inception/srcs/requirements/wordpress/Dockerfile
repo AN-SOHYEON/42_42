@@ -6,6 +6,7 @@ RUN apt-get update -y
 RUN apt-get upgrade -y
 RUN apt-get install -y php7.3 php-fpm php-cli wget curl vim php-mysql dumb-init
 	#php-mbstring php-xml sendmail 
+RUN apt-get install -y mariadb-client
 
 
 RUN			chmod +x /usr/bin/dumb-init
@@ -28,7 +29,6 @@ RUN			chmod +x /tmp/init.sh
 
 EXPOSE		9000
 
-RUN apt-get install -y mariadb-client
 
 ENTRYPOINT	["/usr/bin/dumb-init", "--", "bash", "/tmp/init.sh"]
 # 출처: https://epicarts.tistory.com/159
