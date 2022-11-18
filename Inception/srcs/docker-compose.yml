@@ -8,8 +8,6 @@ services:
     image: mariadb
     env_file:
         - .env
-    ports:
-      - "3306:3306"
     volumes:
       - mariadb:/var/lib/mysql
     networks:
@@ -23,7 +21,7 @@ services:
     image: nginx
     depends_on:
       - mariadb
-    ports: # 포트포워딩을 위한 옵션
+    ports:
       - "443:443"
     volumes:
       - wordpress:/var/www/html
@@ -31,7 +29,7 @@ services:
       - .env
     networks:
       - inception_net
-    restart: always
+    #restart: always
     tty: true
 
   wordpress:
@@ -60,13 +58,13 @@ volumes:
     driver_opts:
       type: volume
       o: bind
-      device: /Users/ansohyeon/Desktop/SAN/data/wordpress
+      device: /home/san/data/wordpress
   mariadb:
     driver: local
     driver_opts:
       type: volume
       o: bind
-      device: /Users/ansohyeon/Desktop/SAN/data/mariadb
+      device: /home/san/data/mariadb
   
 
 # network

@@ -2,7 +2,6 @@ FROM	debian:buster
 
 RUN		apt-get update -y && apt-get upgrade -y && \
 		apt-get install -y mariadb-server dumb-init 
-		# vim sudo procps
 
 RUN		chmod +x /usr/bin/dumb-init && \
 		mkdir -p /var/run/mysqld && \
@@ -17,5 +16,7 @@ COPY	./conf/init_mariadb.sql ./init_mariadb.sql
 RUN		chmod +x ./start_mariadb.sh
 
 ENTRYPOINT	["/usr/bin/dumb-init", "--", "bash", "./start_mariadb.sh"]
+
+EXPOSE		3306
 
 CMD			["mysqld", "--bind-address=0.0.0.0"]

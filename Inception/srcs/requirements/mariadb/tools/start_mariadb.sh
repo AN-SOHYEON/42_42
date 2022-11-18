@@ -11,7 +11,6 @@ then
 	echo -e "${RED} Database [$MARIADB_DATABASE] already exists ${RESET}"
 else
 	eval "echo \"$(cat ./init_mariadb.sql)\"" | mariadb
-	# mysqladmin -u root password $MARIADB_ROOT_PASSWORD
 fi
 
 service mysql stop
