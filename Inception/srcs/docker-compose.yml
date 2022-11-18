@@ -1,21 +1,13 @@
 
-
 version: "3"
-# 도커 compose의 버전을 명시
-# 버전별로 파일의 작성법이 달라지며 docker-compose 파일 빌드시 명시된 버전에 맞게 빌드된다.
 
 services:
-# docker composer up 시, 빌드되는 컨테이너 목록
-# 컨테이너의 이름은 도커 DNS서버에 컨테이너의 IP 주소와 매핑되어 등록되므로 컨테이너 내부에서 해당 이름을 도메인으로 사용할 수 있다. 
-
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
     image: mariadb
     env_file:
         - .env
-    ports:
-      - "3308:3306"
     volumes:
       - mariadb:/var/lib/mysql
     networks:
@@ -29,10 +21,10 @@ services:
     image: nginx
     depends_on:
       - mariadb
-    ports: # 포트포워딩을 위한 옵션
+    ports:
       - "443:443"
     volumes:
-      - wordpress:/var/www/wordpress
+      - wordpress:/var/www/html
     env_file: 
       - .env
     networks:
@@ -49,7 +41,7 @@ services:
     expose: 
       - "9000"
     volumes:
-      - wordpress:/var/www/wordpress
+      - wordpress:/var/www/html
     env_file:
       - .env
     networks:
@@ -57,10 +49,8 @@ services:
     restart: always
     tty: true
 
-
 networks:
-  inception_net:
-    driver: bridge
+  inception_net: {}
 
 volumes:
   wordpress:
@@ -68,130 +58,19 @@ volumes:
     driver_opts:
       type: volume
       o: bind
-      device: /Users/san/data/wordpress
+      device: /home/san/data/wordpress
   mariadb:
     driver: local
     driver_opts:
       type: volume
       o: bind
-      device: /Users/san/data/mariadb
+      device: /home/san/data/mariadb
   
-
-
-
-  # mariadb:
-  #   container_name: mariadb
-  #   build: ./requirements/mariadb
-  #   expose:
-  #     - "3306:3306"
-  #   volumes:
-  #     # - mariadb_data:/var/lib/mysql
-  #     - /Users/ansohyeon/Desktop/SAN/data:/var/lib/mysql
-  #   env_file: 
-  #     - .env
-  #   # networks:
-  #     # - inception_net
-  #   restart: always
-  #   tty: true
-
-#   nginx:
-#     container_name: nginx
-#     build: ./requirements/nginx/
-#     depends_on:
-#       - mariadb
-#     ports: # 포트포워딩을 위한 옵션
-#       - "443:443"
-#     volumes:
-#       - wordpress_data:/var/www/wordpress
-#     env_file: 
-#       - .env
-#     networks:
-#       - inception_net
-#     restart: always
-#     tty: true
-
-#   wordpress:
-#     container_name: wordpress
-#     build: ./requirements/wordpress
-#     depends_on:
-#       - mariadb
-#     expose: 
-#       - "9000"
-#     volumes:
-#       - wordpress_data:/var/www/wordpress
-#     env_file:
-#       - .env
-#     networks:
-#       - inception_nets
-#     restart: always
-#     tty: true
-
-# #  redis:
-# #    image: redis 
-# #     image: 컨테이너 빌드시 사용될 이미지의 이름 
-
-# networks:
-#   inception_net:
-#     driver: bridge
-
-# volumes:
-# # 호스트와 컨테이너 간에 공유할 경로를 설정하는 명령어
-#   # Just specify a path and let the Engine create a volume
-#   #  - /var/lib/mysql
-  # mariadb_data: 
-  ### bind 랑 볼륨의 차이 
-#   wordpress_data:
-#   # # Specify an absolute path mapping
-#   # - /opt/data:/var/lib/mysql
-
-#   # # Path on the host, relative to the Compose file
-#   # - ./cache:/tmp/cache
-
-#   # # User-relative path
-#   # - ~/configs:/etc/configs/:ro
-
-  # # Named volume
-  # - datavolume:/var/lib/mysql
-
-
-# https://nirsa.tistory.com/80 
-# https://seorenn.github.io/note/docker-compose-devenv.html 
-# 명령어 세트와 환경변수 등의 여러 도커를 실행시키는 방법에 대한 것을 스크립트화시켜서 자동화하는 목적의 도구
 
 # network
 # https://www.daleseo.com/docker-compose-networks/
 
 
-
-
-######순서
-# 1. nginx
-#   - 빌드할 이미지 설정
-#   - 컨테이너 이름 설정
-#   - 네트워크 설정
-#   - 포트 설정
-#   - 볼륨 설정
-#   - .env 파일 설정
-#   - restart 설정
-
-# 2. 데이터베이스
-#   - 빌드할 이미지 설정 
-#   - 컨테이너 이름 설정
-#   - 네트워크 설정
-#   - 포트 설정
-#   - 볼륨 설정
-#   - .env 파일 설정
-#   - restart 설정
-
-# 3. 워드프레스
-#   - depends_on 서비스 설정
-#   - 빌드할 이미지 설정 
-#   - 컨테이너 이름 설정
-#   - 네트워크 설정
-#   - 포트 설정
-#   - 볼륨 설정
-#   - .env 파일 설정
-#   - restart 설정
 
 # 클라이언트가 https로 index.html을 서버에 요청
 # 서버의 443포트에 대기중이던 nginx프로세스가 클라이언트릐 요청 수신
