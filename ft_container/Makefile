@@ -11,8 +11,8 @@ BUILD_PATH	= ./build/
 SRC_FILE = main #vector_test
 
 SRC = $(addprefix $(SRC_PATH), $(addsuffix .cpp, $(SRC_FILE)))
-OBJ=$(SRC:$(SRC_PATH)%.o=$(BUILD_PATH)%.o)
-# OBJ = $(addsuffix .o, $(SRC_FILE))
+# OBJ=$(SRC:$(SRC_PATH)%.o=$(BUILD_PATH)%.o)
+OBJ = $(addsuffix .o, $(SRC_FILE))
 
 RM=/bin/rm -rf
 
