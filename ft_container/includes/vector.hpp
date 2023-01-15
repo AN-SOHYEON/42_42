@@ -4,13 +4,14 @@
 #include <iostream>
 #include <memory>
 #include "random_access_iterator.hpp"
+#include "utility.hpp"
 
 #include <vector>
 
 namespace ft
 {
 
-	template <typename T, typename Allocator = std::allocator<T>>
+	template <typename T, typename Allocator = std::allocator<T> >
 	class vector
 	{
 
@@ -27,13 +28,25 @@ namespace ft
 		typedef ft::random_access_iterator<const T> const_iterator;
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
-		typedef typename iterator_traits<iterator>::difference_type difference_type;
 
 	private:
 		pointer arr;
-		size_type size;
-		size_type capacity;
+		size_type _size;
+		size_type _capacity;
 		allocator_type alloc;
+
+		// TODO: FIX ME!!!!!!!!!!! DO NOT USE THIS FUNCTION
+		template <class InputIterator>
+		typename iterator_traits<InputIterator>::difference_type _distance(InputIterator first, InputIterator last)
+		{
+			typename iterator_traits<InputIterator>::difference_type n = 0;
+			while (first != last)
+			{
+				first++;
+				n++;
+			}
+			return (n);
+		}
 
 		template <typename U>
 		void _swap(U &a, U &b)
@@ -48,16 +61,16 @@ namespace ft
 		vector()
 		{
 			arr = NULL;
-			size = 0;
-			capacity = 0;
+			_size = 0;
+			_capacity = 0;
 			alloc = allocator_type();
 		}
 
 		explicit vector(const Allocator &alloc)
 		{
 			arr = NULL;
-			size = 0;
-			capacity = 0;
+			_size = 0;
+			_capacity = 0;
 			this->alloc = alloc;
 		}
 
@@ -65,21 +78,21 @@ namespace ft
 						const T &value = T(),
 						const Allocator &alloc = Allocator())
 		{
-			size = count;
-			capacity = count;
+			_size = count;
+			_capacity = count;
 			this->alloc = alloc;
-			arr = alloc.allocate(capacity);
-			for (size_type i = 0; i < size; i++)
-				arr[i] = value[i];
+			arr = this->alloc.allocate(_capacity);
+			for (size_type i = 0; i < _size; i++)
+				arr[i] = value;
 		}
 
 		template <class InputIt>
 		vector(InputIt first, InputIt last,
-			   const Allocator &alloc = Allocator())
+			   const Allocator &alloc = Allocator(), typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type * = NULL)
 		{
 			arr = NULL;
-			size = 0;
-			capacity = 0;
+			_size = 0;
+			_capacity = 0;
 			this->alloc = alloc;
 			assign(first, last);
 		}
@@ -91,6 +104,9 @@ namespace ft
 
 		vector &operator=(const vector &other)
 		{
+			this->_capacity = 0;
+			this->_size = 0;
+			this->arr = NULL;
 			this->alloc = other.alloc;
 			assign(other.begin(), other.end());
 			return (*this);
@@ -98,62 +114,61 @@ namespace ft
 
 		virtual ~vector()
 		{
-			for (size_type i = 0; i < capacity; i++)
+			for (size_type i = 0; i < _size; i++)
 			{
 				alloc.destroy(&arr[i]);
 			}
-			alloc.deallocate(arr, capacity);
+			alloc.deallocate(arr, _capacity);
 		}
 
 		void reserve(size_type new_cap)
 		{
-			if (new_cap > capacity)
+			if (new_cap > _capacity)
 			{
 				pointer tmp;
-				tmp = alloc.allocate(new_cap);
-				for (size_type i = 0; i < size; i++)
+				tmp = this->alloc.allocate(new_cap);
+				for (size_type i = 0; i < _size; i++)
 					tmp[i] = arr[i];
-				for (size_type i = 0; i < capacity; i++)
+				for (size_type i = 0; i < _size; i++)
 				{
 					alloc.destroy(&arr[i]);
 				}
 				if (arr)
-					alloc.deallocate(arr, capacity);
+					alloc.deallocate(arr, _capacity);
 				arr = tmp;
-				capacity = new_cap;
-				size = new_cap;
+				_capacity = new_cap;
 			}
 		}
 
 		void push_back(const T &value)
 		{
-			if (size == capacity)
+			if (_size == _capacity)
 			{
-				if (capacity)
-					reserve(capacity * 2);
+				if (_capacity)
+					reserve(_capacity * 2);
 				else
 					reserve(1 * 2);
 			}
-			arr[size] = value;
-			size++;
+			arr[_size] = value; // TODO: 왜 -1 안해야되는지 고민할것
+			_size++;
 		}
 
 		void pop_back()
 		{
-			if (size > 0)
+			if (_size > 0)
 			{
-				alloc.destroy(&arr[size]);
-				size--;
+				alloc.destroy(&arr[_size - 1]);
+				_size--;
 			}
 		}
 
 		void clear()
 		{
-			for (size_type i = 0; i < capacity; i++)
+			for (size_type i = 0; i < _capacity; i++)
 			{
 				alloc.destroy(&arr[i]);
 			}
-			size = 0;
+			_size = 0;
 		}
 
 		void assign(size_type count, const T &value)
@@ -164,19 +179,24 @@ namespace ft
 			{
 				push_back(value);
 			}
-			size = count;
+			_size = count;
 		}
 
 		template <class InputIt>
-		void assign(InputIt first, InputIt last)
+		void assign(InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type * = NULL)
 		{
-			typedef typename iterator_trais<InputIt>::size_type inputit_size_type;
-
+			typedef typename iterator_traits<InputIt>::difference_type inputit_size_type;
 			clear();
-			inputit_size_type count = last - first;
+			inputit_size_type count = _distance(first, last); // last - first;
+			// std::cout << "adfasd" << count << std::endl;
+			// std::cout << "ffff" << *first << std::endl;
+			// std::cout << "llll" << *last << std::endl;
 			reserve(count);
 			for (InputIt it = first; it != last; it++)
 			{
+				// std::cout << "push_back!! -> " << *it << std::endl;
+				// std::cout << "mysize!! -> " << _size << std::endl;
+
 				push_back(*it);
 			}
 		}
@@ -193,12 +213,12 @@ namespace ft
 
 		iterator end()
 		{
-			return iterator(&arr[size]);
+			return iterator(&arr[_size]);
 		}
 
 		const_iterator end() const
 		{
-			return const_iterator(&arr[size]);
+			return const_iterator(&arr[_size]);
 		}
 
 		reverse_iterator rbegin()
@@ -223,156 +243,182 @@ namespace ft
 
 		iterator insert(const_iterator pos, const T &value)
 		{
-			if (size == capacity)
+			size_type index = pos - begin();
+			if (_size == _capacity)
 			{
-				if (capacity)
-					reserve(capacity * 2);
+				if (_capacity)
+					reserve(_capacity * 2);
 				else
 					reserve(1 * 2);
 			}
-			size_type index = pos - begin();
-			if (index <= size)
+			if (index < _size)
 			{
-				for (size_type i = size; i > index; i--)
-					arr[i + 1] = arr[i];
+				for (size_type i = _size; i > index; i--)
+					arr[i] = arr[i - 1]; // TODO: arr[i + 1] = arr [i] 이랑 뭐가 다르지? 이건 왜안됨!??????!?!?!?
 			}
 			arr[index] = value;
-			size++;
+			_size++;
+			return iterator(&arr[index]);
 		}
 
 		iterator insert(const_iterator pos, size_type count, const T &value)
 		{
-			if (size + count >= capacity)
-			{
-				if (capacity)
-					reserve(capacity * 2);
-				else
-					reserve(1 * 2);
-			}
 			size_type index = pos - begin();
-			if (index <= size)
+			if (_size + count > _capacity)
 			{
-				for (size_type i = size; i > index; i--)
-					arr[i + 1] = arr[i];
+				// if (_capacity)
+				reserve(_size + count);
+				// else
+				// reserve(1 * 2);
+			}
+			if (index < _size)
+			{
+				for (size_type i = _size + count - 1; i >= index + count; i--)
+				{
+					arr[i] = arr[i - count];
+				}
 			}
 			for (size_type i = 0; i < count; i++)
 				arr[index + i] = value;
-			size = size + count;
+			_size = _size + count;
+			return iterator(&arr[index]);
 		}
 
 		template <class InputIt>
-		iterator insert(const_iterator pos, InputIt first, InputIt last)
+		iterator insert(const_iterator pos, InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type * = NULL)
 		{
-			typedef typename iterator_traits<InputIt>::size_type inputit_size;
-			inputit_size count = last - first;
-			if (size + count >= capacity)
-			{
-				if (capacity)
-					reserve(capacity * 2);
-				else
-					reserve(1 * 2);
-			}
+			// std::cout << "bbb " << pos - this->begin() << std::endl;
+			typedef typename iterator_traits<InputIt>::difference_type inputit_size;
+
 			size_type index = pos - begin();
-			if (index <= size)
+			inputit_size count = _distance(first, last); // last - first;
+			if (_size + count > _capacity)
 			{
-				for (size_type i = size; i > index; i--)
-					arr[i + 1] = arr[i];
+				reserve(_size + count);
+
+				// if (_capacity)
+				// {
+				// 	// std::cout << "cccc " << pos - this->begin() << std::endl;
+				// 	reserve(_capacity * 2);
+				// }
+				// else
+				// 	reserve(1 * 2);
 			}
-			for (size_type i = 0; i < count; i++)
-				arr[index + i] = *(first + i);
-			size = size + count;
+
+			// std::cout << "index ==> " << index << std::endl;
+			// std::cout << "pos ==> " << *pos << std::endl;
+			// std::cout << "begin ==> " << *begin() << std::endl;
+			if (index < _size) // TODO: = 이 들어가야 하는가?
+			{
+				for (size_type i = _size + count - 1; i >= index + count; i--) // TODO: = 이 들어가야 하는기?  i >= index + count
+					arr[i] = arr[i - count];
+			}
+			for (inputit_size i = 0; i < count; i++)
+			{
+
+				arr[index + i] = *(first++);
+			}
+
+			_size = _size + count;
+			return iterator(&arr[index]);
 		}
 
 		void resize(size_type count, T value = T())
 		{
-			if (size >= count)
+			if (_size > count)
 			{
-				for (size_type i = count + 1; i < size; i++)
+				for (size_type i = count; i < _size; i++)
 					alloc.destroy(&arr[i]);
 			}
 			else
 			{
-				if (capacity <= count)
+				if (_capacity <= count)
 				{
-					if (capacity)
-						reserve(capacity * 2);
-					else
-						reserve(1 * 2);
-					for (size_type i = size + 1; i < count; i++)
-						arr[i] = value;
+					// if (_capacity)
+					reserve(count);
+					// else
+					// 	reserve(1 * 2);
 				}
+				for (size_type i = _size; i < count; i++)
+					arr[i] = value;
 			}
-			size = count;
+			_size = count;
 		}
 
 		bool empty() const
 		{
-			if (arr && size > 0)
-				return true;
-			return false;
+			if (arr && _size > 0)
+				return false;
+			return true;
 		}
 
 		iterator erase(iterator pos)
 		{
-			if (!empty)
+			size_type index = pos - begin();
+			if (!empty())
 			{
-				size_type index = pos - begin();
 				alloc.destroy(&arr[index]);
-				if (index < size)
+				if (index < _size)
 				{
-					for (size_type i = index; i < size; i++)
+					for (size_type i = index; i < _size; i++)
 						arr[i] = arr[i + 1];
 				}
-				size--;
+				_size--;
 			}
+			return iterator(&arr[index]);
 		}
 
 		iterator erase(iterator first, iterator last)
 		{
-			if (!empty)
+			size_type f = first - begin();
+			size_type l = last - begin();
+			if (!empty())
 			{
-				size_type f = first - begin();
-				size_type l = last - begin();
 				for (size_type i = f; i < l; i++)
 				{
 					alloc.destroy(&arr[i]);
-					// size--;
+					// _size--;
 				}
-				if (l < size)
+				if (l < _size)
 				{
-					for (size_type i = f; i < size; i++)
+					for (size_type i = f; i < _size; i++)
 						arr[i] = arr[i + (l - f)];
 				}
-				size = size - (l - f);
+				_size = _size - (l - f);
 			}
+			return iterator(&arr[f]);
 		}
 
 		void swap(vector &other)
 		{
 			_swap(this->alloc, other.alloc);
-			_swap(this->size, other.size);
-			_swap(this->capacity, other.capacity);
+			_swap(this->_size, other._size);
+			_swap(this->_capacity, other._capacity);
 			_swap(this->arr, other.arr);
 		}
 
 		reference at(size_type pos)
 		{
-			return &arr[pos];
+			if (pos > _size)
+				throw std::out_of_range("vector");
+			return arr[pos];
 		}
 
 		const_reference at(size_type pos) const
 		{
-			return &arr[pos];
+			if (pos > _size)
+				throw std::out_of_range("vector");
+			return arr[pos];
 		}
 
 		reference operator[](size_type pos)
 		{
-			return &arr[pos];
+			return arr[pos];
 		}
 
 		const_reference operator[](size_type pos) const
 		{
-			return &arr[pos];
+			return arr[pos];
 		}
 
 		reference front()
@@ -387,12 +433,12 @@ namespace ft
 
 		reference back()
 		{
-			return arr[size - 1];
+			return arr[_size - 1];
 		}
 
 		const_reference back() const
 		{
-			return arr[size - 1];
+			return arr[_size - 1];
 		}
 
 		T *data()
@@ -407,7 +453,7 @@ namespace ft
 
 		size_type size() const
 		{
-			return size;
+			return _size;
 		}
 
 		size_type max_size() const
@@ -417,7 +463,7 @@ namespace ft
 
 		size_type capacity() const
 		{
-			return capacity;
+			return _capacity;
 		}
 	};
 
