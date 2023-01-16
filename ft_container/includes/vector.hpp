@@ -467,33 +467,87 @@ namespace ft
 		}
 	};
 
-	// template <class T, class Alloc>
-	// bool operator==(const std::vector<T, Alloc> &lhs,
-	// 				const std::vector<T, Alloc> &rhs);
+	template <class T, class Alloc>
+	bool operator==(const ft::vector<T, Alloc> &lhs,
+					const ft::vector<T, Alloc> &rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return false;
+		ft::random_access_iterator<const T> it_lhs = lhs.begin();
+		ft::random_access_iterator<const T> it_rhs = rhs.begin();
+		while (it_lhs != lhs.end())
+		{
+			if (*it_lhs != *it_rhs)
+				return false;
+			it_lhs++;
+			it_rhs++;
+		}
+		return true;
+	}
 
-	// template <class T, class Alloc>
-	// bool operator!=(const std::vector<T, Alloc> &lhs,
-	// 				const std::vector<T, Alloc> &rhs);
+	template <class T, class Alloc>
+	bool operator!=(const ft::vector<T, Alloc> &lhs,
+					const ft::vector<T, Alloc> &rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return true;
+		ft::random_access_iterator<const T> it_lhs = lhs.begin();
+		ft::random_access_iterator<const T> it_rhs = rhs.begin();
+		while (it_lhs != lhs.end())
+		{
+			if (*it_lhs != *it_rhs)
+				return true;
+			it_lhs++;
+			it_rhs++;
+		}
+		return false;
+	}
 
-	// template <class T, class Alloc>
-	// bool operator<(const std::vector<T, Alloc> &lhs,
-	// 			   const std::vector<T, Alloc> &rhs);
+	template <class T, class Alloc>
+	bool operator<(const ft::vector<T, Alloc> &lhs,
+				   const ft::vector<T, Alloc> &rhs)
+	{
+		if (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()))
+			return true;
+		return false;
+	}
 
-	// template <class T, class Alloc>
-	// bool operator<=(const std::vector<T, Alloc> &lhs,
-	// 				const std::vector<T, Alloc> &rhs);
+	template <class T, class Alloc>
+	bool operator<=(const ft::vector<T, Alloc> &lhs,
+					const ft::vector<T, Alloc> &rhs)
+	{
+		if (lhs == rhs)
+			return true;
+		if (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()))
+			return true;
+		return false;
+	}
 
-	// template <class T, class Alloc>
-	// bool operator>(const std::vector<T, Alloc> &lhs,
-	// 			   const std::vector<T, Alloc> &rhs);
+	template <class T, class Alloc>
+	bool operator>(const ft::vector<T, Alloc> &lhs,
+				   const ft::vector<T, Alloc> &rhs)
+	{
+		if (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()))
+			return true;
+		return false;
+	}
+	template <class T, class Alloc>
+	bool operator>=(const ft::vector<T, Alloc> &lhs,
+					const ft::vector<T, Alloc> &rhs)
+	{
+		if (lhs == rhs)
+			return true;
+		if (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()))
+			return true;
+		return false;
+	}
 
-	// template <class T, class Alloc>
-	// bool operator>=(const std::vector<T, Alloc> &lhs,
-	// 				const std::vector<T, Alloc> &rhs);
-
-	// template <class T, class Alloc>
-	// void swap(std::vector<T, Alloc> &lhs,
-	// 		  std::vector<T, Alloc> &rhs);
+	template <class T, class Alloc>
+	void swap(ft::vector<T, Alloc> &lhs,
+			  ft::vector<T, Alloc> &rhs)
+	{
+		lhs.swap(rhs);
+	}
 
 }
 

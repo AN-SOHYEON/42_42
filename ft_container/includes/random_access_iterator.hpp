@@ -30,6 +30,11 @@ namespace ft
 			_p = other.base();
 		}
 
+		pointer base() const
+		{
+			return _p;
+		}
+
 		virtual ~random_access_iterator() {}
 
 		template <typename U>
@@ -37,11 +42,6 @@ namespace ft
 		{
 			_p = other.base();
 			return *this;
-		}
-
-		pointer base() const
-		{
-			return _p;
 		}
 
 		reference operator*() const
