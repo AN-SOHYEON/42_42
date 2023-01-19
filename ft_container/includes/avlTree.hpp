@@ -32,13 +32,9 @@ namespace ft
 
 		node_pointer llRotate(node_pointer parent)
 		{
-			std::cout << "ll\n";
 			node_pointer child = parent->left;
-			std::cout << "ll2\n";
 			parent->left = child->right;
-			std::cout << "ll3\n";
 			child->right = parent;
-			std::cout << "ll4\n";
 			return child;
 		}
 
@@ -59,24 +55,9 @@ namespace ft
 
 		node_pointer rlRotate(node_pointer parent)
 		{
-			std::cout << "rlrl\n";
 			node_pointer child = parent->right;
-			std::cout << "rlrl2\n";
 			parent->right = llRotate(child);
-			std::cout << "rlrl3\n";
 			return rrRotate(parent);
-		}
-
-	public:
-		avlTree()
-		{
-			_root = NULL;
-			_alloc = allocator_node();
-		}
-
-		virtual ~avlTree()
-		{
-			// TODO: 소멸자 소환하기
 		}
 
 		int getHeight(node_pointer p)
@@ -118,15 +99,9 @@ namespace ft
 				else
 				{
 					*p = rlRotate(*p);
-					std::cout << "okok?\n";
 				}
 			}
 			return *p;
-		}
-
-		void insertNode(T key)
-		{
-			_insertNode(&_root, key);
 		}
 
 		node_pointer _insertNode(node_pointer *root, T x)
@@ -146,13 +121,13 @@ namespace ft
 			else if (x > (*root)->key)
 			{
 				(*root)->right = _insertNode(&((*root)->right), x);
-				std::cout << "wgwg\n";
 				(*root) = rebalance(root);
 			}
 			else
 			{
 				// printf("이미 같은 키가 있습니다.\n");
 				// exit(1);
+				// TODO: logic 필요
 			}
 			return (*root);
 		}
@@ -180,11 +155,6 @@ namespace ft
 			return p;
 		}
 
-		void findTree(T x)
-		{
-			_findTree(_root, x);
-		}
-
 		void _disPlayInorder(node_pointer root)
 		{
 			if (root)
@@ -195,15 +165,9 @@ namespace ft
 			}
 		}
 
-		void disPlayInorder()
+		void _deleteNode(node_pointer root, T x)
 		{
-			std::cout << "erer\n";
-			_disPlayInorder(_root);
-		}
-
-		node_pointer _deleteNode(node_pointer root, T x)
-		{
-			node_pointer parent, *p, *succ, *succ_parent;
+			node_pointer parent, p, succ, succ_parent;
 			node_pointer child;
 
 			parent = NULL;
@@ -237,6 +201,7 @@ namespace ft
 			}
 			else if ((p->left == NULL) || (p->right == NULL))
 			{
+				std::cout << "have one child\n";
 				if (p->left != NULL)
 					child = p->left;
 				else
@@ -271,6 +236,34 @@ namespace ft
 			_alloc.destroy(p);
 			_alloc.deallocate(p, 1);
 			// free(p);
+			root = rebalance(&root);
+		}
+
+	public:
+		avlTree()
+		{
+			_root = NULL;
+			_alloc = allocator_node();
+		}
+
+		virtual ~avlTree()
+		{
+			// TODO: 소멸자 소환하기
+		}
+
+		void insertNode(T key)
+		{
+			_insertNode(&_root, key);
+		}
+
+		void findTree(T x)
+		{
+			_findTree(_root, x);
+		}
+
+		void disPlayInorder()
+		{
+			_disPlayInorder(_root);
 		}
 
 		void deleteNode(T key)
