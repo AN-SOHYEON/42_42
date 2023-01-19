@@ -1,0 +1,283 @@
+#ifndef AVL_TREE_HPP
+#define AVL_TREE_HPP
+
+#include <memory>
+
+#include <iostream>
+#include <stdio.h>
+
+#define MAX(a, b) ((a > b) ? a : b)
+
+namespace ft
+{
+	template <typename T>
+	struct node
+	{
+		T key;
+		struct node *left;
+		struct node *right;
+	};
+
+	template <typename T, typename Node = ft::node<T>, typename Node_Alloc = std::allocator<Node> >
+	class avlTree
+	{
+	public:
+		typedef Node_Alloc allocator_node;
+		typedef Node node_type;
+		typedef Node *node_pointer;
+
+	private:
+		node_pointer _root;
+		allocator_node _alloc;
+
+		node_pointer llRotate(node_pointer parent)
+		{
+			std::cout << "ll\n";
+			node_pointer child = parent->left;
+			std::cout << "ll2\n";
+			parent->left = child->right;
+			std::cout << "ll3\n";
+			child->right = parent;
+			std::cout << "ll4\n";
+			return child;
+		}
+
+		node_pointer rrRotate(node_pointer parent)
+		{
+			node_pointer child = parent->right;
+			parent->right = child->left;
+			child->left = parent;
+			return child;
+		}
+
+		node_pointer lrRotate(node_pointer parent)
+		{
+			node_pointer child = parent->left;
+			parent->left = rrRotate(child);
+			return llRotate(parent);
+		}
+
+		node_pointer rlRotate(node_pointer parent)
+		{
+			std::cout << "rlrl\n";
+			node_pointer child = parent->right;
+			std::cout << "rlrl2\n";
+			parent->right = llRotate(child);
+			std::cout << "rlrl3\n";
+			return rrRotate(parent);
+		}
+
+	public:
+		avlTree()
+		{
+			_root = NULL;
+			_alloc = allocator_node();
+		}
+
+		virtual ~avlTree()
+		{
+			// TODO: 소멸자 소환하기
+		}
+
+		int getHeight(node_pointer p)
+		{
+			int height = 0;
+			if (p != NULL)
+			{
+				height = MAX(getHeight(p->left), getHeight(p->right)) + 1;
+			}
+			return height;
+		}
+
+		int getBF(node_pointer p)
+		{
+			if (p == NULL)
+			{
+				return 0;
+			}
+			return getHeight(p->left) - getHeight(p->right);
+		}
+
+		node_pointer rebalance(node_pointer *p)
+		{
+			int BF = getBF(*p);
+
+			if (BF > 1)
+			{
+				if (getBF((*p)->left) > 0)
+					*p = llRotate(*p);
+				else
+					*p = lrRotate(*p);
+			}
+			else if (BF < -1)
+			{
+				if (getBF((*p)->right) < 0)
+				{
+					*p = rrRotate(*p);
+				}
+				else
+				{
+					*p = rlRotate(*p);
+					std::cout << "okok?\n";
+				}
+			}
+			return *p;
+		}
+
+		void insertNode(T key)
+		{
+			_insertNode(&_root, key);
+		}
+
+		node_pointer _insertNode(node_pointer *root, T x)
+		{
+			if (*root == NULL)
+			{
+				*root = _alloc.allocate(1);
+				(*root)->key = x;
+				(*root)->left = NULL;
+				(*root)->right = NULL;
+			}
+			else if (x < (*root)->key)
+			{
+				(*root)->left = _insertNode(&((*root)->left), x);
+				(*root) = rebalance(root);
+			}
+			else if (x > (*root)->key)
+			{
+				(*root)->right = _insertNode(&((*root)->right), x);
+				std::cout << "wgwg\n";
+				(*root) = rebalance(root);
+			}
+			else
+			{
+				// printf("이미 같은 키가 있습니다.\n");
+				// exit(1);
+			}
+			return (*root);
+		}
+
+		node_pointer _findTree(node_pointer root, T x)
+		{
+			node_pointer p;
+			int count = 0;
+			p = root;
+			while (p != NULL)
+			{
+				count++;
+				if (x < p->key)
+					p = p->left;
+				else if (x == p->key)
+				{
+					printf("%3d번째에 성공", count);
+					return p;
+				}
+				else
+					p = p->right;
+			}
+			count++;
+			printf("%3d번째에 탐색 실패", count);
+			return p;
+		}
+
+		void findTree(T x)
+		{
+			_findTree(_root, x);
+		}
+
+		void _disPlayInorder(node_pointer root)
+		{
+			if (root)
+			{
+				_disPlayInorder(root->left);
+				std::cout << "key: " << root->key << " " << std::endl;
+				_disPlayInorder(root->right);
+			}
+		}
+
+		void disPlayInorder()
+		{
+			std::cout << "erer\n";
+			_disPlayInorder(_root);
+		}
+
+		node_pointer _deleteNode(node_pointer root, T x)
+		{
+			node_pointer parent, *p, *succ, *succ_parent;
+			node_pointer child;
+
+			parent = NULL;
+			p = root;
+			while ((p != NULL) && (p->key != x))
+			{
+				parent = p;
+				if (x < p->key)
+					p = p->left;
+				else
+					p = p->right;
+			}
+
+			if (p == NULL)
+			{
+				std::cout << "찾는 키는 없음" << std::endl;
+				return;
+			}
+
+			if ((p->left == NULL) && (p->right == NULL))
+			{
+				if (parent != NULL)
+				{
+					if (parent->left == p)
+						parent->left = NULL;
+					else
+						parent->right = NULL;
+				}
+				else
+					root = NULL;
+			}
+			else if ((p->left == NULL) || (p->right == NULL))
+			{
+				if (p->left != NULL)
+					child = p->left;
+				else
+					child = p->right;
+
+				if (parent != NULL)
+				{
+					if (parent->left == p)
+						parent->left = child;
+					else
+						parent->right = child;
+				}
+				else
+					root = child;
+			}
+			else
+			{
+				succ_parent = p;
+				succ = p->left;
+				while (succ->right != NULL)
+				{
+					succ_parent = succ;
+					succ = succ->right;
+				}
+				if (succ_parent->left == succ)
+					succ_parent->left = succ->left;
+				else
+					succ_parent->right = succ->right;
+				p->key = succ->key;
+				p = succ;
+			}
+			_alloc.destroy(p);
+			_alloc.deallocate(p, 1);
+			// free(p);
+		}
+
+		void deleteNode(T key)
+		{
+			_deleteNode(_root, key);
+		}
+	};
+}
+
+#endif
