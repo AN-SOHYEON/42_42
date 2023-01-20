@@ -2,6 +2,7 @@
 #define AVL_TREE_HPP
 
 #include <memory>
+#include "Node.hpp"
 
 #include <iostream>
 #include <stdio.h>
@@ -10,14 +11,6 @@
 
 namespace ft
 {
-	template <typename T>
-	struct node
-	{
-		T key;
-		struct node *left;
-		struct node *right;
-	};
-
 	template <typename T, typename Node = ft::node<T>, typename Node_Alloc = std::allocator<Node> >
 	class avlTree
 	{
