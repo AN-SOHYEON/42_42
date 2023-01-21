@@ -79,6 +79,10 @@ STL container를 구현하는 과제이니 당연히 구현을 위해 STL contai
 - 반복자는 컨테이너 내부의 원소를 가리키고 접근할 수 있어야 한다.
 - 반복자는 다음 원소로 이동하고 컨테이너의 모든 원소를 순회할 수 있어야 한다. 
 
+- 반복자를 통해 알고리즘은 컨테이너에 종속적이지 않고도 컨테이너와 결합하여 동작할 수 있다. 
+- STL의 모든 컨테이너는 자신만의 반복자를 제공한다. 
+- [ begin, end ) | end는 끝의 다음 칸을 가리킨다.
+
 
 ### Adaptor
 
@@ -90,13 +94,7 @@ STL container를 구현하는 과제이니 당연히 구현을 위해 STL contai
 	- binder, negator, adaptor for pointers to functions
 
 
-
-
-
-
-
----
-### Stack
-일반 컨테이너를 LIFO 방식의 스택 컨테이너로 변환한다.
-	- empty, size, push_back, pop_back, back 멤버 함수를 지원하는 컨테이너는 모두 stack으로 변환할 수 있다. 
-
+### allocator
+- 템플릿 클래스 
+- 모든 컨테이너는 템플릿 매개변수에 할당기를 인자로 받는다. 
+- 기본 할당기는 allocator<T>
