@@ -11,17 +11,23 @@
 
 namespace ft
 {
-	template <typename T, typename Node = ft::node<T>, typename Node_Alloc = std::allocator<Node> >
+	// template <typename T>
+	template <typename T, typename Key, typename Comp, typename Alloc>
 	class avlTree
 	{
 	public:
-		typedef Node_Alloc allocator_node;
+		typedef ft::node<T> Node;
+		// typedef std::allocator<Node> allocator_node;
+		typedef Alloc allocator;
+		// typedef typename allocator::template rebind<Node>::other node_allocator;
 		typedef Node node_type;
 		typedef Node *node_pointer;
 
-	private:
+		typedef typename allocator::template rebind<Node>::other node_allocator;
+
+	protected:
 		node_pointer _root;
-		allocator_node _alloc;
+		node_allocator _alloc;
 
 		node_pointer llRotate(node_pointer parent)
 		{
@@ -137,15 +143,16 @@ namespace ft
 					p = p->left;
 				else if (x == p->key)
 				{
-					printf("%3d번째에 성공", count);
+					// printf("%3d번째에 성공", count);
 					return p;
 				}
 				else
 					p = p->right;
 			}
 			count++;
-			printf("%3d번째에 탐색 실패", count);
-			return p;
+			// printf("%3d번째에 탐색 실패\n", count);
+			// std::cout << p->key << "\n";
+			return NULL; // 못찾으면 NULL 반환
 		}
 
 		void _disPlayInorder(node_pointer root)
@@ -173,10 +180,9 @@ namespace ft
 				else
 					p = p->right;
 			}
-
 			if (p == NULL)
 			{
-				std::cout << "찾는 키는 없음" << std::endl;
+				// std::cout << "찾는 키는 없음" << std::endl;
 				return;
 			}
 
@@ -214,7 +220,7 @@ namespace ft
 			{
 				succ_parent = p;
 				succ = p->left;
-				while (succ->right != NULL)
+				while (succ->right != NULL) // 안들어옴
 				{
 					succ_parent = succ;
 					succ = succ->right;
@@ -226,7 +232,8 @@ namespace ft
 				p->key = succ->key;
 				p = succ;
 			}
-			_alloc.destroy(p);
+			// // _alloc.destroy(p);
+			// std::cout << "sdf1\n";
 			_alloc.deallocate(p, 1);
 			// free(p);
 			root = rebalance(&root);
@@ -236,7 +243,7 @@ namespace ft
 		avlTree()
 		{
 			_root = NULL;
-			_alloc = allocator_node();
+			_alloc = node_allocator();
 		}
 
 		virtual ~avlTree()
