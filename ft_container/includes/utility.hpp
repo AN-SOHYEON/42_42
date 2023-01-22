@@ -2,6 +2,7 @@
 #ifndef UTILITY_HPP
 #define UTILITY_HPP
 
+#include <memory>
 // pair
 namespace ft
 {
@@ -41,17 +42,18 @@ namespace ft
 		static const bool value = true;
 	};
 
-	template <>
-	struct is_integral<char16_t>
-	{
-		static const bool value = true;
-	};
+	// since c++11
+	// template <>
+	// struct is_integral<char16_t>
+	// {
+	// 	static const bool value = true;
+	// };
 
-	template <>
-	struct is_integral<char32_t>
-	{
-		static const bool value = true;
-	};
+	// template <>
+	// struct is_integral<char32_t>
+	// {
+	// 	static const bool value = true;
+	// };
 
 	template <>
 	struct is_integral<wchar_t>
@@ -86,6 +88,16 @@ namespace ft
 		}
 		return true;
 	}
+
+	// template <class InputIt1,
+	// 		  class InputIt2,
+	// 		  class BinaryPredicate>
+	// bool equal(InputIt1 first1,
+	// 		   InputIt1 last1,
+	// 		   InputIt2 first2,
+	// 		   BinaryPredicate p)
+	// {
+	// } TODO: 구현
 
 	template <class InputIterator1, class InputIterator2>
 	bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1,
@@ -125,7 +137,7 @@ namespace ft
 	};
 
 	template <class T1, class T2>
-	bool operator==(const std::pair<T1, T2> &lhs, const std::pair<T1, T2> &rhs)
+	bool operator==(const ft::pair<T1, T2> &lhs, const ft::pair<T1, T2> &rhs)
 	{
 		if (lhs.first == rhs.first && rhs.second == rhs.second)
 			return true;
@@ -133,7 +145,7 @@ namespace ft
 	}
 
 	template <class T1, class T2>
-	bool operator!=(const std::pair<T1, T2> &lhs, const std::pair<T1, T2> &rhs)
+	bool operator!=(const ft::pair<T1, T2> &lhs, const ft::pair<T1, T2> &rhs)
 	{
 		if (lhs.first == rhs.first && rhs.second == rhs.second)
 			return false;
@@ -141,7 +153,7 @@ namespace ft
 	}
 
 	template <class T1, class T2>
-	bool operator<(const std::pair<T1, T2> &lhs, const std::pair<T1, T2> &rhs)
+	bool operator<(const ft::pair<T1, T2> &lhs, const ft::pair<T1, T2> &rhs)
 	{
 		if (lhs.first < rhs.first)
 			return true;
@@ -151,7 +163,7 @@ namespace ft
 	}
 
 	template <class T1, class T2>
-	bool operator<=(const std::pair<T1, T2> &lhs, const std::pair<T1, T2> &rhs)
+	bool operator<=(const ft::pair<T1, T2> &lhs, const ft::pair<T1, T2> &rhs)
 	{
 		if (lhs.first <= rhs.fist)
 			return true;
@@ -159,7 +171,7 @@ namespace ft
 	}
 
 	template <class T1, class T2>
-	bool operator>(const std::pair<T1, T2> &lhs, const std::pair<T1, T2> &rhs)
+	bool operator>(const ft::pair<T1, T2> &lhs, const ft::pair<T1, T2> &rhs)
 	{
 		if (lhs.first > rhs.first)
 			return true;
@@ -169,7 +181,7 @@ namespace ft
 	}
 
 	template <class T1, class T2>
-	bool operator>=(const std::pair<T1, T2> &lhs, const std::pair<T1, T2> &rhs)
+	bool operator>=(const ft::pair<T1, T2> &lhs, const ft::pair<T1, T2> &rhs)
 	{
 		if (lhs.first >= rhs.fist)
 			return true;
@@ -182,10 +194,15 @@ namespace ft
 		return pair<_T1, _T2>(first, second);
 	}
 
+	template <typename U>
+	struct Less : public std::binary_function<U, U, bool>
+	{
+		bool operator()(const U &left, const U &right) const
+		{
+			return left < right;
+		}
+	};
+
 }
 
 #endif
-
-// - std::equal and/or std::lexicographical_compare
-// - std::pair
-// - std::make_pair

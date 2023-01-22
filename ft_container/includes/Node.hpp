@@ -3,7 +3,6 @@
 
 namespace ft
 {
-
 	template <typename T>
 	struct node
 	{
