@@ -5,12 +5,8 @@
 
 namespace ft
 {
-	template <
-		class T, class Alloc = std::allocator<T>,
-		class Container = ft::vector<T, Alloc> >
-	// template <
-	// 	class T,
-	// 	class Container = ft::vector<T, Alloc > >
+	// template <class T, class Container>
+	template <class T, class Container = ft::vector<T> >
 	class stack
 	{
 
@@ -22,13 +18,13 @@ namespace ft
 		typedef typename Container::const_reference const_reference;
 
 	protected:
-		container_type content;
+		container_type _content;
 
 	public:
 		explicit stack(const Container &cont = Container())
 		{
-			// content = vector(Alloc);
-			content = cont;
+			// _content = vector(Alloc);
+			_content = cont;
 			// std::cout << "stack constructor\n";
 		}
 
@@ -39,46 +35,46 @@ namespace ft
 
 		stack &operator=(const stack &other)
 		{
-			content = other.content;
+			_content = other._content;
 			return (*this);
 		}
 
 		reference top()
 		{
-			return (content.back());
+			return (_content.back());
 		}
 
 		const_reference top() const
 		{
-			return (content.back());
+			return (_content.back());
 		}
 
 		bool empty() const
 		{
-			if (content.empty())
+			if (_content.empty())
 				return true;
 			return false;
 		}
 
 		size_type size() const
 		{
-			return (content.size());
+			return (_content.size());
 		}
 
 		void push(const value_type &value)
 		{
-			content.push_back(value);
+			_content.push_back(value);
 		}
 
 		void pop()
 		{
-			content.pop_back();
+			_content.pop_back();
 		}
 
 		friend bool operator==(const stack &lhs, const stack &rhs)
 		{
 			// std::cout << "here\n";
-			return (lhs.content == rhs.content);
+			return (lhs._content == rhs._content);
 		}
 
 		friend bool operator!=(const stack &lhs, const stack &rhs)
@@ -88,22 +84,22 @@ namespace ft
 
 		friend bool operator<(const stack &lhs, const stack &rhs)
 		{
-			return (lhs.content < rhs.content);
+			return (lhs._content < rhs._content);
 		}
 
 		friend bool operator<=(const stack &lhs, const stack &rhs)
 		{
-			return (lhs.content <= rhs.content);
+			return (lhs._content <= rhs._content);
 		}
 
 		friend bool operator>(const stack &lhs, const stack &rhs)
 		{
-			return (lhs.content > rhs.content);
+			return (lhs._content > rhs._content);
 		}
 
 		friend bool operator>=(const stack &lhs, const stack &rhs)
 		{
-			return (lhs.content >= rhs.content);
+			return (lhs._content >= rhs._content);
 		}
 	};
 
