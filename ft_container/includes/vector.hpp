@@ -29,13 +29,14 @@ namespace ft
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
-	private:
+	protected:
 		pointer arr;
 		size_type _size;
 		size_type _capacity;
 		allocator_type alloc;
 
-		// TODO: FIX ME!!!!!!!!!!! DO NOT USE THIS FUNCTION
+		// TODO: 이거...>쓸수 밖에 없느데..... InputIterator에 노드기반 이터레이터들어오면 뺄셈으로는 차이를 구할수가 없음....
+		// 아니면 이터레이터별로 protected 멤버함수로 가지도록 할수도?
 		template <class InputIterator>
 		typename iterator_traits<InputIterator>::difference_type _distance(InputIterator first, InputIterator last)
 		{
@@ -149,7 +150,7 @@ namespace ft
 				else
 					reserve(1 * 2);
 			}
-			arr[_size] = value; // TODO: 왜 -1 안해야되는지 고민할것
+			arr[_size] = value; // 왜 -1 안해야되는지 고민할것 -> 왜냐면 현재 마지막칸([size-1]) 다음에 원소를 넣어야 하니까ㅏ
 			_size++;
 		}
 
@@ -188,15 +189,10 @@ namespace ft
 			typedef typename iterator_traits<InputIt>::difference_type inputit_size_type;
 			clear();
 			inputit_size_type count = _distance(first, last); // last - first;
-			// std::cout << "adfasd" << count << std::endl;
-			// std::cout << "ffff" << *first << std::endl;
-			// std::cout << "llll" << *last << std::endl;
+
 			reserve(count);
 			for (InputIt it = first; it != last; it++)
 			{
-				// std::cout << "push_back!! -> " << *it << std::endl;
-				// std::cout << "mysize!! -> " << _size << std::endl;
-
 				push_back(*it);
 			}
 		}
@@ -304,10 +300,6 @@ namespace ft
 				// else
 				// 	reserve(1 * 2);
 			}
-
-			// std::cout << "index ==> " << index << std::endl;
-			// std::cout << "pos ==> " << *pos << std::endl;
-			// std::cout << "begin ==> " << *begin() << std::endl;
 			if (index < _size) // TODO: = 이 들어가야 하는가?
 			{
 				for (size_type i = _size + count - 1; i >= index + count; i--) // TODO: = 이 들어가야 하는기?  i >= index + count
@@ -315,7 +307,6 @@ namespace ft
 			}
 			for (inputit_size i = 0; i < count; i++)
 			{
-
 				arr[index + i] = *(first++);
 			}
 
