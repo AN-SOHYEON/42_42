@@ -4,14 +4,15 @@
 namespace ft
 {
 	template <typename T>
-	struct node
+	struct Node
 	{
-		T key;
-		struct node *left;
-		struct node *right;
+		T content;
+		struct Node *left;
+		struct Node *right;
+		struct Node *parent;
 
-		node() {}
-		virtual ~node() {}
+		Node() {}
+		virtual ~Node() {}
 	};
 
 }
