@@ -30,66 +30,55 @@ namespace ft
 
 		node_pointer llRotate(node_pointer parent)
 		{
-			// std::cout << "doing llrotate\n";
-			// std::cout << "parent content : " << parent->content << "\n";
-			// 4
 			node_pointer child = parent->left;
-			// std::cout << "child content : " << child->content << "\n";
-			// 2
+
 			parent->left = child->right;
-			if (parent->left)
-				parent->left->parent = parent;
-			// std::cout << "parent->left content : " << parent->left->content << "\n";
+			if (child->right)
+				child->right->parent = parent;
+
+			// if (parent->left)
+			// 	parent->left->parent = parent;
 
 			child->right = parent;
+			child->parent = parent->parent;
 			parent->parent = child;
-			// std::cout << "parent and child->right content : " << parent->content << "\n";
 			return child;
 		}
 
 		node_pointer rrRotate(node_pointer parent)
 		{
-			// std::cout << "doing rrrotate\n";
-			// std::cout << "parent content : " << parent->content << "\n";
 			node_pointer child = parent->right;
-			// std::cout << "child content : " << child->content << "\n";
 
 			parent->right = child->left;
-			if (parent->right)
-				parent->right->parent = parent;
-			// std::cout << "parent->right content : " << parent->right->content << "\n";
+			if (child->left)
+				child->left->parent = parent;
+
+			// if (parent->right)
+			// 	parent->right->parent = parent;
 
 			child->left = parent;
+			child->parent = parent->parent;
 			parent->parent = child;
-			// std::cout << "parent and child->left content : " << parent->content << "\n";
 
 			return child;
 		}
 
 		node_pointer lrRotate(node_pointer parent)
 		{
-			// std::cout << "doing lrrotate\n";
-			// std::cout << "parent content : " << parent->content << "\n";
 
 			node_pointer child = parent->left;
-			// std::cout << "child content : " << child->content << "\n";
 
 			parent->left = rrRotate(child);
-			parent->left->parent = parent;
-			// std::cout << "parent->left content : " << parent->left->content << "\n";
-			// std::cout << "parent->left->parent content is 4 : " << parent->left->parent->content << "\n";
 
 			return llRotate(parent);
 		}
 
 		node_pointer rlRotate(node_pointer parent)
 		{
-			// disPlayInorder();
 			node_pointer child = parent->right;
-			parent->right = llRotate(child);
-			parent->right->parent = parent;
 
-			// std::cout << "doing rlRR\n";
+			parent->right = llRotate(child);
+
 			return rrRotate(parent);
 		}
 
@@ -133,15 +122,9 @@ namespace ft
 			dummy->parent->right = dummy;
 		}
 
-		// node_pointer rebalance(node_pointer *p)
 		void rebalance(node_pointer *p)
 		{
 			int BF = getBF(*p);
-			std::cout << "start rebalance----displayInorder--in--debug----\n";
-			disPlayInorder_for_debug();
-			// _disPlayInorder_for_debug(*p);
-			std::cout << "start rebalance----displayInorder--in--debug---fin\n";
-			std::cout << "in rebalnce p content is " << (*p)->content << "\n";
 			if (BF > 1)
 			{
 				if (getBF((*p)->left) > 0)
@@ -167,9 +150,9 @@ namespace ft
 				std::cout << "no rebalance\n";
 			}
 			// insertDummyNode();
-			std::cout << "in rebalance----displayInorder--in--debug----\n";
-			disPlayInorder_for_debug();
-			std::cout << "in rebalance----displayInorder--in--debug---fin\n";
+			// std::cout << "in rebalance----displayInorder--in--debug----\n";
+			// disPlayInorder_for_debug();
+			// std::cout << "in rebalance----displayInorder--in--debug---fin\n";
 			// return *p;
 		}
 
@@ -309,162 +292,57 @@ namespace ft
 			return res;
 		}
 
-		node_pointer _deleteNode(node_pointer root, T content)
+		void _deleteNode(node_pointer root, T content)
 		{
-			std::cout << "hhhhh first root->content : " << root->content << "\n";
-			if (root == NULL)
-			{
-				std::cout << "here\n";
-				return NULL;
-			}
-			node_pointer del = NULL;
+			(void)root;
+			node_pointer del = _findTree(_root, content);
+			if (del == NULL) // content가 존재하지 않음
+				return;
 
-			if (root->content < content)
+			if ((del->left == NULL) && (del->right == NULL)) // no child
 			{
-				std::cout << "hhhhh\n";
-				std::cout << "_deleteNode parameter root->right->content " << root->right->content << "\n";
-				root->right = _deleteNode(root->right, content);
-				if (root->right->content)
-					std::cout << "return _deleteNode in right : " << root->right->content << " and root content is " << root->content << "\n";
+				_alloc.deallocate(del, 1);
+				del = NULL;
 			}
-			else if (root->content > content)
+			else if ((del->left == NULL) || (del->right == NULL)) // one child
 			{
-				std::cout << "dkdkdkdkdk\n";
-				std::cout << "_deleteNode parameter root->left->content " << root->left->content << "\n";
-				root->left = _deleteNode(root->left, content);
-				if (root->left->content)
-					std::cout << "return _deleteNode in left : " << root->left->content << "\n";
-			}
-			else
-			{
-				std::cout << "will delete this | root->content : " << root->content << "\n";
-				std::cout << "root's parent content : " << root->parent->content << "\n";
-				// node_pointer del = NULL;
-				if ((root->right == NULL) || (root->left == NULL)) // no child or one child
+				node_pointer child = NULL;
+				if (del->left)
 				{
-					if (del == root->left)
-						del = root->right;
-					else if (del == root->right)
-						del = root->left;
-
-					if (del == NULL) // no child
-					{
-						std::cout << "no child logic\n";
-						del = root;
-						std::cout << "del's content : " << del->content << "\n";
-						std::cout << "del's parent : " << del->parent->content << "\n";
-						if (root->parent->left == root)
-							root->parent->left = NULL;
-						else if (root->parent->right == root)
-							root->parent->right = NULL;
-						_alloc.deallocate(del, 1);
-						del = NULL;
-						root = root->parent;
-						// std::cout << "==========displayInorder in no child===============\n";
-						// disPlayInorder_for_debug();
-						// root = NULL;
-					}
-					else // one child
-					{
-						root = del;
-					}
+					child = del->left;
 				}
-				else // two child
+				else
 				{
-					std::cout << "here\n";
-					del = _oneSmallerNode(root);
-					std::cout << "oneSmallerNode : " << del->content << "\n";
-					root->content = del->content;
-					root->right = _deleteNode(root->right, del->content);
-					std::cout << "after _deleteNode in two child : " << root->right->content << "\n";
+					child = del->right;
 				}
+				child->parent = del->parent;
+				_alloc.deallocate(del, 1);
+				del = NULL;
 			}
-			if (root == NULL)
+			else // two child
 			{
-				std::cout << "hhhhh ^^^^^^^^^^^^\n";
-				return NULL;
-			}
-			// std::cout << "before rebalance\n";
-			rebalance(&root);
-			// _alloc.deallocate(del, 1);
-			// std::cout << "return value of rebalance is " << res->content << "\n";
-			// _disPlayInorder_for_debug(res);
-			std::cout << "after rebalance root content is : " << root->content << "\n";
-			return root;
+				node_pointer child = NULL;
+				node_pointer tmp = del;
 
-			// return rebalance(&root);
+				child = _oneSmallerNode(del);
+				std::cout << "result of oneSmallerNode->content : " << child->content << "\n";
+				child->parent = del->parent;
+				child->left = del->left;
+				if (tmp->left != NULL)
+				{
+					tmp->left->parent = child;
+				}
+				child->right = tmp->right;
+				if (tmp->right != NULL)
+				{
+					tmp->right->parent = child;
+				}
+				del = child;
+				_alloc.deallocate(tmp, 1);
+			}
+			rebalance(&_root);
+			std::cout << "here\n";
 			//////////////////////////////////////////////////////////////////////////
-
-			// node_pointer parent, p, succ, succ_parent;
-			// node_pointer child;
-
-			// parent = NULL;
-			// p = root;
-			// while ((p != NULL) && (p->key != x))
-			// {
-			// 	parent = p;
-			// 	if (x < p->key)
-			// 		p = p->left;
-			// 	else
-			// 		p = p->right;
-			// }
-			// if (p == NULL)
-			// {
-			// 	// std::cout << "찾는 키는 없음" << std::endl;
-			// 	return;
-			// }
-
-			// if ((p->left == NULL) && (p->right == NULL))
-			// {
-			// 	if (parent != NULL)
-			// 	{
-			// 		if (parent->left == p)
-			// 			parent->left = NULL;
-			// 		else
-			// 			parent->right = NULL;
-			// 	}
-			// 	else
-			// 		root = NULL;
-			// }
-			// else if ((p->left == NULL) || (p->right == NULL))
-			// {
-			// 	std::cout << "have one child\n";
-			// 	if (p->left != NULL)
-			// 		child = p->left;
-			// 	else
-			// 		child = p->right;
-
-			// 	if (parent != NULL)
-			// 	{
-			// 		if (parent->left == p)
-			// 			parent->left = child;
-			// 		else
-			// 			parent->right = child;
-			// 	}
-			// 	else
-			// 		root = child;
-			// }
-			// else
-			// {
-			// 	succ_parent = p;
-			// 	succ = p->left;
-			// 	while (succ->right != NULL) // 안들어옴
-			// 	{
-			// 		succ_parent = succ;
-			// 		succ = succ->right;
-			// 	}
-			// 	if (succ_parent->left == succ)
-			// 		succ_parent->left = succ->left;
-			// 	else
-			// 		succ_parent->right = succ->right;
-			// 	p->key = succ->key;
-			// 	p = succ;
-			// }
-			// // // _alloc.destroy(p);
-			// // std::cout << "sdf1\n";
-			// _alloc.deallocate(p, 1);
-			// // free(p);
-			// root = rebalance(&root);
 		}
 
 	public:
