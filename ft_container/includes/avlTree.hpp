@@ -122,84 +122,64 @@ namespace ft
 			dummy->parent->right = dummy;
 		}
 
-		void rebalance(node_pointer *p)
+		node_pointer rebalance(node_pointer node)
 		{
-			int BF = getBF(*p);
+			int BF = getBF(node);
 			if (BF > 1)
 			{
-				if (getBF((*p)->left) > 0)
-					*p = llRotate(*p);
+				if (getBF((node)->left) > 0)
+					node = llRotate(node);
 				else
-					*p = lrRotate(*p);
+					node = lrRotate(node);
 			}
 			else if (BF < -1)
 			{
-				if (getBF((*p)->right) < 0)
+				if (getBF((node)->right) < 0)
 				{
-					*p = rrRotate(*p);
+					node = rrRotate(node);
 				}
 				else
 				{
 					// std::cout << "before rlRR\n";
-					*p = rlRotate(*p);
+					node = rlRotate(node);
 				}
 			}
 			else
 			{
 				// no rebalance
-				std::cout << "no rebalance\n";
+				// std::cout << "no rebalance\n";
 			}
-			// insertDummyNode();
-			// std::cout << "in rebalance----displayInorder--in--debug----\n";
-			// disPlayInorder_for_debug();
-			// std::cout << "in rebalance----displayInorder--in--debug---fin\n";
-			// return *p;
+			return node;
 		}
 
-		void _setParent(node_pointer *child, node_pointer parent)
+		void _setParent(node_pointer child, node_pointer parent)
 		{
-			(*child)->parent = parent;
+			child->parent = parent;
 		}
 
-		node_pointer _insertNode(node_pointer *root, T content)
+		node_pointer _insertNode(node_pointer root, T content)
 		{
-			if (*root == NULL)
+			if (root == NULL)
 			{
-				*root = _alloc.allocate(1);
-				(*root)->content = content;
-				(*root)->left = NULL;
-				(*root)->right = NULL;
-				(*root)->parent = NULL;
+				root = _alloc.allocate(1);
+				root->content = content;
+				root->left = NULL;
+				root->right = NULL;
+				root->parent = NULL;
 			}
-			else if (content < (*root)->content)
+			else if (content < root->content)
 			{
-				// deleteDummyNode();
-				(*root)->left = _insertNode(&((*root)->left), content);
-				_setParent(&((*root)->left), (*root));
-				// std::cout << "after _setParent : " << (*root)->left->parent->content << " is " << (*root)->left->content << " 's parent\n";
-				std::cout << "rebalance parameter root is " << (*root)->content << " when insert content is " << content << "\n";
-				// (*root) = rebalance(root);
-				rebalance(root);
-				// if ((*root)->parent)
-				// {
-				// 	std::cout << "now parent of root(" << (*root)->content << ") is " << (*root)->parent->content << "\n";
-				// 	std::cout << "now parent of rootchild(" << (*root)->right->content << ") is " << (*root)->right->parent->content << "\n";
-				// }
+				root->left = _insertNode(root->left, content);
+				_setParent(root->left, root);
+				// std::cout << "rebalance parameter root is " << root->content << " when insert content is " << content << "\n";
+				root = rebalance(root);
 			}
-			else if (content > (*root)->content)
+			else if (content > root->content)
 			{
-				// deleteDummyNode();
-				(*root)->right = _insertNode(&((*root)->right), content);
-				_setParent(&((*root)->right), (*root));
-				// std::cout << "after _setParent : " << (*root)->right->parent->content << " is " << (*root)->right->content << " 's parent\n";
-				std::cout << "rebalance parameter root is " << (*root)->content << " when insert content is " << content << "\n";
-				// (*root) = rebalance(root);
-				rebalance(root);
-				// if ((*root)->parent)
-				// {
-				// 	std::cout << "now parent of root(" << (*root)->content << ") is " << (*root)->parent->content << "\n";
-				// 	std::cout << "now parent of rootchild(" << (*root)->right->content << ") is " << (*root)->right->parent->content << "\n";
-				// }
+				root->right = _insertNode(root->right, content);
+				_setParent(root->right, root);
+				// std::cout << "rebalance parameter root is " << root->content << " when insert content is " << content << "\n";
+				root = rebalance(root);
 			}
 			else
 			{
@@ -208,7 +188,7 @@ namespace ft
 				// TODO: logic 필요
 			}
 			// insertDummyNode();
-			return (*root);
+			return (root);
 		}
 
 		node_pointer _findTree(node_pointer root, T content)
@@ -241,7 +221,7 @@ namespace ft
 			{
 				_disPlayInorder(root->left);
 				if (root != end_node())
-					std::cout << "key: " << root->content << " " << std::endl;
+					std::cout << "key: " << root->content << "\n";
 				_disPlayInorder(root->right);
 			}
 		}
@@ -292,56 +272,92 @@ namespace ft
 			return res;
 		}
 
-		void _deleteNode(node_pointer root, T content)
+		node_pointer _deleteNode(node_pointer root, T content)
 		{
-			(void)root;
-			node_pointer del = _findTree(_root, content);
-			if (del == NULL) // content가 존재하지 않음
-				return;
+			if (root == NULL)
+				return NULL;
 
-			if ((del->left == NULL) && (del->right == NULL)) // no child
+			if (content < root->content)
 			{
-				_alloc.deallocate(del, 1);
-				del = NULL;
+				// std::cout << "insert leftline\n";
+				root->left = _deleteNode(root->left, content);
+				root = rebalance(root);
 			}
-			else if ((del->left == NULL) || (del->right == NULL)) // one child
+			else if (content > root->content)
 			{
-				node_pointer child = NULL;
-				if (del->left)
-				{
-					child = del->left;
-				}
-				else
-				{
-					child = del->right;
-				}
-				child->parent = del->parent;
-				_alloc.deallocate(del, 1);
-				del = NULL;
+				// std::cout << "insert rightline\n";
+				root->right = _deleteNode(root->right, content);
+				root = rebalance(root);
 			}
-			else // two child
+			else
 			{
-				node_pointer child = NULL;
-				node_pointer tmp = del;
+				if ((root->left == NULL) && (root->right == NULL)) // no child
+				{
+					// _alloc.deallocate(root, 1);
+					root = NULL;
+				}
+				else if ((root->left == NULL) || (root->right == NULL)) // one child
+				{
+					node_pointer child = NULL;
+					if (root->left)
+					{
+						child = root->left;
+					}
+					else
+					{
+						// std::cout << "wdf\n";
+						child = root->right;
+					}
 
-				child = _oneSmallerNode(del);
-				std::cout << "result of oneSmallerNode->content : " << child->content << "\n";
-				child->parent = del->parent;
-				child->left = del->left;
-				if (tmp->left != NULL)
-				{
-					tmp->left->parent = child;
+					child->parent = root->parent;
+					// std::cout << "now child->parent is 2 : " << child->parent->content << "\n";
+					if (root->parent->right == root)
+					{
+						root->parent->right = child;
+						// std::cout << "still root->content is 4 : " << root->content << "\n";
+						// std::cout << "change root->parent->right is 3 : " << root->parent->right->content << "\n";
+					}
+					else
+					{
+						root->parent->left = child;
+					}
+					// _alloc.deallocate(root, 1);
+					// root = NULL;
+					return child;
 				}
-				child->right = tmp->right;
-				if (tmp->right != NULL)
+				else // two child
 				{
-					tmp->right->parent = child;
+					node_pointer child = NULL;
+					node_pointer tmp = root;
+					// std::cout << "tmp->content : " << tmp->content << "\n";
+					// std::cout << "root->content : " << root->content << "\n";
+					child = _oneSmallerNode(root);
+					// std::cout << "result of oneSmallerNode->content : " << child->content << "\n";
+					child->parent = tmp->parent;
+
+					if (tmp->left != child)
+					{
+						child->left = tmp->left;
+						if (tmp->left != NULL)
+						{
+							tmp->left->parent = child;
+						}
+					}
+					else
+					{
+						child->left = NULL;
+					}
+
+					child->right = tmp->right;
+					if (tmp->right != NULL)
+					{
+						tmp->right->parent = child;
+					}
+					root = child;
+					_alloc.deallocate(tmp, 1);
 				}
-				del = child;
-				_alloc.deallocate(tmp, 1);
 			}
-			rebalance(&_root);
-			std::cout << "here\n";
+			return root;
 			//////////////////////////////////////////////////////////////////////////
 		}
 
@@ -360,16 +376,12 @@ namespace ft
 		{
 			avlTree();
 			insertNode(content);
-			// _insertNode(&_root, content);
-			// insertDummyNode();
 		}
 
 		avlTree(node_pointer n)
 		{
 			avlTree();
 			insertNode(n->content);
-			// _insertNode(&_root, n->content);
-			// insertDummyNode();
 		}
 
 		avlTree(const avlTree &tree)
@@ -387,8 +399,7 @@ namespace ft
 			if (_root)
 				deleteDummyNode();
 			// std::cout << "sdfsdf\n";
-			_insertNode(&_root, content);
-			// std::cout << "werwer\n";
+			_root = _insertNode(_root, content);
 			insertDummyNode();
 		}
 
@@ -405,23 +416,27 @@ namespace ft
 		void deleteNode(T content)
 		{
 			deleteDummyNode();
-			_deleteNode(_root, content);
+			_root = _deleteNode(_root, content);
+			// std::cout << "========display in deleteNode()========\n";
+			// disPlayInorder();
 			insertDummyNode();
 		}
 
-		Node *begin_node()
+		node_pointer begin_node()
 		{
-			Node *current = _root;
+			node_pointer current = _root;
 			while (current->left)
 				current = current->left;
 			return current;
 		}
 
-		Node *end_node()
+		node_pointer end_node()
 		{
-			Node *current = _root;
+			node_pointer current = _root;
 			while (current->right)
+			{
 				current = current->right;
+			}
 			return current; // TODO: 원래는 이게 맞음
 							// return current->parent;
 		}
