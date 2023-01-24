@@ -48,12 +48,12 @@ namespace ft
 
 		reference operator*()
 		{
-			return (_node->content);
+			return (this->_node->content);
 		}
 
 		pointer operator->() const
 		{
-			return _node;
+			return (&this->_node->content);
 		}
 
 		bidirectional_iterator &operator++()
