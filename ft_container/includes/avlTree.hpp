@@ -133,10 +133,15 @@ namespace ft
 			dummy->parent->right = dummy;
 		}
 
-		node_pointer rebalance(node_pointer *p)
+		// node_pointer rebalance(node_pointer *p)
+		void rebalance(node_pointer *p)
 		{
 			int BF = getBF(*p);
-
+			std::cout << "start rebalance----displayInorder--in--debug----\n";
+			disPlayInorder_for_debug();
+			// _disPlayInorder_for_debug(*p);
+			std::cout << "start rebalance----displayInorder--in--debug---fin\n";
+			std::cout << "in rebalnce p content is " << (*p)->content << "\n";
 			if (BF > 1)
 			{
 				if (getBF((*p)->left) > 0)
@@ -165,7 +170,7 @@ namespace ft
 			std::cout << "in rebalance----displayInorder--in--debug----\n";
 			disPlayInorder_for_debug();
 			std::cout << "in rebalance----displayInorder--in--debug---fin\n";
-			return *p;
+			// return *p;
 		}
 
 		void _setParent(node_pointer *child, node_pointer parent)
@@ -190,7 +195,8 @@ namespace ft
 				_setParent(&((*root)->left), (*root));
 				// std::cout << "after _setParent : " << (*root)->left->parent->content << " is " << (*root)->left->content << " 's parent\n";
 				std::cout << "rebalance parameter root is " << (*root)->content << " when insert content is " << content << "\n";
-				(*root) = rebalance(root);
+				// (*root) = rebalance(root);
+				rebalance(root);
 				// if ((*root)->parent)
 				// {
 				// 	std::cout << "now parent of root(" << (*root)->content << ") is " << (*root)->parent->content << "\n";
@@ -204,7 +210,8 @@ namespace ft
 				_setParent(&((*root)->right), (*root));
 				// std::cout << "after _setParent : " << (*root)->right->parent->content << " is " << (*root)->right->content << " 's parent\n";
 				std::cout << "rebalance parameter root is " << (*root)->content << " when insert content is " << content << "\n";
-				(*root) = rebalance(root);
+				// (*root) = rebalance(root);
+				rebalance(root);
 				// if ((*root)->parent)
 				// {
 				// 	std::cout << "now parent of root(" << (*root)->content << ") is " << (*root)->parent->content << "\n";
@@ -308,7 +315,7 @@ namespace ft
 			if (root == NULL)
 			{
 				std::cout << "here\n";
-				return root;
+				return NULL;
 			}
 			node_pointer del = NULL;
 
@@ -350,6 +357,9 @@ namespace ft
 							root->parent->left = NULL;
 						else if (root->parent->right == root)
 							root->parent->right = NULL;
+						_alloc.deallocate(del, 1);
+						del = NULL;
+						root = root->parent;
 						// std::cout << "==========displayInorder in no child===============\n";
 						// disPlayInorder_for_debug();
 						// root = NULL;
@@ -368,20 +378,19 @@ namespace ft
 					root->right = _deleteNode(root->right, del->content);
 					std::cout << "after _deleteNode in two child : " << root->right->content << "\n";
 				}
-				std::cout << "fuck\n";
-				// 여까지
 			}
 			if (root == NULL)
 			{
 				std::cout << "hhhhh ^^^^^^^^^^^^\n";
-				return root;
+				return NULL;
 			}
-			_alloc.deallocate(del, 1);
 			// std::cout << "before rebalance\n";
-			node_pointer res = rebalance(&root);
-			std::cout << "return value of rebalance is " << res->content << "\n";
-			_disPlayInorder_for_debug(res);
-			return res;
+			rebalance(&root);
+			// _alloc.deallocate(del, 1);
+			// std::cout << "return value of rebalance is " << res->content << "\n";
+			// _disPlayInorder_for_debug(res);
+			std::cout << "after rebalance root content is : " << root->content << "\n";
+			return root;
 
 			// return rebalance(&root);
 			//////////////////////////////////////////////////////////////////////////
