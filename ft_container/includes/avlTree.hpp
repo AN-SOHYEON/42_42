@@ -279,25 +279,30 @@ namespace ft
 
 			if (content < root->content)
 			{
-				// std::cout << "insert leftline\n";
+				std::cout << "insert leftline\n";
 				root->left = _deleteNode(root->left, content);
-				root = rebalance(root);
+				if (_root)
+					root = rebalance(root);
 			}
 			else if (content > root->content)
 			{
-				// std::cout << "insert rightline\n";
+				std::cout << "insert rightline\n";
 				root->right = _deleteNode(root->right, content);
-				root = rebalance(root);
+				if (_root)
+					root = rebalance(root);
 			}
 			else
 			{
 				if ((root->left == NULL) && (root->right == NULL)) // no child
 				{
+					std::cout << "no child\n";
 					// _alloc.deallocate(root, 1);
 					root = NULL;
+					// std::cout << "you\n";
 				}
 				else if ((root->left == NULL) || (root->right == NULL)) // one child
 				{
+					std::cout << "one child\n";
 					node_pointer child = NULL;
 					if (root->left)
 					{
@@ -305,21 +310,28 @@ namespace ft
 					}
 					else
 					{
-						// std::cout << "wdf\n";
+						std::cout << "wdf\n";
 						child = root->right;
 					}
 
-					child->parent = root->parent;
-					// std::cout << "now child->parent is 2 : " << child->parent->content << "\n";
-					if (root->parent->right == root)
+					if (root->parent)
 					{
-						root->parent->right = child;
-						// std::cout << "still root->content is 4 : " << root->content << "\n";
-						// std::cout << "change root->parent->right is 3 : " << root->parent->right->content << "\n";
+						child->parent = root->parent;
+						// std::cout << "now child->parent is 2 : " << child->parent->content << "\n";
+						if (root->parent->right == root)
+						{
+							root->parent->right = child;
+							// std::cout << "still root->content is 4 : " << root->content << "\n";
+							// std::cout << "change root->parent->right is 3 : " << root->parent->right->content << "\n";
+						}
+						else
+						{
+							root->parent->left = child;
+						}
 					}
 					else
 					{
-						root->parent->left = child;
+						child->parent = NULL;
 					}
 					// _alloc.deallocate(root, 1);
 					// root = NULL;
@@ -327,6 +339,7 @@ namespace ft
 				}
 				else // two child
 				{
+					std::cout << "two child\n";
 					node_pointer child = NULL;
 					node_pointer tmp = root;
 					// std::cout << "tmp->content : " << tmp->content << "\n";
@@ -419,7 +432,8 @@ namespace ft
 			_root = _deleteNode(_root, content);
 			// std::cout << "========display in deleteNode()========\n";
 			// disPlayInorder();
-			insertDummyNode();
+			if (_root)
+				insertDummyNode();
 		}
 
 		node_pointer begin_node()
