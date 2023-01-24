@@ -416,9 +416,9 @@ namespace ft
 			insertDummyNode();
 		}
 
-		void findTree(T content)
+		node_pointer findTree(T content)
 		{
-			_findTree(_root, content);
+			return _findTree(_root, content);
 		}
 
 		void disPlayInorder()
@@ -455,14 +455,18 @@ namespace ft
 							// return current->parent;
 		}
 
-		avlTree &operator=(const avlTree &tree) // TODO: implement
-		{
-		}
+		// avlTree &operator=(const avlTree &tree) // TODO: implement
+		// {
+		// }
 
 		void disPlayInorder_for_debug()
 		{
 			_disPlayInorder_for_debug(_root);
 		}
+
+		/*
+		implement for tree:
+		 */
 	};
 }
 
