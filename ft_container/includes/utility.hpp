@@ -118,11 +118,15 @@ namespace ft
 	template <typename _T1, typename _T2>
 	struct pair
 	{
-		_T1 first;
-		_T2 second;
+		typedef _T1 first_value;
+		typedef _T2 second_value;
+
+		first_value first;
+		second_value second;
 
 		pair(void) : first(), second() {}
 		pair(const _T1 &__first, const _T2 &__second) : first(__first), second(__second) {}
+
 		template <class U1, class U2>
 		pair(const pair<U1, U2> &p) : first(p.first), second(p.second) {}
 
@@ -139,7 +143,7 @@ namespace ft
 	template <class T1, class T2>
 	bool operator==(const ft::pair<T1, T2> &lhs, const ft::pair<T1, T2> &rhs)
 	{
-		if (lhs.first == rhs.first && rhs.second == rhs.second)
+		if ((lhs.first == rhs.first) && (rhs.second == rhs.second))
 			return true;
 		return false;
 	}
@@ -147,9 +151,7 @@ namespace ft
 	template <class T1, class T2>
 	bool operator!=(const ft::pair<T1, T2> &lhs, const ft::pair<T1, T2> &rhs)
 	{
-		if (lhs.first == rhs.first && rhs.second == rhs.second)
-			return false;
-		return true;
+		return !(lhs == rhs);
 	}
 
 	template <class T1, class T2>
