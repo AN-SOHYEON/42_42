@@ -22,7 +22,7 @@ namespace ft
 		typedef typename ft::Node<T> Node;
 		// typedef typename ft::Node<T> *Node_pointer;
 
-	private:
+	protected:
 		// Node_pointer _node;
 		Node *_node;
 
@@ -125,19 +125,29 @@ namespace ft
 			--_node;
 			return tmp;
 		}
+
+		bool operator==(const bidirectional_iterator &it)
+		{
+			return (this->_node == it._node);
+		}
+
+		bool operator!=(const bidirectional_iterator &it)
+		{
+			return (this->_node != it._node);
+		}
 	};
 
-	template <class Iter1, class Iter2>
-	bool operator==(const ft::bidirectional_iterator<Iter1> &lhs, const ft::bidirectional_iterator<Iter2> &rhs)
-	{
-		return *lhs == *rhs;
-	}
+	// template <class Iter1, class Iter2>
+	// bool operator==(const ft::bidirectional_iterator<Iter1> &lhs, const ft::bidirectional_iterator<Iter2> &rhs)
+	// {
+	// 	return *lhs == *rhs;
+	// }
 
-	template <class Iter1, class Iter2>
-	bool operator!=(const ft::bidirectional_iterator<Iter1> &lhs, const ft::bidirectional_iterator<Iter2> &rhs)
-	{
-		return *lhs != *rhs;
-	}
+	// template <class Iter1, class Iter2>
+	// bool operator!=(const ft::bidirectional_iterator<Iter1> &lhs, const ft::bidirectional_iterator<Iter2> &rhs)
+	// {
+	// 	return *lhs != *rhs;
+	// }
 }
 
 #endif
