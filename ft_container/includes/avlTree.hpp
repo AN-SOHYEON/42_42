@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "Node.hpp"
+#include <functional>
 
 #include <iostream>
 #include <stdio.h>
@@ -12,14 +13,17 @@
 namespace ft
 {
 	// template <typename T>
-	template <typename T, typename Key, typename Comp, typename Alloc>
+	// template <typename T, typename Key, typename Comp, typename Alloc> // TODO: 모르겠다 나는
+	template <class Key, class Value, class Compare, class Alloc>
 	class avlTree
 	{
 	public:
-		typedef ft::Node<T> Node;
+		typedef ft::AvlNode<Key, Value> Node;
+		typedef ft::pair<Key, Value> value_type;
 		typedef Alloc allocator;
 		typedef Node node_type;
 		typedef Node *node_pointer;
+		typedef Compare compare_type;
 
 		typedef typename allocator::template rebind<Node>::other node_allocator;
 		// typename allocator::template rebind<Node>::other node_allocator;
@@ -27,6 +31,7 @@ namespace ft
 	protected:
 		node_pointer _root;
 		node_allocator _alloc;
+		compare_type _comp;
 
 		node_pointer llRotate(node_pointer parent)
 		{
@@ -118,7 +123,6 @@ namespace ft
 			dummy->left = NULL;
 			dummy->right = NULL;
 			dummy->parent = end_node();
-			// std::cout << "insertDummyNode current end_node is " << end_node()->content << "\n";
 			dummy->parent->right = dummy;
 		}
 
@@ -157,24 +161,27 @@ namespace ft
 			child->parent = parent;
 		}
 
-		node_pointer _insertNode(node_pointer root, T content)
+		node_pointer _insertNode(node_pointer root, value_type content)
 		{
 			if (root == NULL)
 			{
 				root = _alloc.allocate(1);
 				root->content = content;
+				// root->content(ft::make_pair(content.first, content.second));
 				root->left = NULL;
 				root->right = NULL;
 				root->parent = NULL;
 			}
-			else if (content < root->content)
+			// else if (content < root->content)
+			else if (_comp(content.first, root->content.first))
 			{
 				root->left = _insertNode(root->left, content);
 				_setParent(root->left, root);
 				// std::cout << "rebalance parameter root is " << root->content << " when insert content is " << content << "\n";
 				root = rebalance(root);
 			}
-			else if (content > root->content)
+			// else if (content > root->content)
+			else if (_comp(root->content.first, content.first))
 			{
 				root->right = _insertNode(root->right, content);
 				_setParent(root->right, root);
@@ -184,14 +191,13 @@ namespace ft
 			else
 			{
 				// printf("이미 같은 키가 있습니다.\n");
-				// exit(1);
-				// TODO: logic 필요
+				root->content = content;
 			}
 			// insertDummyNode();
 			return (root);
 		}
 
-		node_pointer _findTree(node_pointer root, T content)
+		node_pointer _findTree(node_pointer root, value_type content) // TODO: comp 함수 써야하는지
 		{
 			node_pointer p;
 			int count = 0;
@@ -199,9 +205,10 @@ namespace ft
 			while (p != NULL)
 			{
 				count++;
-				if (content < p->content)
+				// if (content < p->content)
+				if (_comp(content.first, p->content.first))
 					p = p->left;
-				else if (content == p->content)
+				else if (content.first == p->content.first) // TODO: comp ????
 				{
 					// printf("%3d번째에 성공", count);
 					return p;
@@ -210,8 +217,6 @@ namespace ft
 					p = p->right;
 			}
 			count++;
-			// printf("%3d번째에 탐색 실패\n", count);
-			// std::cout << p->content << "\n";
 			return NULL; // 못찾으면 NULL 반환
 		}
 
@@ -272,21 +277,21 @@ namespace ft
 			return res;
 		}
 
-		node_pointer _deleteNode(node_pointer root, T content)
+		node_pointer _deleteNode(node_pointer root, value_type content)
 		{
 			if (root == NULL)
 				return NULL;
 
-			if (content < root->content)
+			// if (content < root->content)
+			if (_comp(content.first, root->content.first))
 			{
-				std::cout << "insert leftline\n";
 				root->left = _deleteNode(root->left, content);
 				if (_root)
 					root = rebalance(root);
 			}
-			else if (content > root->content)
+			// else if (content > root->content)
+			else if (_comp(root->content.first, content.first))
 			{
-				std::cout << "insert rightline\n";
 				root->right = _deleteNode(root->right, content);
 				if (_root)
 					root = rebalance(root);
@@ -295,14 +300,14 @@ namespace ft
 			{
 				if ((root->left == NULL) && (root->right == NULL)) // no child
 				{
-					std::cout << "no child\n";
+					// std::cout << "no child\n";
 					// _alloc.deallocate(root, 1);
 					root = NULL;
 					// std::cout << "you\n";
 				}
 				else if ((root->left == NULL) || (root->right == NULL)) // one child
 				{
-					std::cout << "one child\n";
+					// std::cout << "one child\n";
 					node_pointer child = NULL;
 					if (root->left)
 					{
@@ -310,7 +315,6 @@ namespace ft
 					}
 					else
 					{
-						std::cout << "wdf\n";
 						child = root->right;
 					}
 
@@ -321,8 +325,6 @@ namespace ft
 						if (root->parent->right == root)
 						{
 							root->parent->right = child;
-							// std::cout << "still root->content is 4 : " << root->content << "\n";
-							// std::cout << "change root->parent->right is 3 : " << root->parent->right->content << "\n";
 						}
 						else
 						{
@@ -339,13 +341,10 @@ namespace ft
 				}
 				else // two child
 				{
-					std::cout << "two child\n";
+					// std::cout << "two child\n";
 					node_pointer child = NULL;
 					node_pointer tmp = root;
-					// std::cout << "tmp->content : " << tmp->content << "\n";
-					// std::cout << "root->content : " << root->content << "\n";
 					child = _oneSmallerNode(root);
-					// std::cout << "result of oneSmallerNode->content : " << child->content << "\n";
 					child->parent = tmp->parent;
 
 					if (tmp->left != child)
@@ -371,30 +370,39 @@ namespace ft
 				}
 			}
 			return root;
-			//////////////////////////////////////////////////////////////////////////
 		}
 
 	public:
 		/*
 		constuctor:
 		 */
-		avlTree()
-		{
-			_root = NULL;
-			_alloc = node_allocator();
-		}
+		// avlTree()
+		// {
+		// 	_root = NULL;
+		// 	_alloc = node_allocator();
+		// }
 
 		/*  */
-		avlTree(T content)
+		avlTree(const Compare &comp = Compare(), const Alloc &alloc = Alloc())
 		{
-			avlTree();
+			_root = NULL;
+			_comp = comp;
+			_alloc = alloc;
+			// _alloc = node_allocator();
+		}
+
+		avlTree(value_type content, const Compare &comp = Compare(), const Alloc &alloc = Alloc())
+		{
+			_root = NULL;
+			_comp = comp;
+			_alloc = alloc;
+			// _alloc = node_allocator();
 			insertNode(content);
 		}
 
-		avlTree(node_pointer n)
+		avlTree(node_pointer n, const Compare &comp = Compare(), const Alloc &alloc = Alloc())
 		{
-			avlTree();
-			insertNode(n->content);
+			avlTree(n->content, comp, alloc);
 		}
 
 		avlTree(const avlTree &tree)
@@ -407,7 +415,7 @@ namespace ft
 			// TODO: 소멸자 소환하기
 		}
 
-		void insertNode(T content)
+		void insertNode(value_type content)
 		{
 			if (_root)
 				deleteDummyNode();
@@ -416,7 +424,7 @@ namespace ft
 			insertDummyNode();
 		}
 
-		node_pointer findTree(T content)
+		node_pointer findTree(value_type content)
 		{
 			return _findTree(_root, content);
 		}
@@ -426,12 +434,10 @@ namespace ft
 			_disPlayInorder(_root);
 		}
 
-		void deleteNode(T content)
+		void deleteNode(value_type content)
 		{
 			deleteDummyNode();
 			_root = _deleteNode(_root, content);
-			// std::cout << "========display in deleteNode()========\n";
-			// disPlayInorder();
 			if (_root)
 				insertDummyNode();
 		}
