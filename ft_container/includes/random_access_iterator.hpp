@@ -13,7 +13,7 @@ namespace ft
 	public:
 		typedef T iterator_type;
 		typedef typename ft::iterator_traits<T *>::value_type value_type;
-		typedef typename ft::iterator_traits<T *>::iterator_category iterator_category;
+		typedef typename std::random_access_iterator_tag iterator_category;
 		typedef typename ft::iterator_traits<T *>::difference_type difference_type;
 		typedef typename ft::iterator_traits<T *>::pointer pointer;
 		typedef typename ft::iterator_traits<T *>::reference reference;
@@ -157,7 +157,7 @@ namespace ft
 		return lhs.base() - rhs.base();
 	}
 
-	template <class Iter>
+	template <class Iter> // TODO: fix!!!!!!!!!!!
 	random_access_iterator<Iter>
 	operator-(typename random_access_iterator<Iter>::difference_type n, const random_access_iterator<Iter> &it)
 	{
