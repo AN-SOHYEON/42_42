@@ -18,11 +18,6 @@ namespace ft
 		class Value,
 		class Compare = std::less<Key>, // map의 정렬 기준 조건자
 		class Allocator = std::allocator<ft::pair<const Key, Value> > >
-	// template <
-	// 	class Key,
-	// 	class Value,
-	// 	class Compare,
-	// 	class Allocator>
 	class map
 	{
 
@@ -34,7 +29,7 @@ namespace ft
 		typedef typename std::ptrdiff_t difference_type;
 		typedef Compare key_compare;
 		typedef Allocator allocator_type;
-		typedef typename allocator_type::template rebind<ft::Node<value_type> >::other node_allocator;
+		typedef typename allocator_type::template rebind<ft::Node<key_type, value_type> >::other node_allocator;
 		// typedef typename allocator_type::template rebind<ft::node<value_type> >::other node_allocator;
 		// TODO: rebind<ft::avlTree>
 
@@ -43,13 +38,14 @@ namespace ft
 		typedef typename Allocator::pointer pointer;
 		typedef typename Allocator::const_pointer const_pointer;
 
-		typedef typename ft::bidirectional_iterator<value_type> iterator;
-		typedef typename ft::bidirectional_iterator<const value_type> const_iterator;
+		typedef typename ft::bidirectional_iterator<key_type, mapped_type> iterator;
+		typedef typename ft::bidirectional_iterator<const key_type, const mapped_type> const_iterator;
 		typedef typename ft::reverse_iterator<iterator> reverse_iterator;
 		typedef typename ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
-		typedef typename ft::avlTree<value_type, key_type, Compare, Allocator> tree;
-		typedef typename ft::Node<value_type> node;
+		// typedef typename ft::avlTree<value_type, key_type, Compare, Allocator> tree;
+		typedef typename ft::avlTree<key_type, mapped_type, Compare, Allocator> tree;
+		typedef typename ft::Node<key_type, mapped_type> node;
 
 		class value_compare : public std::binary_function<value_type, value_type, bool>
 		{
@@ -95,18 +91,18 @@ namespace ft
 		}
 
 	public:
-		map()
-		{
-			_tree = NULL;
-			_alloc = node_allocator();
-			_key_comp = key_compare();
-			_value_comp = value_compare(_key_comp);
-		}
+		// map()
+		// {
+		// 	// _tree = NULL;
+		// 	_alloc = node_allocator();
+		// 	_key_comp = key_compare();
+		// 	_value_comp = value_compare(_key_comp);
+		// }
 
 		explicit map(const Compare &comp = key_compare(),
 					 const Allocator &alloc = allocator_type())
 		{
-			_tree = NULL;
+			// _tree = NULL;
 			_alloc = alloc;
 			_key_comp = comp;
 			_value_comp = value_compare(comp);
@@ -118,15 +114,19 @@ namespace ft
 			const Allocator &alloc = allocator_type(),
 			typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type * = NULL)
 		{
-			_alloc = alloc; // TODO: 아ㅏㅏㅏ allocator 모르겠는디ㅣㅣㅣ
+			_alloc = alloc; // TODO: 아ㅏㅏㅏ allocator 모르겠는디ㅣㅣㅣ ㅇㅈ
 			_key_comp = comp;
 			_value_comp = value_compare(comp);
+			_tree = tree(_key_comp, _alloc);
 			insert(first, last);
 		}
 
 		map(const map &other) : _alloc(other._alloc), _key_comp(other._key_comp), _tree(other._tree), _value_comp(other._value_comp) {}
 
-		virtual ~map() {}
+		virtual ~map()
+		{
+			// _tree.clear
+		}
 
 		map &operator=(const map &other)
 		{
@@ -160,11 +160,12 @@ namespace ft
 			return n->content->second;
 		}
 
-		mapped_type &operator[](const Key &key) // TODO: 다시 명세 확인하기;;;;;;;;;;;;;;;;;;
+		mapped_type &operator[](const key_type &key)
 		{
-			node *n = _tree.findTree(key);
+			ft::pair<iterator, bool> *it;
+			*it = insert(ft::make_pair<key_type, mapped_type>(key, NULL));
 
-			return n->content->second;
+			return &(it->first);
 		}
 
 		/*
@@ -195,6 +196,7 @@ namespace ft
 		{
 			return reverse_iterator(end());
 		}
+
 		const_reverse_iterator rbegin() const
 		{
 			return reverse_iterator(end());
@@ -223,20 +225,13 @@ namespace ft
 
 		size_type size() const
 		{
-			size_type size = 0;
-			iterator first = begin();
-
-			while (first != end())
-			{
-				first++;
-				size++;
-			}
-			return (size);
+			// std::cout << "in map size : " << _tree.size() << "\n";
+			return _tree.size();
 		}
 
 		size_type max_size() const
 		{
-			return _alloc.max_size(); // TODO: right?
+			return _alloc.max_size();
 		}
 
 		/*
@@ -259,7 +254,7 @@ namespace ft
 			// iterator it;
 			bool insert_res;
 
-			node *n = _tree.findTree(value->first);
+			node *n = _tree.findTree(value.first);
 			if (n)
 			{
 				insert_res = false;
@@ -268,43 +263,57 @@ namespace ft
 			{
 				insert_res = true;
 				_tree.insertNode(value);
-				n = _tree.findTree(value->first);
+				n = _tree.findTree(value.first);
 			}
 			iterator it(n);
 
 			return ft::make_pair<iterator, bool>(it, insert_res);
 		}
 
-		iterator insert(iterator pos, const value_type &value)
+		iterator insert(iterator pos, const value_type &content)
 		{
 			(void)pos;
-			return iterator(_tree.insertTree(value));
+			// return iterator(_tree.insertNode(value));
+			_tree.insertNode(content);
+
+			return iterator(_tree.findTree(content.first));
 		}
 
 		template <class InputIt>
-		void insert(InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type * = NULL)
+		void insert(InputIt first, InputIt last)
 		{
 			InputIt it = first;
 
 			for (; it != last; it++)
+			{
+				// std::cout << (*it).first << "\n";
 				_tree.insertNode(*it);
+			}
 		}
 
 		void erase(iterator pos)
 		{
-			(void)pos;
+			_tree.deleteNode(*pos);
+			// (void)pos;
 		}
 
 		void erase(iterator first, iterator last)
 		{
-			(void)first;
-			(void)last;
+			iterator it = first;
+			iterator tmp;
+
+			while (it != last)
+			{
+				tmp = it;
+				it++;
+				erase(tmp);
+			}
 		}
 
-		size_type erase(const Key &key)
-		{
-			(void)key;
-		}
+		// size_type erase(const key_type &key) // TODO: 구현하기
+		// {
+		// 	size_type del_node = 0;
+		// }
 
 		void swap(map &other)
 		{
@@ -318,14 +327,14 @@ namespace ft
 		Lookup:
 		 */
 		// 키가 매개 변수에서 지정한 키와 일치하는 map의 요소 수를 반환.
-		size_type count(const Key &key) const
+		size_type count(const key_type &key) const
 		{
 			if (_tree.findTree(key))
 				return 1;
 			return 0;
 		}
 
-		iterator find(const Key &key)
+		iterator find(const key_type &key)
 		{
 			node *n = _tree.findKey(key);
 
@@ -334,7 +343,7 @@ namespace ft
 			return end();
 		}
 
-		const_iterator find(const Key &key) const
+		const_iterator find(const key_type &key) const
 		{
 			node *n = _tree.findTree(key);
 
@@ -344,65 +353,67 @@ namespace ft
 		}
 
 		// key의 반복자 구간인 pair 객체
-		ft::pair<iterator, iterator> equal_range(const Key &key)
+		ft::pair<iterator, iterator> equal_range(const key_type &key)
 		{
 			return ft::make_pair(lower_bound(key), upper_bound(key));
 		}
 
-		ft::pair<const_iterator, const_iterator> equal_range(const Key &key) const
+		ft::pair<const_iterator, const_iterator> equal_range(const key_type &key) const
 		{
 			return ft::make_pair(lower_bound(key), upper_bound(key));
 		}
 
-		// key의 시작 구간을 가리키는 반복자
-		iterator lower_bound(const Key &key)
+		// key의 시작 구간을 가리키는 반복자/ key와 같거나 바로 다음 큰값
+		iterator lower_bound(const key_type &key)
 		{
-			iterator iter = this->begin();
+			iterator iter = begin();
 			// node *stad = _tree.findTree(key);
-
-			for (; iter != end(); iter++)
+			// std::cout << "wefe\n";
+			while (iter != end())
 			{
-				if ((*iter).first > key)
-					return --iter;
+				if (iter->first >= key)
+					return iter;
+				++iter;
 			}
 			return end();
 		}
 
-		const_iterator lower_bound(const Key &key) const
+		const_iterator lower_bound(const key_type &key) const
 		{
 			const_iterator iter = begin();
-			node *stad = _tree.findTree(key);
+			// node *stad = _tree.findTree(key);
 
-			for (; iter != end(); iter++)
+			while (iter != end())
 			{
-				if ((*iter)->first > key)
-					return --iter;
+				if (iter->first >= key)
+					return iter;
+				++iter;
 			}
 			return end();
 		}
 
-		// key의 끝 구간을 가리키는 반복자
-		iterator upper_bound(const Key &key)
+		// key 바로 다음 큰 값
+		iterator upper_bound(const key_type &key)
 		{
 			iterator iter = begin();
 			// node *stad = _tree.findTree(key);
 
 			for (; iter != end(); iter++)
 			{
-				if ((*iter).first > key)
+				if (iter->first > key)
 					return iter;
 			}
 			return end();
 		}
 
-		const_iterator upper_bound(const Key &key) const
+		const_iterator upper_bound(const key_type &key) const
 		{
-			iterator iter = begin();
+			const_iterator iter = begin();
 			// node *stad = _tree.findTree(key);
 
 			for (; iter != end(); iter++)
 			{
-				if ((*iter)->first > key)
+				if (iter->first > key)
 					return iter;
 			}
 			return end();

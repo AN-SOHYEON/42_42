@@ -191,20 +191,10 @@ namespace ft
 	}
 
 	template <typename _T1, typename _T2>
-	pair<_T1, _T2> make_pair(_T1 first, _T2 second)
+	ft::pair<_T1, _T2> make_pair(_T1 first, _T2 second)
 	{
 		return pair<_T1, _T2>(first, second);
 	}
-
-	template <typename U>
-	struct Less : public std::binary_function<U, U, bool>
-	{
-		bool operator()(const U &left, const U &right) const
-		{
-			return left < right;
-		}
-	};
-
 }
 
 #endif

@@ -9,22 +9,24 @@
 
 namespace ft
 {
-	template <typename T>
+	template <typename Key, typename Value>
 	class bidirectional_iterator
 	{
 	public:
-		typedef T iterator_type;
-		typedef typename ft::iterator_traits<T *>::value_type value_type;
+		typedef typename ft::Node<Key, Value> node;
+		typedef typename ft::pair<Key, Value> content;
+
+		typedef typename ft::iterator_traits<content *>::value_type value_type;
+		typedef typename ft::iterator_traits<content *>::difference_type difference_type;
+		typedef typename ft::iterator_traits<content *>::pointer pointer;
+		typedef typename ft::iterator_traits<content *>::reference reference;
 		typedef std::bidirectional_iterator_tag category_tag;
-		typedef typename ft::iterator_traits<T *>::difference_type difference_type;
-		typedef typename ft::iterator_traits<T *>::pointer pointer;
-		typedef typename ft::iterator_traits<T *>::reference reference;
-		typedef typename ft::Node<T> Node;
+		typedef ft::Node<const Key, const Value> *const_node_pointer;
 		// typedef typename ft::Node<T> *Node_pointer;
 
 	protected:
 		// Node_pointer _node;
-		Node *_node;
+		node *_node;
 
 	public:
 		bidirectional_iterator()
@@ -32,15 +34,13 @@ namespace ft
 			_node = NULL;
 		}
 
-		bidirectional_iterator(Node *node) : _node(node) {}
+		bidirectional_iterator(node *node) : _node(node) {}
 
 		virtual ~bidirectional_iterator() {}
 
-		template <typename U>
-		bidirectional_iterator(const bidirectional_iterator<U> &other) : _node(other._node) {}
+		bidirectional_iterator(const bidirectional_iterator &other) : _node(other._node) {}
 
-		template <typename U>
-		bidirectional_iterator &operator=(const bidirectional_iterator<U> &other)
+		bidirectional_iterator &operator=(const bidirectional_iterator &other)
 		{
 			_node = other._node;
 			return *this;
@@ -48,12 +48,22 @@ namespace ft
 
 		reference operator*()
 		{
-			return (this->_node->content);
+			return this->_node->content;
+		}
+
+		reference operator*() const
+		{
+			return this->_node->content;
+		}
+
+		pointer operator->()
+		{
+			return &this->_node->content;
 		}
 
 		pointer operator->() const
 		{
-			return (&this->_node->content);
+			return &this->_node->content;
 		}
 
 		bidirectional_iterator &operator++()
@@ -134,6 +144,11 @@ namespace ft
 		bool operator!=(const bidirectional_iterator &it)
 		{
 			return (this->_node != it._node);
+		}
+
+		operator bidirectional_iterator<const Key, const Value>() const
+		{
+			return (bidirectional_iterator<const Key, const Value>(const_node_pointer(this->_node)));
 		}
 	};
 
