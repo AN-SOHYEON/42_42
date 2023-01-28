@@ -31,12 +31,12 @@ namespace ft
 		typedef Allocator allocator_type;
 		typedef typename allocator_type::template rebind<ft::Node<key_type, value_type> >::other node_allocator;
 		// typedef typename allocator_type::template rebind<ft::node<value_type> >::other node_allocator;
-		// TODO: rebind<ft::avlTree>
 
 		typedef value_type &reference;
 		typedef const value_type &const_reference;
-		typedef typename Allocator::pointer pointer;
-		typedef typename Allocator::const_pointer const_pointer;
+		// typedef typename Allocator::pointer pointer;
+		typedef typename node_allocator::pointer pointer;			  // TODO:
+		typedef typename node_allocator::const_pointer const_pointer; // TODO:
 
 		typedef typename ft::bidirectional_iterator<key_type, mapped_type> iterator;
 		typedef typename ft::bidirectional_iterator<const key_type, const mapped_type> const_iterator;
@@ -99,6 +99,11 @@ namespace ft
 		// 	_value_comp = value_compare(_key_comp);
 		// }
 
+		tree &__get_tree()
+		{
+			return _tree;
+		}
+
 		explicit map(const Compare &comp = key_compare(),
 					 const Allocator &alloc = allocator_type())
 		{
@@ -118,10 +123,15 @@ namespace ft
 			_key_comp = comp;
 			_value_comp = value_compare(comp);
 			_tree = tree(_key_comp, _alloc);
+			// std::cout << "sdjksdhf\n";
 			insert(first, last);
 		}
 
-		map(const map &other) : _alloc(other._alloc), _key_comp(other._key_comp), _tree(other._tree), _value_comp(other._value_comp) {}
+		map(const map &other) : _alloc(other._alloc), _key_comp(other._key_comp), _value_comp(other._value_comp)
+		{
+			_tree = tree(_key_comp, _alloc);
+			*this = other;
+		}
 
 		virtual ~map()
 		{
@@ -130,10 +140,10 @@ namespace ft
 
 		map &operator=(const map &other)
 		{
-			_tree = other._tree;
 			_alloc = other._alloc;
 			_key_comp = other._key_comp;
 			_value_comp = other._value_comp;
+			insert(other.begin(), other.end());
 			return (*this);
 		}
 
@@ -162,10 +172,18 @@ namespace ft
 
 		mapped_type &operator[](const key_type &key)
 		{
-			ft::pair<iterator, bool> *it;
-			*it = insert(ft::make_pair<key_type, mapped_type>(key, NULL));
+			node *n = _tree.findTree(key);
+			if (n) // 있는 인덱스면
+			{
 
-			return &(it->first);
+				erase(iterator(n));
+			}
+			ft::pair<key_type, mapped_type> p = ft::make_pair(key, mapped_type());
+			// std::cout << "you\n";
+			_tree.insertNode(p);
+			n = _tree.findTree(key);
+
+			return (n->content.second);
 		}
 
 		/*
@@ -241,19 +259,21 @@ namespace ft
 		void clear()
 		{
 			iterator it = begin();
+			iterator tmp;
 
-			for (; it != end(); it++)
+			while (it != end())
 			{
-				_alloc.destroy(it);
-				_alloc.deallocate(it, 1);
+				tmp = it;
+				it++;
+				erase(tmp);
 			}
+			// _tree.clear();
 		}
 
 		ft::pair<iterator, bool> insert(const value_type &value)
 		{
 			// iterator it;
 			bool insert_res;
-
 			node *n = _tree.findTree(value.first);
 			if (n)
 			{
@@ -263,6 +283,7 @@ namespace ft
 			{
 				insert_res = true;
 				_tree.insertNode(value);
+				// std::cout << "wdfwdfwdfwdf\n";
 				n = _tree.findTree(value.first);
 			}
 			iterator it(n);
@@ -284,16 +305,27 @@ namespace ft
 		{
 			InputIt it = first;
 
-			for (; it != last; it++)
+			// std::cout << "first : " << first->first << "\n";
+			// std::cout << "last  : " << last->first << "\n";
+			// std::cout << "same  : " << (first == last) << "\n";
+			// std::cout << "same2  : " << (first->first == last->first) << "\n";
+
+			// int bomb_count = 15;
+			while (it != last)
 			{
-				// std::cout << (*it).first << "\n";
+				// std::cout << "it->first" << it->first << "\n";
 				_tree.insertNode(*it);
+				// std::cout << "hihihi\n";
+				++it;
+				// bomb_count--;
+				// if (bomb_count < 0)
+				// break;
 			}
 		}
 
 		void erase(iterator pos)
 		{
-			_tree.deleteNode(*pos);
+			_tree.deleteNode(pos->first);
 			// (void)pos;
 		}
 
@@ -305,15 +337,22 @@ namespace ft
 			while (it != last)
 			{
 				tmp = it;
-				it++;
+				std::cout << "heere???? " << (*tmp).first << "\n";
+				++it;
 				erase(tmp);
 			}
 		}
 
-		// size_type erase(const key_type &key) // TODO: 구현하기
-		// {
-		// 	size_type del_node = 0;
-		// }
+		size_type erase(const key_type &key) // TODO: 구현하기
+		{
+			node *n = _tree.findTree(key);
+
+			if (n)
+			{
+				iterator it(n);
+				erase(it);
+			}
+		}
 
 		void swap(map &other)
 		{
@@ -367,8 +406,7 @@ namespace ft
 		iterator lower_bound(const key_type &key)
 		{
 			iterator iter = begin();
-			// node *stad = _tree.findTree(key);
-			// std::cout << "wefe\n";
+
 			while (iter != end())
 			{
 				if (iter->first >= key)
@@ -396,7 +434,6 @@ namespace ft
 		iterator upper_bound(const key_type &key)
 		{
 			iterator iter = begin();
-			// node *stad = _tree.findTree(key);
 
 			for (; iter != end(); iter++)
 			{

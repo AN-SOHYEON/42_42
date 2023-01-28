@@ -27,6 +27,8 @@ namespace ft
 		typedef Compare compare_type;
 
 		typedef typename allocator::template rebind<node_type>::other node_allocator;
+		typedef typename node_allocator::pointer pointer;
+		typedef typename node_allocator::const_pointer const_pointer;
 		// typename allocator::template rebind<Node>::other node_allocator;
 
 	protected:
@@ -111,11 +113,42 @@ namespace ft
 		void deleteDummyNode()
 		{
 			node_pointer end = end_node();
-			end->parent->right = NULL;
-			// std::cout << end->parent->content << "\n";
-			end->parent = NULL;
-			// _alloc.destroy(end);
-			_alloc.deallocate(end, 1);
+			// std::cout << "end_node : " << end->content.first << "\n";
+			// std::cout << " " << end->content.second << "\n";
+
+			if (_size > 0)
+			{
+				end->parent->right = NULL;
+				// std::cout << end->parent->content << "\n";
+				end->parent = NULL;
+				// _alloc.destroy(end);
+				_alloc.deallocate(end, 1);
+			}
+			else
+			{
+				_alloc.deallocate(end, 1);
+				_root = NULL;
+			}
+			// std::cout << "sdf\n";
+			// TODO: 흠 delete .....
+		}
+
+		void deleteRootDummyNode()
+		{
+			node_pointer end = end_node();
+			// std::cout << "end_node : " << end->content.first << "\n";
+			// std::cout << " " << end->content.second << "\n";
+
+			if (_size > 0)
+			{
+				end->parent->right = NULL;
+				// std::cout << end->parent->content << "\n";
+				end->parent = NULL;
+				// _alloc.destroy(end);
+				_alloc.deallocate(end, 1);
+			}
+			// std::cout << "sdf\n";
+			// TODO: 흠 delete .....
 		}
 
 		void insertDummyNode()
@@ -123,11 +156,24 @@ namespace ft
 			node_pointer dummy = _alloc.allocate(1);
 			_alloc.construct(dummy, node_type());
 
-			dummy->content = make_pair(key_type(), mapped_type());
+			dummy->content = ft::make_pair(key_type(), mapped_type());
 			dummy->left = NULL;
 			dummy->right = NULL;
 			dummy->parent = end_node();
 			dummy->parent->right = dummy;
+		}
+
+		node_pointer makeDummyNode()
+		{
+			node_pointer dummy = _alloc.allocate(1);
+			_alloc.construct(dummy, node_type());
+
+			dummy->content = ft::make_pair(key_type(), mapped_type());
+			dummy->left = NULL;
+			dummy->right = NULL;
+			dummy->parent = NULL;
+
+			return dummy;
 		}
 
 		node_pointer rebalance(node_pointer node)
@@ -203,7 +249,7 @@ namespace ft
 			return (root);
 		}
 
-		node_pointer _findTree(node_pointer root, key_type key) const
+		node_pointer _findTree(node_pointer root, key_type key) // const
 		{
 			node_pointer p;
 			int count = 0;
@@ -232,7 +278,7 @@ namespace ft
 			{
 				_disPlayInorder(root->left);
 				if (root != end_node())
-					std::cout << "key_type: " << root->content << "\n";
+					std::cout << "key_type: " << root->content.first << "-" << root->content.second << "\n";
 				_disPlayInorder(root->right);
 			}
 		}
@@ -283,22 +329,20 @@ namespace ft
 			return res;
 		}
 
-		node_pointer _deleteNode(node_pointer root, value_type content)
+		node_pointer _deleteNode(node_pointer root, key_type key)
 		{
 			if (root == NULL)
 				return NULL;
 
-			// if (content < root->content)
-			if (_comp(content.first, root->content.first))
+			if (_comp(key, root->content.first))
 			{
-				root->left = _deleteNode(root->left, content);
+				root->left = _deleteNode(root->left, key);
 				if (_root)
 					root = rebalance(root);
 			}
-			// else if (content > root->content)
-			else if (_comp(root->content.first, content.first))
+			else if (_comp(root->content.first, key))
 			{
-				root->right = _deleteNode(root->right, content);
+				root->right = _deleteNode(root->right, key);
 				if (_root)
 					root = rebalance(root);
 			}
@@ -395,7 +439,7 @@ namespace ft
 		avlTree(const Compare &comp = Compare(), const Alloc &alloc = Alloc())
 		{
 			_size = 0;
-			_root = NULL;
+			_root = makeDummyNode();
 			_comp = comp;
 			_alloc = alloc;
 			// _alloc = node_allocator();
@@ -404,7 +448,7 @@ namespace ft
 		avlTree(value_type content, const Compare &comp = Compare(), const Alloc &alloc = Alloc())
 		{
 			_size = 0;
-			_root = NULL;
+			_root = makeDummyNode();
 			_comp = comp;
 			_alloc = alloc;
 			// _alloc = node_allocator();
@@ -416,46 +460,66 @@ namespace ft
 			avlTree(n->content, comp, alloc);
 		}
 
-		avlTree(const avlTree &tree)
+		avlTree(const avlTree &tree) //
 		{
+
 			*this = tree;
 		}
 
 		virtual ~avlTree()
 		{
 			// TODO: 소멸자 소환하기
+			// 더미 노드 소멸시키기
+		}
+
+		avlTree &operator=(const avlTree &tree) // TODO: deep copy
+		{
+			_root = tree._root;
+			_alloc = tree._alloc;
+			_comp = tree._comp;
+			_size = tree._size;
+
+			return *this;
 		}
 
 		void insertNode(value_type content)
 		{
-			if (_root)
-				deleteDummyNode();
+			deleteDummyNode();
 			// std::cout << "sdfsdf\n";
 			_root = _insertNode(_root, content);
 			insertDummyNode();
 		}
 
-		node_pointer findTree(key_type key) const
+		node_pointer findTree(key_type key) // const
 		{
 			return _findTree(_root, key);
 		}
+
+		// mapped_type &findNodeValue(key_type key)
+		// {
+		// 	return _findNodeValue(_root, key);
+		// }
 
 		void disPlayInorder()
 		{
 			_disPlayInorder(_root);
 		}
 
-		void deleteNode(value_type content)
+		void deleteNode(key_type key)
 		{
 			deleteDummyNode();
-			_root = _deleteNode(_root, content);
+			_root = _deleteNode(_root, key);
 			if (_root)
 				insertDummyNode();
+			else
+				_root = makeDummyNode();
 		}
 
 		node_pointer begin_node() const
 		{
 			node_pointer current = _root;
+			// if (size > 0)
+
 			while (current->left)
 				current = current->left;
 			return current;
@@ -468,8 +532,7 @@ namespace ft
 			{
 				current = current->right;
 			}
-			return current; // TODO: 원래는 이게 맞음
-							// return current->parent;
+			return current;
 		}
 
 		size_type size() const
@@ -477,8 +540,16 @@ namespace ft
 			return _size;
 		}
 
-		// avlTree &operator=(const avlTree &tree) // TODO: implement
+		// void clear()
 		// {
+		// 	deleteDummyNode();
+
+		// 	// iterator it = begin();
+		// 	// for (; it != end(); it++)
+		// 	// {
+		// 	// 	_alloc.destroy(it);
+		// 	// 	_alloc.deallocate(it, 1);
+		// 	// }
 		// }
 
 		void disPlayInorder_for_debug()

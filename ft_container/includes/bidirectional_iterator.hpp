@@ -38,7 +38,9 @@ namespace ft
 
 		virtual ~bidirectional_iterator() {}
 
-		bidirectional_iterator(const bidirectional_iterator &other) : _node(other._node) {}
+		bidirectional_iterator(const bidirectional_iterator &other) : _node(other._node)
+		{
+		}
 
 		bidirectional_iterator &operator=(const bidirectional_iterator &other)
 		{
@@ -97,7 +99,8 @@ namespace ft
 		bidirectional_iterator operator++(int)
 		{ // 후위 연산자
 			bidirectional_iterator tmp(*this);
-			++_node;
+			// ++(_node); // TODO: 반성
+			++(*this);
 			return tmp;
 		}
 
@@ -132,7 +135,8 @@ namespace ft
 		bidirectional_iterator operator--(int)
 		{ // 후위 연산자
 			bidirectional_iterator tmp(*this);
-			--_node;
+			// --_node;
+			--(*this);
 			return tmp;
 		}
 
