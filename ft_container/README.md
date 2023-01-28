@@ -98,3 +98,7 @@ STL container를 구현하는 과제이니 당연히 구현을 위해 STL contai
 - 템플릿 클래스 
 - 모든 컨테이너는 템플릿 매개변수에 할당기를 인자로 받는다. 
 - 기본 할당기는 allocator<T>
+
+- 표준 컨테이너에서 필요로 하는 rebind라는 중첩(nested) 구조체 템플릿을 반드시 제공해야 한다.
+  (출처 : http://egloos.zum.com/sweeper/v/2966785)
+  
