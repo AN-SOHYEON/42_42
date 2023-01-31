@@ -1,7 +1,7 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
-#include <functional>  // std::less
+#include <functional> // std::less
 #include <map>
 #include <memory>
 #include <utility>
@@ -12,10 +12,10 @@
 
 namespace ft {
 template <class Key, class Value,
-          class Compare = std::less<Key>,  // map의 정렬 기준 조건자
+          class Compare = std::less<Key>, // map의 정렬 기준 조건자
           class Allocator = std::allocator<ft::pair<const Key, Value> > >
 class map {
-   public:
+  public:
     typedef Key key_type;
     typedef Value mapped_type;
     typedef typename ft::pair<const key_type, mapped_type> value_type;
@@ -31,8 +31,8 @@ class map {
     typedef value_type &reference;
     typedef const value_type &const_reference;
     // typedef typename Allocator::pointer pointer;
-    typedef typename node_allocator::pointer pointer;              // TODO:
-    typedef typename node_allocator::const_pointer const_pointer;  // TODO:
+    typedef typename node_allocator::pointer pointer;             // TODO:
+    typedef typename node_allocator::const_pointer const_pointer; // TODO:
 
     typedef typename ft::bidirectional_iterator<key_type, mapped_type> iterator;
     typedef typename ft::bidirectional_iterator<const key_type, const mapped_type> const_iterator;
@@ -47,20 +47,20 @@ class map {
         friend class map;
         // map 클래스의 모든 멤버 함수는 value_compare 클래스에 대한 프렌드 접근 권한을 부여받는다.
 
-       protected:
+      protected:
         key_compare comp;
         value_compare(key_compare c) : comp(c) {}
-        value_compare() {}  // TODO: ?????이게 왜 있어야 하는 거지 나는?
+        value_compare() {} // TODO: ?????이게 왜 있어야 하는 거지 나는?
 
-       public:
+      public:
         bool operator()(const value_type &x, const value_type &y) const {
             return comp(x.first, y.first);
         }
     };
 
-   protected:
+  protected:
     tree _tree;
-    node_allocator _alloc;  // TODO: 둘지말지 고민하기
+    node_allocator _alloc; // TODO: 둘지말지 고민하기
     key_compare _key_comp;
     value_compare _value_comp;
 
@@ -84,7 +84,7 @@ class map {
         b = tmp;
     }
 
-   public:
+  public:
     // map()
     // {
     // 	// _tree = NULL;
@@ -106,11 +106,10 @@ class map {
     map(InputIt first, InputIt last, const Compare &comp = key_compare(),
         const Allocator &alloc = allocator_type(),
         typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type * = NULL) {
-        _alloc = alloc;  // TODO: 아ㅏㅏㅏ allocator 모르겠는디ㅣㅣㅣ ㅇㅈ
+        _alloc = alloc; // TODO: 아ㅏㅏㅏ allocator 모르겠는디ㅣㅣㅣ ㅇㅈ
         _key_comp = comp;
         _value_comp = value_compare(comp);
         _tree = tree(_key_comp, _alloc);
-        // std::cout << "sdjksdhf\n";
         insert(first, last);
     }
 
@@ -129,7 +128,6 @@ class map {
         _key_comp = other._key_comp;
         _value_comp = other._value_comp;
         _tree = tree(_key_comp, _alloc);
-        // *this = other;
         insert(other.begin(), other.end());
         return (*this);
     }
@@ -139,26 +137,28 @@ class map {
     mapped_type &at(const key_type &key) {
         node *n = _tree.findTree(key);
 
-        if (n == NULL) throw std::out_of_range("map over");
+        if (n == NULL)
+            throw std::out_of_range("map over");
         return n->content->second;
     }
 
     const mapped_type &at(const key_type &key) const {
         node *n = _tree.findTree(key);
 
-        if (n == NULL) throw std::out_of_range("map over");
+        if (n == NULL)
+            throw std::out_of_range("map over");
         return n->content->second;
     }
 
     mapped_type &operator[](const key_type &key) {
         node *n = _tree.findTree(key);
-        if (n)  // 있는 인덱스면
+
+        if (!n) // 없는 인덱스면
         {
-            erase(iterator(n));
+            ft::pair<key_type, mapped_type> p = ft::make_pair(key, mapped_type());
+            _tree.insertNode(p);
         }
-        ft::pair<key_type, mapped_type> p = ft::make_pair(key, mapped_type());
         // std::cout << "you\n";
-        _tree.insertNode(p);
         n = _tree.findTree(key);
 
         return (n->content.second);
@@ -268,8 +268,10 @@ class map {
     }
 
     void erase(iterator pos) {
+
+        // std::cout << "erase\n";
         _tree.deleteNode(pos->first);
-        // (void)pos;
+        // std::cout << "after erase\n";
     }
 
     void erase(iterator first, iterator last) {
@@ -278,20 +280,23 @@ class map {
 
         while (it != last) {
             tmp = it;
-            std::cout << "heere???? " << (*tmp).first << "\n";
+            // std::cout << "heere???? " << (*tmp).first << "\n";
             ++it;
             erase(tmp);
         }
     }
 
-    size_type erase(const key_type &key)  // TODO: 구현하기
+    size_type erase(const key_type &key) // TODO: 구현하기
     {
         node *n = _tree.findTree(key);
-
+        // std::cout << "begin in erase is : " << begin()->first << "\n";
         if (n) {
             iterator it(n);
+            // std::cout << "want to delete : " << it->first << "\n";
             erase(it);
+            return 1;
         }
+        return 0;
     }
 
     void swap(map &other) {
@@ -306,21 +311,25 @@ class map {
      */
     // 키가 매개 변수에서 지정한 키와 일치하는 map의 요소 수를 반환.
     size_type count(const key_type &key) const {
-        if (_tree.findTree(key)) return 1;
+        if (_tree.findTree(key))
+            return 1;
         return 0;
     }
 
     iterator find(const key_type &key) {
-        node *n = _tree.findKey(key);
+        node *n = _tree.findTree(key);
 
-        if (n) return iterator(_tree.findTree(key));
+        if (n)
+            return iterator(_tree.findTree(key));
         return end();
     }
 
     const_iterator find(const key_type &key) const {
         node *n = _tree.findTree(key);
 
-        if (n) return const_iterator(_tree.findTree(key));
+        if (n)
+            return iterator(_tree.findTree(key));
+            // return const_iterator(_tree.findTree(key));
         return end();
     }
 
@@ -338,7 +347,8 @@ class map {
         iterator iter = begin();
 
         while (iter != end()) {
-            if (iter->first >= key) return iter;
+            if (iter->first >= key)
+                return iter;
             ++iter;
         }
         return end();
@@ -349,7 +359,8 @@ class map {
         // node *stad = _tree.findTree(key);
 
         while (iter != end()) {
-            if (iter->first >= key) return iter;
+            if (iter->first >= key)
+                return iter;
             ++iter;
         }
         return end();
@@ -360,7 +371,8 @@ class map {
         iterator iter = begin();
 
         for (; iter != end(); iter++) {
-            if (iter->first > key) return iter;
+            if (iter->first > key)
+                return iter;
         }
         return end();
     }
@@ -370,7 +382,8 @@ class map {
         // node *stad = _tree.findTree(key);
 
         for (; iter != end(); iter++) {
-            if (iter->first > key) return iter;
+            if (iter->first > key)
+                return iter;
         }
         return end();
     }
@@ -387,46 +400,46 @@ class map {
 
 /* non member function */
 template <class Key, class Value, class Compare, class Alloc>
-bool operator==(const std::map<Key, Value, Compare, Alloc> &lhs,
-                const std::map<Key, Value, Compare, Alloc> &rhs) {
+bool operator==(const ft::map<Key, Value, Compare, Alloc> &lhs,
+                const ft::map<Key, Value, Compare, Alloc> &rhs) {
     return ((lhs.size() == rhs.size()) && (ft::equal(lhs.begin(), lhs.end(), rhs.begin())));
 }
 
 template <class Key, class Value, class Compare, class Alloc>
-bool operator!=(const std::map<Key, Value, Compare, Alloc> &lhs,
-                const std::map<Key, Value, Compare, Alloc> &rhs) {
+bool operator!=(const ft::map<Key, Value, Compare, Alloc> &lhs,
+                const ft::map<Key, Value, Compare, Alloc> &rhs) {
     return !(lhs == rhs);
 }
 
 template <class Key, class Value, class Compare, class Alloc>
-bool operator<(const std::map<Key, Value, Compare, Alloc> &lhs,
-               const std::map<Key, Value, Compare, Alloc> &rhs) {
+bool operator<(const ft::map<Key, Value, Compare, Alloc> &lhs,
+               const ft::map<Key, Value, Compare, Alloc> &rhs) {
     return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 }
 
 template <class Key, class Value, class Compare, class Alloc>
-bool operator<=(const std::map<Key, Value, Compare, Alloc> &lhs,
-                const std::map<Key, Value, Compare, Alloc> &rhs) {
+bool operator<=(const ft::map<Key, Value, Compare, Alloc> &lhs,
+                const ft::map<Key, Value, Compare, Alloc> &rhs) {
     return !(rhs < lhs);
 }
 
 template <class Key, class Value, class Compare, class Alloc>
-bool operator>(const std::map<Key, Value, Compare, Alloc> &lhs,
-               const std::map<Key, Value, Compare, Alloc> &rhs) {
+bool operator>(const ft::map<Key, Value, Compare, Alloc> &lhs,
+               const ft::map<Key, Value, Compare, Alloc> &rhs) {
     return (rhs < lhs);
 }
 
 template <class Key, class Value, class Compare, class Alloc>
-bool operator>=(const std::map<Key, Value, Compare, Alloc> &lhs,
-                const std::map<Key, Value, Compare, Alloc> &rhs) {
+bool operator>=(const ft::map<Key, Value, Compare, Alloc> &lhs,
+                const ft::map<Key, Value, Compare, Alloc> &rhs) {
     return !(lhs < rhs);
 }
 
 template <class Key, class Value, class Compare, class Alloc>
-void swap(std::map<Key, Value, Compare, Alloc> &lhs, std::map<Key, Value, Compare, Alloc> &rhs) {
+void swap(ft::map<Key, Value, Compare, Alloc> &lhs, ft::map<Key, Value, Compare, Alloc> &rhs) {
     lhs.swap(rhs);
 }
 
-}  // namespace ft
+} // namespace ft
 
 #endif

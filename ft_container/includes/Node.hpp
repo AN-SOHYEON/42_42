@@ -33,8 +33,17 @@ struct Node {
     template <typename K, typename V>
     Node(const Node<K, V> &other)
         : content(other.content), left(other.left), right(other.right), parent(other.parent) {}
-
+   
     virtual ~Node() {}
+
+    Node &operator= (const Node &other) {
+        content = other.content;
+        left = other.left;
+        right = other.right;
+        parent = other.parent;
+        return *this;
+    }
+
 };
 
 template <class K, class V>
