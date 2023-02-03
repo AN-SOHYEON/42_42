@@ -87,17 +87,40 @@ class avlTree {
     }
 
     int getHeight(node_pointer p) {
-        int height = 0;
-        if (p != NULL) {
-            height = MAX(getHeight(p->left), getHeight(p->right)) + 1;
+
+        // if (p && p->left == NULL && p->right == NULL) {
+		// 	return 0;
+        // }
+        if (p == NULL) {
+			return 0;
         }
-        return height;
+	
+		// std::cout << "in getheight p content is : " << p->content.first << "\n";
+		// int a = getHeight(p->left);
+		// std::cout << "a : " << a << "\n";
+		// int b = getHeight(p->right);
+		// std::cout << "b : " << b << "\n";
+    	return MAX(getHeight(p->left), getHeight(p->right)) + 1;
+    	// return MAX(a, b) + 1;
+
+        // int height = 0;
+        // if (p != NULL) {
+        //     height = MAX(getHeight(p->left), getHeight(p->right)) + 1;
+        // }
+        // return height;
     }
 
     int getBF(node_pointer p) {
+		// std::cout << "in getBF\n";
         if (p == NULL) {
             return 0;
         }
+		// std::cout << "in getBF\n";
+		// std::cout << "first p content is : " << p->content.first << "\n";
+		// if (p->left)
+		// 	std::cout << "first p's left content is : " << p->left->content.first << "\n";
+		// if (p->right)
+		// 	std::cout << "first p's right content is : " << p->right->content.first << "\n";
         return getHeight(p->left) - getHeight(p->right);
     }
 
@@ -162,20 +185,26 @@ class avlTree {
     }
 
     node_pointer rebalance(node_pointer node) {
+		// std::cout << "in rebalance\n";
         int BF = getBF(node);
+		// std::cout << "BF is " << "\n";
         if (BF > 1) {
+
+				// std::cout << "before \n";
             if (getBF((node)->left) > 0)
                 node = llRotate(node);
             else
                 node = lrRotate(node);
         } else if (BF < -1) {
             if (getBF((node)->right) < 0) {
+				// std::cout << "before rr\n";
                 node = rrRotate(node);
             } else {
                 // std::cout << "before rlRR\n";
                 node = rlRotate(node);
             }
         } else {
+			
             // no rebalance
             // std::cout << "no rebalance\n";
         }
@@ -189,32 +218,24 @@ class avlTree {
             root = _alloc.allocate(1);
             _alloc.construct(root, node_type());
             root->content = content;
-            // root->content(ft::make_pair(content.first, content.second));
             root->left = NULL;
             root->right = NULL;
             root->parent = NULL;
             _size++;
         }
-        // else if (content < root->content)
         else if (_comp(content.first, root->content.first)) {
             root->left = _insertNode(root->left, content);
             _setParent(root->left, root);
-            // std::cout << "rebalance parameter root is " << root->content << " when insert content
-            // is " << content << "\n";
             root = rebalance(root);
         }
-        // else if (content > root->content)
         else if (_comp(root->content.first, content.first)) {
             root->right = _insertNode(root->right, content);
             _setParent(root->right, root);
-            // std::cout << "rebalance parameter root is " << root->content << " when insert content
-            // is " << content << "\n";
             root = rebalance(root);
         } else {
             // printf("이미 같은 키가 있습니다.\n");
             // root->content = content;
         }
-        // insertDummyNode();
         return (root);
     }
 
@@ -309,12 +330,13 @@ class avlTree {
     }
 
     node_pointer _deleteNode(node_pointer root, key_type key) {
+			// std::cout << "here node content is : " << root->content.first << "\n";
         if (root == NULL)
             return NULL;
 
         if (_comp(key, root->content.first)) {
+			// std::cout << "hihi\n";
             root->left = _deleteNode(root->left, key);
-			// std::cout << "here\n";
             if (_root)
 			{
 				// std::cout << "before rebalance\n";
@@ -363,25 +385,54 @@ class avlTree {
             {
                 // std::cout << "two child\n";
                 node_pointer child = NULL;
-                node_pointer tmp = root;
                 child = _oneSmallerNode(root);
                 // std::cout << "one SmalerNode : " << child->content.first << "\n";
-                child->parent = tmp->parent;
-
-                if (tmp->left != child) {
-                    child->left = tmp->left;
-                    if (tmp->left != NULL) {
-                        tmp->left->parent = child;
+                
+                if (child->left == NULL && child->right == NULL) {
+                    value_type tmp_content = root->content;
+	    			root->content = child->content;
+		    		child->content = tmp_content;
+    
+	    			if (child->parent->left == child)
+		    			child->parent->left = NULL;
+			    	else
+				    	child->parent->right = NULL;
+                    _alloc.deallocate(child, 1);
+                }
+                else // child가 자식이 하나 있을떄 
+				{
+                    node_pointer tmp = root;
+				    if (child->left) {
+                        child->left->parent = child->parent;
+                        if (child->parent->left == child)
+                            child->parent->left = child->left;
+                        else
+                            child->parent->right = child->left;
+                    } else if (child->right) {
+                        child->right->parent = child->parent;
+                        if (child->parent->left == child)
+                            child->parent->left = child->right;
+                        else
+                            child->parent->right = child->right;
                     }
-                } else {
-                    // child->left = NULL;
+                    
+                    child->parent = tmp->parent;
+
+                    if (tmp->left != child) {
+                        child->left = tmp->left;
+                        if (tmp->left != NULL) {
+                           tmp->left->parent = child;
+                        }
+                    } else {
+                       // child->left = NULL;
+                    }
+                    child->right = tmp->right;
+                    if (tmp->right != NULL) {
+                       tmp->right->parent = child;
+                    }
+                    root = child;
+                    _alloc.deallocate(tmp, 1);
                 }
-                child->right = tmp->right;
-                if (tmp->right != NULL) {
-                    tmp->right->parent = child;
-                }
-                root = child;
-                _alloc.deallocate(tmp, 1);
                 _size--;
             }
         }
@@ -516,6 +567,7 @@ class avlTree {
     /*
     implement for tree:
      */
+
 };
 } // namespace ft
 

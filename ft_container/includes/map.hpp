@@ -158,7 +158,6 @@ class map {
             ft::pair<key_type, mapped_type> p = ft::make_pair(key, mapped_type());
             _tree.insertNode(p);
         }
-        // std::cout << "you\n";
         n = _tree.findTree(key);
 
         return (n->content.second);
@@ -193,13 +192,9 @@ class map {
      */
     bool empty() const {
         return (begin() == end());
-        // if (begin() == end())
-        // 	return true;
-        // return false;
     }
 
     size_type size() const {
-        // std::cout << "in map size : " << _tree.size() << "\n";
         return _tree.size();
     }
 
@@ -208,7 +203,6 @@ class map {
     /*
     modifiers:
      */
-    // 모든 원소 제거
     void clear() {
         iterator it = begin();
         iterator tmp;
@@ -222,15 +216,14 @@ class map {
     }
 
     ft::pair<iterator, bool> insert(const value_type &value) {
-        // iterator it;
         bool insert_res;
         node *n = _tree.findTree(value.first);
+
         if (n) {
             insert_res = false;
         } else {
             insert_res = true;
             _tree.insertNode(value);
-            // std::cout << "wdfwdfwdfwdf\n";
             n = _tree.findTree(value.first);
         }
         iterator it(n);
@@ -250,28 +243,15 @@ class map {
     void insert(InputIt first, InputIt last) {
         InputIt it = first;
 
-        // std::cout << "first : " << first->first << "\n";
-        // std::cout << "last  : " << last->first << "\n";
-        // std::cout << "same  : " << (first == last) << "\n";
-        // std::cout << "same2  : " << (first->first == last->first) << "\n";
-
-        // int bomb_count = 15;
         while (it != last) {
-            // std::cout << "it->first" << it->first << "\n";
             _tree.insertNode(*it);
-            // std::cout << "hihihi\n";
             ++it;
-            // bomb_count--;
-            // if (bomb_count < 0)
-            // break;
         }
     }
 
     void erase(iterator pos) {
-
-        // std::cout << "erase\n";
+        // std::cout << "erase ver1\n";
         _tree.deleteNode(pos->first);
-        // std::cout << "after erase\n";
     }
 
     void erase(iterator first, iterator last) {
@@ -396,6 +376,53 @@ class map {
 
     // value 정렬 기준인 조건자를 반환
     value_compare value_comp() const { return _value_comp; }
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+	// template <typename T>
+	// void print_rb_tree(const std::string& prefix, const ft::Node* node,
+	// 				bool isLeft) {
+	// if (node != NULL) {
+	// 	typedef const _rb_tree_node<T>* link_type;
+	// 	link_type x = static_cast<link_type>(node);
+	// 	std::cout << prefix;
+	// 	if (prefix.size() > 0)
+	// 	std::cout << (!isLeft ? "├── (R)" : "└── (L)");
+	// 	else {
+	// 	std::cout << "└── (root)";
+	// 	isLeft = true;
+	// 	}
+
+	// 	// print the value of the node
+	// 	std::string color = PRINT_RED;
+	// 	(x->color == RED) ? color = PRINT_RED : color = PRINT_WHITE;
+	// 	std::cout << color << x->value << PRINT_RESET << std::endl;
+
+	// 	// enter the next tree level - left and right branch
+	// 	::print_rb_tree<T>(prefix + (!isLeft ? "│   " : "    "), node->right,
+	// 					false);
+	// 	::print_rb_tree<T>(prefix + (!isLeft ? "│   " : "    "), node->left, true);
+	// } else {
+	// 	std::cout << prefix;
+	// 	std::cout << (!isLeft ? "├── (R) " : "└── (L) ");
+	// 	std::cout << PRINT_WHITE << "NIL" << PRINT_RESET << std::endl;
+	// }
+	// }
+
+	// template <typename T>
+	// void print_rb_tree(_rb_tree_iterator<T> it) {
+	// 	_rb_tree_node_base* header = it._node;
+
+	// 	if (header->parent == NULL) return;
+	// 	// root 시작
+	// 	::print_rb_tree<T>("", header->parent, false);
+	// 	std::cout << "\n\n";
+	// }
+
+	// void tree_test(void);
+
 };
 
 /* non member function */
