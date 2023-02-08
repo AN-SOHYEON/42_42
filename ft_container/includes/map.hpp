@@ -1,7 +1,7 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
-#include <functional> // std::less
+#include <functional>  // std::less
 #include <map>
 #include <memory>
 #include <utility>
@@ -12,10 +12,10 @@
 
 namespace ft {
 template <class Key, class Value,
-          class Compare = std::less<Key>, // map의 정렬 기준 조건자
+          class Compare = std::less<Key>,  // map의 정렬 기준 조건자
           class Allocator = std::allocator<ft::pair<const Key, Value> > >
 class map {
-  public:
+   public:
     typedef Key key_type;
     typedef Value mapped_type;
     typedef typename ft::pair<const key_type, mapped_type> value_type;
@@ -23,23 +23,18 @@ class map {
     typedef typename std::ptrdiff_t difference_type;
     typedef Compare key_compare;
     typedef Allocator allocator_type;
-    typedef typename allocator_type::template rebind<ft::Node<key_type, value_type> >::other
-        node_allocator;
-    // typedef typename allocator_type::template rebind<ft::node<value_type> >::other
-    // node_allocator;
+    typedef typename allocator_type::template rebind<ft::Node<key_type, value_type> >::other node_allocator;
 
     typedef value_type &reference;
     typedef const value_type &const_reference;
-    // typedef typename Allocator::pointer pointer;
-    typedef typename node_allocator::pointer pointer;             // TODO:
-    typedef typename node_allocator::const_pointer const_pointer; // TODO:
+    typedef typename node_allocator::pointer pointer;
+    typedef typename node_allocator::const_pointer const_pointer;
 
     typedef typename ft::bidirectional_iterator<key_type, mapped_type> iterator;
     typedef typename ft::bidirectional_iterator<const key_type, const mapped_type> const_iterator;
     typedef typename ft::reverse_iterator<iterator> reverse_iterator;
     typedef typename ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
-    // typedef typename ft::avlTree<value_type, key_type, Compare, Allocator> tree;
     typedef typename ft::avlTree<key_type, mapped_type, Compare, Allocator> tree;
     typedef typename ft::Node<key_type, mapped_type> node;
 
@@ -47,35 +42,22 @@ class map {
         friend class map;
         // map 클래스의 모든 멤버 함수는 value_compare 클래스에 대한 프렌드 접근 권한을 부여받는다.
 
-      protected:
+       protected:
         key_compare comp;
         value_compare(key_compare c) : comp(c) {}
-        value_compare() {} // TODO: ?????이게 왜 있어야 하는 거지 나는?
+        value_compare() {}  // TODO: ?????이게 왜 있어야 하는 거지 나는?
 
-      public:
+       public:
         bool operator()(const value_type &x, const value_type &y) const {
             return comp(x.first, y.first);
         }
     };
 
-  protected:
+   protected:
     tree _tree;
-    node_allocator _alloc; // TODO: 둘지말지 고민하기
+    node_allocator _alloc;
     key_compare _key_comp;
     value_compare _value_comp;
-
-    // template <class InputIterator> // node 기반 컨테이너는 이터레이터간의 거리를 뺄셈으로 구할 수
-    // 없다. typename iterator_traits<InputIterator>::difference_type _distance(InputIterator first,
-    // InputIterator last)
-    // {
-    // 	typename iterator_traits<InputIterator>::difference_type n = 0;
-    // 	while (first != last)
-    // 	{
-    // 		first++;
-    // 		n++;
-    // 	}
-    // 	return (n);
-    // }
 
     template <typename U>
     void _swap(U &a, U &b) {
@@ -84,7 +66,7 @@ class map {
         b = tmp;
     }
 
-  public:
+   public:
     // map()
     // {
     // 	// _tree = NULL;
@@ -95,18 +77,15 @@ class map {
 
     tree &__get_tree() { return _tree; }
 
-    explicit map(const Compare &comp = key_compare(), const Allocator &alloc = allocator_type()) {
-        // _tree = NULL;
+    explicit map(const Compare &comp = key_compare(), const Allocator &alloc = node_allocator()) {
         _alloc = alloc;
         _key_comp = comp;
         _value_comp = value_compare(comp);
     }
 
     template <class InputIt>
-    map(InputIt first, InputIt last, const Compare &comp = key_compare(),
-        const Allocator &alloc = allocator_type(),
-        typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type * = NULL) {
-        _alloc = alloc; // TODO: 아ㅏㅏㅏ allocator 모르겠는디ㅣㅣㅣ ㅇㅈ
+    map(InputIt first, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type last, const Compare &comp = key_compare(), const Allocator &alloc = node_allocator()) {
+        _alloc = alloc;
         _key_comp = comp;
         _value_comp = value_compare(comp);
         _tree = tree(_key_comp, _alloc);
@@ -120,10 +99,11 @@ class map {
     }
 
     virtual ~map() {
-        // _tree.clear
+        _tree.clear();  // TODO: implement
     }
 
-    map &operator=(const map &other) {
+    map &
+    operator=(const map &other) {
         _alloc = other._alloc;
         _key_comp = other._key_comp;
         _value_comp = other._value_comp;
@@ -136,7 +116,6 @@ class map {
 
     mapped_type &at(const key_type &key) {
         node *n = _tree.findTree(key);
-
         if (n == NULL)
             throw std::out_of_range("map over");
         return n->content->second;
@@ -144,7 +123,6 @@ class map {
 
     const mapped_type &at(const key_type &key) const {
         node *n = _tree.findTree(key);
-
         if (n == NULL)
             throw std::out_of_range("map over");
         return n->content->second;
@@ -152,14 +130,11 @@ class map {
 
     mapped_type &operator[](const key_type &key) {
         node *n = _tree.findTree(key);
-
-        if (!n) // 없는 인덱스면
-        {
+        if (!n) {
             ft::pair<key_type, mapped_type> p = ft::make_pair(key, mapped_type());
             _tree.insertNode(p);
         }
         n = _tree.findTree(key);
-
         return (n->content.second);
     }
 
@@ -167,15 +142,14 @@ class map {
     iterator:
      */
     iterator begin() { return iterator(this->_tree.begin_node()); }
+
     const_iterator begin() const {
-        // return const_iterator(this->_tree.begin_node());
         return iterator(this->_tree.begin_node());
     }
 
     iterator end() { return iterator(this->_tree.end_node()); }
 
     const_iterator end() const {
-        // return const_iterator(this->_tree.end_node());
         return iterator(this->_tree.end_node());
     }
 
@@ -233,16 +207,13 @@ class map {
 
     iterator insert(iterator pos, const value_type &content) {
         (void)pos;
-        // return iterator(_tree.insertNode(value));
         _tree.insertNode(content);
-
         return iterator(_tree.findTree(content.first));
     }
 
     template <class InputIt>
-    void insert(InputIt first, InputIt last) {
+    void insert(InputIt first, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type last) {
         InputIt it = first;
-
         while (it != last) {
             _tree.insertNode(*it);
             ++it;
@@ -250,7 +221,6 @@ class map {
     }
 
     void erase(iterator pos) {
-        // std::cout << "erase ver1\n";
         _tree.deleteNode(pos->first);
     }
 
@@ -260,19 +230,15 @@ class map {
 
         while (it != last) {
             tmp = it;
-            // std::cout << "heere???? " << (*tmp).first << "\n";
             ++it;
             erase(tmp);
         }
     }
 
-    size_type erase(const key_type &key) // TODO: 구현하기
-    {
+    size_type erase(const key_type &key) {
         node *n = _tree.findTree(key);
-        // std::cout << "begin in erase is : " << begin()->first << "\n";
         if (n) {
             iterator it(n);
-            // std::cout << "want to delete : " << it->first << "\n";
             erase(it);
             return 1;
         }
@@ -298,7 +264,6 @@ class map {
 
     iterator find(const key_type &key) {
         node *n = _tree.findTree(key);
-
         if (n)
             return iterator(_tree.findTree(key));
         return end();
@@ -309,7 +274,6 @@ class map {
 
         if (n)
             return iterator(_tree.findTree(key));
-            // return const_iterator(_tree.findTree(key));
         return end();
     }
 
@@ -325,7 +289,6 @@ class map {
     // key의 시작 구간을 가리키는 반복자/ key와 같거나 바로 다음 큰값
     iterator lower_bound(const key_type &key) {
         iterator iter = begin();
-
         while (iter != end()) {
             if (iter->first >= key)
                 return iter;
@@ -336,8 +299,6 @@ class map {
 
     const_iterator lower_bound(const key_type &key) const {
         const_iterator iter = begin();
-        // node *stad = _tree.findTree(key);
-
         while (iter != end()) {
             if (iter->first >= key)
                 return iter;
@@ -359,8 +320,6 @@ class map {
 
     const_iterator upper_bound(const key_type &key) const {
         const_iterator iter = begin();
-        // node *stad = _tree.findTree(key);
-
         for (; iter != end(); iter++) {
             if (iter->first > key)
                 return iter;
@@ -376,53 +335,6 @@ class map {
 
     // value 정렬 기준인 조건자를 반환
     value_compare value_comp() const { return _value_comp; }
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-	// template <typename T>
-	// void print_rb_tree(const std::string& prefix, const ft::Node* node,
-	// 				bool isLeft) {
-	// if (node != NULL) {
-	// 	typedef const _rb_tree_node<T>* link_type;
-	// 	link_type x = static_cast<link_type>(node);
-	// 	std::cout << prefix;
-	// 	if (prefix.size() > 0)
-	// 	std::cout << (!isLeft ? "├── (R)" : "└── (L)");
-	// 	else {
-	// 	std::cout << "└── (root)";
-	// 	isLeft = true;
-	// 	}
-
-	// 	// print the value of the node
-	// 	std::string color = PRINT_RED;
-	// 	(x->color == RED) ? color = PRINT_RED : color = PRINT_WHITE;
-	// 	std::cout << color << x->value << PRINT_RESET << std::endl;
-
-	// 	// enter the next tree level - left and right branch
-	// 	::print_rb_tree<T>(prefix + (!isLeft ? "│   " : "    "), node->right,
-	// 					false);
-	// 	::print_rb_tree<T>(prefix + (!isLeft ? "│   " : "    "), node->left, true);
-	// } else {
-	// 	std::cout << prefix;
-	// 	std::cout << (!isLeft ? "├── (R) " : "└── (L) ");
-	// 	std::cout << PRINT_WHITE << "NIL" << PRINT_RESET << std::endl;
-	// }
-	// }
-
-	// template <typename T>
-	// void print_rb_tree(_rb_tree_iterator<T> it) {
-	// 	_rb_tree_node_base* header = it._node;
-
-	// 	if (header->parent == NULL) return;
-	// 	// root 시작
-	// 	::print_rb_tree<T>("", header->parent, false);
-	// 	std::cout << "\n\n";
-	// }
-
-	// void tree_test(void);
-
 };
 
 /* non member function */
@@ -467,6 +379,6 @@ void swap(ft::map<Key, Value, Compare, Alloc> &lhs, ft::map<Key, Value, Compare,
     lhs.swap(rhs);
 }
 
-} // namespace ft
+}  // namespace ft
 
 #endif
