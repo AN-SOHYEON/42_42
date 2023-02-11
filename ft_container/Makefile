@@ -1,40 +1,32 @@
 NAME	=ft_container_test
 
-CC		= c++ 
+CXX		= c++ 
 FLAGS	= -Wall -Werror -Wextra -std=c++98
 
-INC_PATH	= ./includes/ 
+INC_PATH	= ./includes/
 SRC_PATH	= ./src/
-BUILD_PATH	= ./build/
 
 # primary
 SRC_FILE = main #vector_test
+SRC_TEST = src/ft_stl.cpp
 
 SRC = $(addprefix $(SRC_PATH), $(addsuffix .cpp, $(SRC_FILE)))
-# OBJ=$(SRC:$(SRC_PATH)%.o=$(BUILD_PATH)%.o)
-OBJ = $(addsuffix .o, $(SRC_FILE))
+OBJ = $(SRC:.cpp=.o)
 
 RM=/bin/rm -rf
 
-
-
-# Object directory generation
-$(BUILD_PATH)	:
-	@mkdir $(BUILD_PATH)
-
 %.o: %.cpp
 	@echo "$(NAME) compile..."
-	@$(CC) $(FLAGS) -I $(INC_PATH) -o $@ -c $<
+	@$(CXX) $(FLAGS) -I$(INC_PATH) -O3 -o $@ -c $<
 
 $(NAME): $(OBJ)
-	@$(CC) $(FLAGS) -I $(INC_PATH) -o $(NAME) $(OBJ)
+	@$(CXX) $(FLAGS) -I$(INC_PATH) -o $(NAME) $(OBJ)
 
 all	: $(NAME)
 
 clean	:
 	@echo "remove..."
 	@$(RM) $(OBJ)
-	@$(RM) $(BUILD_PATH)
 
 fclean	: clean
 	@echo "remove all"
@@ -42,5 +34,13 @@ fclean	: clean
 
 re	: fclean all
 
+test:
+	@$(CXX) $(FLAGS) -I$(INC_PATH) $(SRC_TEST) -o TEST -O3
+	@./TEST
+
+tclean	:
+	@echo "remove test..."
+	@$(RM) TEST
+
 .PHONY :
-	all clean fclean re
+	all clean fclean re test tclean

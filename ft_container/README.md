@@ -33,7 +33,6 @@ STL container를 구현하는 과제이니 당연히 구현을 위해 STL contai
 	- vector<bool>은 구현할 필요 없습니다. 
 - map
 - stack
-	- 
 
 - std::iterator_traits
 - std::reverse_iterator
@@ -95,10 +94,15 @@ STL container를 구현하는 과제이니 당연히 구현을 위해 STL contai
 
 
 ### allocator
+- 컨테이너의 메모리 할당 정보와 정책을 캡슐화한 STL 구성 요소
 - 템플릿 클래스 
 - 모든 컨테이너는 템플릿 매개변수에 할당기를 인자로 받는다. 
 - 기본 할당기는 allocator<T>
+- 사용자가 직접 메모리 할당 방식을 제어할 수 있게 한다. 
+- 사용자가 컨테이너에 맞는 메모리 할당 모델을 필요로 하거나 특정 구현 환경에 최적화된 메모리 할당기를 필요로 할때 커스텀해서 쓸 수 있다.
 
 - 표준 컨테이너에서 필요로 하는 rebind라는 중첩(nested) 구조체 템플릿을 반드시 제공해야 한다.
   (출처 : http://egloos.zum.com/sweeper/v/2966785)
-  
+
+- allocator에 대해 정리가 잘된 블로그
+  https://uncertainty-momo.tistory.com/53 

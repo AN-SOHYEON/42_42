@@ -67,14 +67,6 @@ class map {
     }
 
    public:
-    // map()
-    // {
-    // 	// _tree = NULL;
-    // 	_alloc = node_allocator();
-    // 	_key_comp = key_compare();
-    // 	_value_comp = value_compare(_key_comp);
-    // }
-
     tree &__get_tree() { return _tree; }
 
     explicit map(const Compare &comp = key_compare(), const Allocator &alloc = node_allocator()) {
@@ -92,22 +84,35 @@ class map {
         insert(first, last);
     }
 
-    map(const map &other)
-        : _alloc(other._alloc), _key_comp(other._key_comp), _value_comp(other._value_comp) {
-        _tree = tree(_key_comp, _alloc);
+    // map(const map &other)
+    //     : _alloc(other._alloc), _key_comp(other._key_comp), _value_comp(other._value_comp) {
+    //     std::cout << "fuck\n";
+    //     _tree = tree(_key_comp, _alloc);
+    //     std::cout << "fuckfuckfuck\n";
+    //     insert(other.begin(), other.end());
+    //     std::cout << "fuckfuckfuckyoyoyoyououyou\n";
+    // }
+    map(const map &other) {
+        // std::cout << "in copy constructor\n";
+        _alloc = other._alloc;
+        _key_comp = other._key_comp;
+        _value_comp = other._value_comp;
+
+        // _tree = tree(_key_comp, _alloc);
+        // std::cout << "fucking\n";
         *this = other;
     }
 
     virtual ~map() {
-        _tree.clear();  // TODO: implement
     }
 
     map &
     operator=(const map &other) {
+        clear();
         _alloc = other._alloc;
         _key_comp = other._key_comp;
         _value_comp = other._value_comp;
-        _tree = tree(_key_comp, _alloc);
+        // _tree = tree(_key_comp, _alloc);
         insert(other.begin(), other.end());
         return (*this);
     }
@@ -178,15 +183,15 @@ class map {
     modifiers:
      */
     void clear() {
-        iterator it = begin();
-        iterator tmp;
+        // iterator it = begin();
+        // iterator tmp;
 
-        while (it != end()) {
-            tmp = it;
-            it++;
-            erase(tmp);
-        }
-        // _tree.clear();
+        // while (it != end()) {
+        //     tmp = it;
+        //     it++;
+        //     erase(tmp);
+        // }
+        _tree.clear();
     }
 
     ft::pair<iterator, bool> insert(const value_type &value) {
@@ -216,7 +221,7 @@ class map {
         InputIt it = first;
         while (it != last) {
             _tree.insertNode(*it);
-            ++it;
+            it++;
         }
     }
 
@@ -245,11 +250,39 @@ class map {
         return 0;
     }
 
-    void swap(map &other) {
-        _swap(_tree, other._tree);
-        _swap(_alloc, other._alloc);
-        _swap(_key_comp, other._key_comp);
-        _swap(_value_comp, other._value_comp);
+    void swap(map &other) {  // TODO: treeswap
+        map tmp(other);
+        // std::cout << "copy contructor\n";
+        // other._tree = _tree;
+        // _tree = tmp._tree;
+
+        // std::cout << "tmp\n";
+        // tmp.__get_tree().disPlayInorder();
+        // std::cout << "other\n";
+        // other.__get_tree().disPlayInorder();
+        // std::cout << "----------------------\n";
+
+        // other.erase(other.begin());
+        // std::cout << "tmp\n";
+        // tmp.__get_tree().disPlayInorder();
+        // std::cout << "other\n";
+        // other.__get_tree().disPlayInorder();
+
+        // std::cout << "1\n";
+        // other = *this;
+        // std::cout << "2\n";
+        // *this = tmp;
+        // std::cout << "3\n";
+
+        // tree tmp = tree(_key_comp, _alloc);
+        // tmp.in
+        // _tree = other._tree;
+        // other._tree = tmp;
+        // std::cout << "wer\n";
+        // _swap(_tree, tmp._tree);
+        _swap(_alloc, tmp._alloc);
+        _swap(_key_comp, tmp._key_comp);
+        _swap(_value_comp, tmp._value_comp);
     }
 
     /*

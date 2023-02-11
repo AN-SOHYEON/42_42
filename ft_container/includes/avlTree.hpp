@@ -335,7 +335,6 @@ class avlTree {
         _root = _dummy;
         _comp = comp;
         _alloc = alloc;
-        // _alloc = node_allocator();
         insertNode(content);
     }
 
@@ -349,13 +348,10 @@ class avlTree {
     }
 
     virtual ~avlTree() {
-        // TODO: 소멸자 소환하기
-        // 더미 노드 소멸시키기
-        // if (_root)
-        //     clear();
-
         _alloc.destroy(_dummy);
         _alloc.deallocate(_dummy, 1);
+        if (_root)
+            clear();
     }
 
     avlTree &operator=(const avlTree &tree) {
@@ -394,11 +390,8 @@ class avlTree {
 
     node_pointer begin_node() const {
         node_pointer current = _root;
-        // if (size > 0)
-        // std::cout << "current : " << current->content.first << "\n";
         while (current->left) {
             current = current->left;
-            // std::cout << "current : " << current->content.first << "\n";
         }
         return current;
     }
@@ -414,6 +407,7 @@ class avlTree {
 
     size_type size() const { return _size; }
 
+    // TODO: private으로 옮기기
     void _clear(node_pointer *root) {
         if (*root) {
             _clear(&((*root)->left));
@@ -421,28 +415,43 @@ class avlTree {
             node_pointer parent = (*root)->parent;
             if (parent) {
                 if (parent->left == (*root)) {
+                    // std::cout << "root content is : " << (*root)->content.first << "\n";
                     _alloc.destroy(*root);
-                    std::cout << "next\n";
+                    // std::cout << "next\n";
                     _alloc.deallocate(*root, 1);
-                    std::cout << "last\n";
+                    // std::cout << "last\n";
                     parent->left = NULL;
                     _size--;
                 } else if (parent->right == (*root)) {
+                    // std::cout << "root content is : " << (*root)->content.first << "\n";
                     _alloc.destroy(*root);
                     _alloc.deallocate(*root, 1);
                     parent->right = NULL;
                     _size--;
                 }
+            } else {
+                // std::cout << "last node \n";
+                // std::cout << "root content is : " << (*root)->content.first << "\n";
+                _alloc.destroy(*root);
+                _alloc.deallocate(*root, 1);
+                // std::cout << "lklk\n";
             }
-            // _alloc.destroy(*root);
-            // _alloc.deallocate(*root, 1);
         }
     }
 
     void clear() {
         deleteDummyNode();
         _clear(&_root);
+        _root = _dummy;
     }
+
+    // void init() {
+    //     _root = NULL
+    // }
+
+    // void swap(avlTree &other) {
+    //     avlTree tmp
+    // }
 };
 }  // namespace ft
 
