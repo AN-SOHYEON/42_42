@@ -264,7 +264,7 @@ class vector {
             if (_capacity)
                 reserve(_capacity * 2);
             else
-                reserve(1 * 2);
+                reserve(10);
         }
         arr[_size] = value;
         _size++;
