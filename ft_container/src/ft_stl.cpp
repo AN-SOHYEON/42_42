@@ -628,9 +628,12 @@ int main(void) {
     std::cout << YELLOW << BOLD << "------------- map insert -------------" << RESET << std::endl;
     gettimeofday(&ft_start, NULL);
     {
+        std::cout << "hihi\n";
         ft::map<int, int> map_int;
-        for (int i = 0; i < MAP_SIZE; i++)
+        std::cout << "whdif\n";
+        for (int i = 0; i < MAP_SIZE; i++) {
             map_int.insert(ft::make_pair(i, i));
+        }
     }
     gettimeofday(&ft_end, NULL);
     ft_time = get_time(ft_start, ft_end);
@@ -801,34 +804,34 @@ int main(void) {
     } else
         std::cout << GREEN << BOLD << "ft::map - swap is OK" << RESET << std::endl;
 
-    // // map clear
-    // std::cout << YELLOW << BOLD << "------------- map clear -------------" << RESET << std::endl;
-    // gettimeofday(&ft_start, NULL);
-    // {
-    //     ft::map<int, int> map_int;
-    //     for (int i = 0; i < MAP_SIZE; i++)
-    //         map_int.insert(ft::make_pair(i, i));
-    //     map_int.clear();
-    // }
-    // gettimeofday(&ft_end, NULL);
-    // ft_time = get_time(ft_start, ft_end);
+    // map clear
+    std::cout << YELLOW << BOLD << "------------- map clear -------------" << RESET << std::endl;
+    gettimeofday(&ft_start, NULL);
+    {
+        ft::map<int, int> map_int;
+        for (int i = 0; i < MAP_SIZE; i++)
+            map_int.insert(ft::make_pair(i, i));
+        map_int.clear();
+    }
+    gettimeofday(&ft_end, NULL);
+    ft_time = get_time(ft_start, ft_end);
 
-    // gettimeofday(&std_start, NULL);
-    // {
-    //     std::map<int, int> std_map_int;
-    //     for (int i = 0; i < MAP_SIZE; i++)
-    //         std_map_int.insert(std::make_pair(i, i));
-    //     std_map_int.clear();
-    // }
-    // gettimeofday(&std_end, NULL);
-    // std_time = get_time(std_start, std_end);
-    // std::cout << BLUE << BOLD << "ft  :\t" << ft_time << " us" << RESET << std::endl;
-    // std::cout << MAGENTA << BOLD << "std :\t" << std_time << " us" << RESET << std::endl;
-    // if (std_time && ft_time > 20 * std_time) {
-    //     std::cout << RED << BOLD << "ft::map - clear is " << (double)ft_time / std_time << " times slow" << RESET << std::endl;
-    //     // exit(1);
-    // } else
-    //     std::cout << GREEN << BOLD << "ft::map - clear is OK" << RESET << std::endl;
+    gettimeofday(&std_start, NULL);
+    {
+        std::map<int, int> std_map_int;
+        for (int i = 0; i < MAP_SIZE; i++)
+            std_map_int.insert(std::make_pair(i, i));
+        std_map_int.clear();
+    }
+    gettimeofday(&std_end, NULL);
+    std_time = get_time(std_start, std_end);
+    std::cout << BLUE << BOLD << "ft  :\t" << ft_time << " us" << RESET << std::endl;
+    std::cout << MAGENTA << BOLD << "std :\t" << std_time << " us" << RESET << std::endl;
+    if (std_time && ft_time > 20 * std_time) {
+        std::cout << RED << BOLD << "ft::map - clear is " << (double)ft_time / std_time << " times slow" << RESET << std::endl;
+        // exit(1);
+    } else
+        std::cout << GREEN << BOLD << "ft::map - clear is OK" << RESET << std::endl;
 
     while (1) {
     }

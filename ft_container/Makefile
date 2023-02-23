@@ -35,8 +35,8 @@ fclean	: clean
 re	: fclean all
 
 test:
-	@$(CXX) $(FLAGS) -I$(INC_PATH) $(SRC_TEST) -o TEST -O3
-	@./TEST
+	@$(CXX) $(FLAGS) -I$(INC_PATH) $(SRC_TEST) -o TEST -O3 -g #-fsanitize=address -g3
+	# @./TEST
 
 tclean	:
 	@echo "remove test..."
