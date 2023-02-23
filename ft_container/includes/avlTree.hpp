@@ -381,6 +381,20 @@ class avlTree {
         //_root = _dummy;
     }
 
+    template <typename U>
+    void _swap(U &a, U &b) {
+        U tmp = a;
+        a = b;
+        b = tmp;
+    }
+
+    void swap(avlTree &other) {
+        _swap(_dummy, other._dummy);
+        _swap(_root, other._root);
+        _swap(_alloc, other._alloc);
+        _swap(_size, other._size);
+    }
+
     avlTree &
     operator=(const avlTree &tree) {
         _dummy = tree._dummy;

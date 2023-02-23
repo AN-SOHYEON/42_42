@@ -230,9 +230,9 @@ class map {
     }
 
     void swap(map &other) {
-        map tmp(*this);
-        *this = other;
-        other = tmp;
+        // map tmp(*this);
+        // *this = other;
+        // other = tmp;
 
         // _tree.swap(other._tree);
 
@@ -241,9 +241,10 @@ class map {
         // _swap(_value_comp, other._value_comp);
         // _swap(_tree, other._tree);
         // _swap(_tree, other._tree);
-        // _swap(_alloc, other._alloc);
-        // _swap(_key_comp, other._key_comp);
-        // _swap(_value_comp, other._value_comp);
+        _swap(_alloc, other._alloc);
+        _tree.swap(other._tree);
+        _swap(_key_comp, other._key_comp);
+        _swap(_value_comp, other._value_comp);
     }
 
     /*
