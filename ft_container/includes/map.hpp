@@ -70,61 +70,38 @@ class map {
     tree &__get_tree() { return _tree; }
 
     explicit map(const Compare &comp = key_compare(), const Allocator &alloc = node_allocator()) {
-        std::cout << "map default constructor start\n";
         _alloc = alloc;
         _key_comp = comp;
         _value_comp = value_compare(comp);
-        // _tree = tree(_key_comp, _alloc);
-        std::cout << "map default constructor end\n";
     }
 
     template <class InputIt>
     map(InputIt first, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type last, const Compare &comp = key_compare(), const Allocator &alloc = node_allocator()) {
-        std::cout << "map range constructor start\n";
         _alloc = alloc;
         _key_comp = comp;
         _value_comp = value_compare(comp);
-        // _tree = tree(_key_comp, _alloc);
         insert(first, last);
-        std::cout << "map range constructor end\n";
     }
 
-    // map(const map &other)
-    //     : _alloc(other._alloc), _key_comp(other._key_comp), _value_comp(other._value_comp) {
-    //     std::cout << "fuck\n";
-    //     _tree = tree(_key_comp, _alloc);
-    //     std::cout << "fuckfuckfuck\n";
-    //     insert(other.begin(), other.end());
-    //     std::cout << "fuckfuckfuckyoyoyoyououyou\n";
-    // }
     map(const map &other) {
-        std::cout << "map copy constructor start\n";
-        _alloc = other._alloc;
-        _key_comp = other._key_comp;
-        _value_comp = other._value_comp;
-
-        // _tree = tree(_key_comp, _alloc);
-        // std::cout << "fucking\n";
+        // _alloc = other._alloc;
+        // _key_comp = other._key_comp;
+        // _value_comp = other._value_comp;
         *this = other;
-        std::cout << "map copy constructor end\n";
     }
 
     ~map() {
-        std::cout << "map destructor\n";
     }
 
     map &
     operator=(const map &other) {
-        std::cout << "map copyoperator start\n";
-        clear();
-        std::cout << "in map copyoperator clear function is end\n";
+        if (!_tree.isEmpty())
+            clear();
         _alloc = other._alloc;
         _key_comp = other._key_comp;
         _value_comp = other._value_comp;
-        // _tree = tree(_key_comp, _alloc);
         insert(other.begin(), other.end());
         return (*this);
-        std::cout << "map copyoperator end\n";
     }
 
     allocator_type get_allocator() const { return _alloc; }
@@ -193,19 +170,10 @@ class map {
     modifiers:
      */
     void clear() {
-        // iterator it = begin();
-        // iterator tmp;
-
-        // while (it != end()) {
-        //     tmp = it;
-        //     it++;
-        //     erase(tmp);
-        // }
         _tree.clear();
     }
 
     ft::pair<iterator, bool> insert(const value_type &value) {
-        // std::cout << "insert [ ft::pair<iterator, bool> insert(const value_type &value) ]\n";
         bool insert_res;
         node *n = _tree.findTree(value.first);
 
@@ -223,18 +191,16 @@ class map {
 
     iterator insert(iterator pos, const value_type &content) {
         (void)pos;
-        // std::cout << "insert [ iterator insert(iterator pos, const value_type &content) ]\n";
         _tree.insertNode(content);
         return iterator(_tree.findTree(content.first));
     }
 
     template <class InputIt>
     void insert(InputIt first, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type last) {
-        // std::cout << "insert with range\n";
         InputIt it = first;
         while (it != last) {
             _tree.insertNode(*it);
-            it++;
+            ++it;
         }
     }
 
@@ -263,39 +229,21 @@ class map {
         return 0;
     }
 
-    void swap(map &other) {  // TODO: treeswap
-        map tmp(other);
-        // std::cout << "copy contructor\n";
-        // other._tree = _tree;
-        // _tree = tmp._tree;
+    void swap(map &other) {
+        map tmp(*this);
+        *this = other;
+        other = tmp;
 
-        // std::cout << "tmp\n";
-        // tmp.__get_tree().disPlayInorder();
-        // std::cout << "other\n";
-        // other.__get_tree().disPlayInorder();
-        // std::cout << "----------------------\n";
+        // _tree.swap(other._tree);
 
-        // other.erase(other.begin());
-        // std::cout << "tmp\n";
-        // tmp.__get_tree().disPlayInorder();
-        // std::cout << "other\n";
-        // other.__get_tree().disPlayInorder();
-
-        // std::cout << "1\n";
-        // other = *this;
-        // std::cout << "2\n";
-        // *this = tmp;
-        // std::cout << "3\n";
-
-        // tree tmp = tree(_key_comp, _alloc);
-        // tmp.in
-        // _tree = other._tree;
-        // other._tree = tmp;
-        // std::cout << "wer\n";
-        // _swap(_tree, tmp._tree);
-        _swap(_alloc, tmp._alloc);
-        _swap(_key_comp, tmp._key_comp);
-        _swap(_value_comp, tmp._value_comp);
+        // _swap(_alloc, other._alloc);
+        // _swap(_key_comp, other._key_comp);
+        // _swap(_value_comp, other._value_comp);
+        // _swap(_tree, other._tree);
+        // _swap(_tree, other._tree);
+        // _swap(_alloc, other._alloc);
+        // _swap(_key_comp, other._key_comp);
+        // _swap(_value_comp, other._value_comp);
     }
 
     /*

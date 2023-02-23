@@ -83,9 +83,11 @@ class avlTree {
 
     void deleteDummyNode() {
         // node_pointer end = end_node();
-        if (_size > 0) {
+        // if (_size > 0) {
+        if (_dummy->parent) {
             _dummy->parent->right = NULL;
             _dummy->parent = NULL;
+            // }
         } else {
             _root = NULL;
         }
@@ -312,6 +314,29 @@ class avlTree {
         return root;
     }
 
+    void _clear(node_pointer *root) {
+        if (*root) {
+            _clear(&((*root)->left));
+            _clear(&((*root)->right));
+            node_pointer parent = (*root)->parent;
+            if (parent) {
+                if (parent->left == (*root)) {
+                    _alloc.destroy(*root);
+                    _alloc.deallocate(*root, 1);
+                    parent->left = NULL;
+                } else if (parent->right == (*root)) {
+                    _alloc.destroy(*root);
+                    _alloc.deallocate(*root, 1);
+                    parent->right = NULL;
+                }
+            } else {
+                _alloc.destroy(*root);
+                _alloc.deallocate(*root, 1);
+            }
+            _size--;
+        }
+    }
+
    public:
     /*
     constuctor:
@@ -353,7 +378,7 @@ class avlTree {
         deleteDummyNode();
         if (_root)
             _clear(&_root);
-        _root = _dummy;
+        //_root = _dummy;
     }
 
     avlTree &
@@ -409,35 +434,10 @@ class avlTree {
 
     size_type size() const { return _size; }
 
-    // TODO: private으로 옮기기
-    void _clear(node_pointer *root) {
-        if (*root) {
-            _clear(&((*root)->left));
-            _clear(&((*root)->right));
-            node_pointer parent = (*root)->parent;
-            if (parent) {
-                if (parent->left == (*root)) {
-                    // std::cout << "root content is : " << (*root)->content.first << "\n";
-                    _alloc.destroy(*root);
-                    // std::cout << "next\n";
-                    _alloc.deallocate(*root, 1);
-                    // std::cout << "last\n";
-                    parent->left = NULL;
-                    _size--;
-                } else if (parent->right == (*root)) {
-                    // std::cout << "root content is : " << (*root)->content.first << "\n";
-                    _alloc.destroy(*root);
-                    _alloc.deallocate(*root, 1);
-                    parent->right = NULL;
-                    _size--;
-                }
-            } else {
-                // std::cout << "last node \n";
-                // std::cout << "root content is : " << (*root)->content.first << "\n";
-                _alloc.destroy(*root);
-                _alloc.deallocate(*root, 1);
-            }
-        }
+    bool isEmpty() const {
+        if (_root)
+            return false;
+        return true;
     }
 };
 }  // namespace ft
