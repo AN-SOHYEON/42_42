@@ -3,9 +3,6 @@
 #define BIDIRECTIONAL_ITERATOR_HPP
 
 #include "iterator.hpp"
-// #include "avlTree.hpp"
-
-#include <iterator>
 
 namespace ft {
 template <typename Key, typename Value>
@@ -20,10 +17,8 @@ class bidirectional_iterator {
     typedef typename ft::iterator_traits<content *>::reference reference;
     typedef std::bidirectional_iterator_tag iterator_category;
     typedef ft::Node<const Key, const Value> *const_node_pointer;
-    // typedef typename ft::Node<T> *Node_pointer;
 
    protected:
-    // Node_pointer _node;
     node *_node;
 
    public:
@@ -72,7 +67,6 @@ class bidirectional_iterator {
 
     bidirectional_iterator operator++(int) {  // 후위 연산자
         bidirectional_iterator tmp(*this);
-        // ++(_node); // TODO: 반성
         ++(*this);
         return tmp;
     }
@@ -101,7 +95,6 @@ class bidirectional_iterator {
 
     bidirectional_iterator operator--(int) {  // 후위 연산자
         bidirectional_iterator tmp(*this);
-        // --_node;
         --(*this);
         return tmp;
     }
@@ -116,19 +109,6 @@ class bidirectional_iterator {
     }
 };
 
-// template <class Iter1, class Iter2>
-// bool operator==(const ft::bidirectional_iterator<Iter1> &lhs, const
-// ft::bidirectional_iterator<Iter2> &rhs)
-// {
-// 	return *lhs == *rhs;
-// }
-
-// template <class Iter1, class Iter2>
-// bool operator!=(const ft::bidirectional_iterator<Iter1> &lhs, const
-// ft::bidirectional_iterator<Iter2> &rhs)
-// {
-// 	return *lhs != *rhs;
-// }
 }  // namespace ft
 
 #endif

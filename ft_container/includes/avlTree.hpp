@@ -8,7 +8,6 @@
 #include "utility.hpp"
 
 #define MAX(a, b) ((a > b) ? a : b)
-
 namespace ft {
 template <class Key, class Value, class Compare, class Alloc>
 class avlTree {
@@ -82,12 +81,9 @@ class avlTree {
     }
 
     void deleteDummyNode() {
-        // node_pointer end = end_node();
-        // if (_size > 0) {
         if (_dummy->parent) {
             _dummy->parent->right = NULL;
             _dummy->parent = NULL;
-            // }
         } else {
             _root = NULL;
         }
@@ -122,8 +118,6 @@ class avlTree {
                 node = rlRotate(node);
             }
         }
-        // else {
-        // }
         return node;
     }
 
@@ -147,8 +141,6 @@ class avlTree {
             _setParent(root->right, root);
             root = rebalance(root);
         }
-        // else {
-        // }
         return (root);
     }
 
@@ -337,6 +329,13 @@ class avlTree {
         }
     }
 
+    template <typename U>
+    void _swap(U &a, U &b) {
+        U tmp = a;
+        a = b;
+        b = tmp;
+    }
+
    public:
     /*
     constuctor:
@@ -378,14 +377,6 @@ class avlTree {
         deleteDummyNode();
         if (_root)
             _clear(&_root);
-        //_root = _dummy;
-    }
-
-    template <typename U>
-    void _swap(U &a, U &b) {
-        U tmp = a;
-        a = b;
-        b = tmp;
     }
 
     void swap(avlTree &other) {

@@ -4,22 +4,6 @@
 #include "utility.hpp"
 
 namespace ft {
-// template <typename T>
-// struct Node
-// {
-// 	T content;
-// 	struct Node *left;
-// 	struct Node *right;
-// 	struct Node *parent;
-
-// 	Node() {}
-
-// 	template <typename U>
-// 	Node(const Node<U> &other) : content(other.content), left(other.left), right(other.right),
-// parent(other.parent) {}
-
-// 	virtual ~Node() {}
-// };
 
 template <typename Key, typename Value>
 struct Node {
@@ -33,17 +17,16 @@ struct Node {
     template <typename K, typename V>
     Node(const Node<K, V> &other)
         : content(other.content), left(other.left), right(other.right), parent(other.parent) {}
-   
+
     virtual ~Node() {}
 
-    Node &operator= (const Node &other) {
+    Node &operator=(const Node &other) {
         content = other.content;
         left = other.left;
         right = other.right;
         parent = other.parent;
         return *this;
     }
-
 };
 
 template <class K, class V>

@@ -2,9 +2,7 @@
 #define MAP_HPP
 
 #include <functional>  // std::less
-#include <map>
 #include <memory>
-#include <utility>
 
 #include "avlTree.hpp"
 #include "bidirectional_iterator.hpp"
@@ -45,7 +43,6 @@ class map {
        protected:
         key_compare comp;
         value_compare(key_compare c) : comp(c) {}
-        value_compare() {}  // TODO: ?????이게 왜 있어야 하는 거지 나는?
 
        public:
         bool operator()(const value_type &x, const value_type &y) const {
@@ -57,7 +54,6 @@ class map {
     tree _tree;
     node_allocator _alloc;
     key_compare _key_comp;
-    value_compare _value_comp;
 
     template <typename U>
     void _swap(U &a, U &b) {
@@ -72,21 +68,16 @@ class map {
     explicit map(const Compare &comp = key_compare(), const Allocator &alloc = node_allocator()) {
         _alloc = alloc;
         _key_comp = comp;
-        _value_comp = value_compare(comp);
     }
 
     template <class InputIt>
     map(InputIt first, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type last, const Compare &comp = key_compare(), const Allocator &alloc = node_allocator()) {
         _alloc = alloc;
         _key_comp = comp;
-        _value_comp = value_compare(comp);
         insert(first, last);
     }
 
     map(const map &other) {
-        // _alloc = other._alloc;
-        // _key_comp = other._key_comp;
-        // _value_comp = other._value_comp;
         *this = other;
     }
 
@@ -99,7 +90,6 @@ class map {
             clear();
         _alloc = other._alloc;
         _key_comp = other._key_comp;
-        _value_comp = other._value_comp;
         insert(other.begin(), other.end());
         return (*this);
     }
@@ -230,21 +220,9 @@ class map {
     }
 
     void swap(map &other) {
-        // map tmp(*this);
-        // *this = other;
-        // other = tmp;
-
-        // _tree.swap(other._tree);
-
-        // _swap(_alloc, other._alloc);
-        // _swap(_key_comp, other._key_comp);
-        // _swap(_value_comp, other._value_comp);
-        // _swap(_tree, other._tree);
-        // _swap(_tree, other._tree);
         _swap(_alloc, other._alloc);
         _tree.swap(other._tree);
         _swap(_key_comp, other._key_comp);
-        _swap(_value_comp, other._value_comp);
     }
 
     /*
@@ -329,7 +307,7 @@ class map {
     key_compare key_comp() const { return _key_comp; }
 
     // value 정렬 기준인 조건자를 반환
-    value_compare value_comp() const { return _value_comp; }
+    value_compare value_comp() const { return value_compare(_key_comp); }
 };
 
 /* non member function */
