@@ -82,10 +82,10 @@ class avlTree {
     }
 
     void deleteDummyNode() {
-        node_pointer end = end_node();
+        // node_pointer end = end_node();
         if (_size > 0) {
-            end->parent->right = NULL;
-            end->parent = NULL;
+            _dummy->parent->right = NULL;
+            _dummy->parent = NULL;
         } else {
             _root = NULL;
         }
@@ -259,7 +259,6 @@ class avlTree {
                 }
                 _alloc.destroy(root);
                 _alloc.deallocate(root, 1);
-                // root = NULL;
                 _size--;
                 return child;
             } else  // two child
@@ -299,9 +298,6 @@ class avlTree {
                             tmp->left->parent = child;
                         }
                     }
-                    // else {
-                    //     // child->left = NULL;
-                    // }
                     child->right = tmp->right;
                     if (tmp->right != NULL) {
                         tmp->right->parent = child;
@@ -320,16 +316,15 @@ class avlTree {
     /*
     constuctor:
      */
-    avlTree(const Compare &comp = Compare(), const Alloc &alloc = Alloc()) {
+    avlTree(const Compare &comp = Compare(), const Alloc &alloc = node_allocator()) {
         _size = 0;
         _dummy = makeDummyNode();
         _root = _dummy;
         _comp = comp;
         _alloc = alloc;
-        // _alloc = node_allocator();
     }
 
-    avlTree(value_type content, const Compare &comp = Compare(), const Alloc &alloc = Alloc()) {
+    avlTree(value_type content, const Compare &comp = Compare(), const Alloc &alloc = node_allocator()) {
         _size = 0;
         _dummy = makeDummyNode();
         _root = _dummy;
@@ -338,23 +333,31 @@ class avlTree {
         insertNode(content);
     }
 
-    avlTree(node_pointer n, const Compare &comp = Compare(), const Alloc &alloc = Alloc()) {
+    avlTree(node_pointer n, const Compare &comp = Compare(), const Alloc &alloc = node_allocator()) {
         avlTree(n->content, comp, alloc);
     }
 
-    avlTree(const avlTree &tree)  //
-    {
+    avlTree(const avlTree &tree) {
         *this = tree;
     }
 
     virtual ~avlTree() {
+        if (_root && _root != _dummy) {
+            clear();
+        }
         _alloc.destroy(_dummy);
         _alloc.deallocate(_dummy, 1);
-        if (_root)
-            clear();
     }
 
-    avlTree &operator=(const avlTree &tree) {
+    void clear() {
+        deleteDummyNode();
+        if (_root)
+            _clear(&_root);
+        _root = _dummy;
+    }
+
+    avlTree &
+    operator=(const avlTree &tree) {
         _dummy = tree._dummy;
         _root = tree._root;
         _alloc = tree._alloc;
@@ -398,7 +401,6 @@ class avlTree {
 
     node_pointer end_node() const {
         node_pointer current = _root;
-
         while (current->right) {
             current = current->right;
         }
@@ -434,24 +436,9 @@ class avlTree {
                 // std::cout << "root content is : " << (*root)->content.first << "\n";
                 _alloc.destroy(*root);
                 _alloc.deallocate(*root, 1);
-                // std::cout << "lklk\n";
             }
         }
     }
-
-    void clear() {
-        deleteDummyNode();
-        _clear(&_root);
-        _root = _dummy;
-    }
-
-    // void init() {
-    //     _root = NULL
-    // }
-
-    // void swap(avlTree &other) {
-    //     avlTree tmp
-    // }
 };
 }  // namespace ft
 

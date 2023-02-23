@@ -70,18 +70,23 @@ class map {
     tree &__get_tree() { return _tree; }
 
     explicit map(const Compare &comp = key_compare(), const Allocator &alloc = node_allocator()) {
+        std::cout << "map default constructor start\n";
         _alloc = alloc;
         _key_comp = comp;
         _value_comp = value_compare(comp);
+        // _tree = tree(_key_comp, _alloc);
+        std::cout << "map default constructor end\n";
     }
 
     template <class InputIt>
     map(InputIt first, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type last, const Compare &comp = key_compare(), const Allocator &alloc = node_allocator()) {
+        std::cout << "map range constructor start\n";
         _alloc = alloc;
         _key_comp = comp;
         _value_comp = value_compare(comp);
-        _tree = tree(_key_comp, _alloc);
+        // _tree = tree(_key_comp, _alloc);
         insert(first, last);
+        std::cout << "map range constructor end\n";
     }
 
     // map(const map &other)
@@ -93,7 +98,7 @@ class map {
     //     std::cout << "fuckfuckfuckyoyoyoyououyou\n";
     // }
     map(const map &other) {
-        // std::cout << "in copy constructor\n";
+        std::cout << "map copy constructor start\n";
         _alloc = other._alloc;
         _key_comp = other._key_comp;
         _value_comp = other._value_comp;
@@ -101,20 +106,25 @@ class map {
         // _tree = tree(_key_comp, _alloc);
         // std::cout << "fucking\n";
         *this = other;
+        std::cout << "map copy constructor end\n";
     }
 
-    virtual ~map() {
+    ~map() {
+        std::cout << "map destructor\n";
     }
 
     map &
     operator=(const map &other) {
+        std::cout << "map copyoperator start\n";
         clear();
+        std::cout << "in map copyoperator clear function is end\n";
         _alloc = other._alloc;
         _key_comp = other._key_comp;
         _value_comp = other._value_comp;
         // _tree = tree(_key_comp, _alloc);
         insert(other.begin(), other.end());
         return (*this);
+        std::cout << "map copyoperator end\n";
     }
 
     allocator_type get_allocator() const { return _alloc; }
@@ -195,6 +205,7 @@ class map {
     }
 
     ft::pair<iterator, bool> insert(const value_type &value) {
+        // std::cout << "insert [ ft::pair<iterator, bool> insert(const value_type &value) ]\n";
         bool insert_res;
         node *n = _tree.findTree(value.first);
 
@@ -212,12 +223,14 @@ class map {
 
     iterator insert(iterator pos, const value_type &content) {
         (void)pos;
+        // std::cout << "insert [ iterator insert(iterator pos, const value_type &content) ]\n";
         _tree.insertNode(content);
         return iterator(_tree.findTree(content.first));
     }
 
     template <class InputIt>
     void insert(InputIt first, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type last) {
+        // std::cout << "insert with range\n";
         InputIt it = first;
         while (it != last) {
             _tree.insertNode(*it);

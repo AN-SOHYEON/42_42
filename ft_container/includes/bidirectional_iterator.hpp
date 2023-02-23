@@ -10,7 +10,7 @@
 namespace ft {
 template <typename Key, typename Value>
 class bidirectional_iterator {
-  public:
+   public:
     typedef typename ft::Node<Key, Value> node;
     typedef typename ft::pair<Key, Value> content;
 
@@ -22,11 +22,11 @@ class bidirectional_iterator {
     typedef ft::Node<const Key, const Value> *const_node_pointer;
     // typedef typename ft::Node<T> *Node_pointer;
 
-  protected:
+   protected:
     // Node_pointer _node;
     node *_node;
 
-  public:
+   public:
     bidirectional_iterator() { _node = NULL; }
 
     bidirectional_iterator(node *node) : _node(node) {}
@@ -49,7 +49,7 @@ class bidirectional_iterator {
     pointer operator->() const { return &this->_node->content; }
 
     bidirectional_iterator &operator++() {
-        if (_node->right) // 오른쪽 자식이 있을 떄
+        if (_node->right)  // 오른쪽 자식이 있을 떄
         {
             _node = _node->right;
             while (_node->left)
@@ -70,7 +70,7 @@ class bidirectional_iterator {
         return *this;
     }
 
-    bidirectional_iterator operator++(int) { // 후위 연산자
+    bidirectional_iterator operator++(int) {  // 후위 연산자
         bidirectional_iterator tmp(*this);
         // ++(_node); // TODO: 반성
         ++(*this);
@@ -78,7 +78,7 @@ class bidirectional_iterator {
     }
 
     bidirectional_iterator &operator--() {
-        if (_node->left) // 오른쪽 자식이 있을 떄
+        if (_node->left)  // 오른쪽 자식이 있을 떄
         {
             _node = _node->left;
             while (_node->right)
@@ -99,7 +99,7 @@ class bidirectional_iterator {
         return *this;
     }
 
-    bidirectional_iterator operator--(int) { // 후위 연산자
+    bidirectional_iterator operator--(int) {  // 후위 연산자
         bidirectional_iterator tmp(*this);
         // --_node;
         --(*this);
@@ -110,6 +110,7 @@ class bidirectional_iterator {
 
     bool operator!=(const bidirectional_iterator &it) { return (this->_node != it._node); }
 
+    // conversion operator
     operator bidirectional_iterator<const Key, const Value>() const {
         return (bidirectional_iterator<const Key, const Value>(const_node_pointer(this->_node)));
     }
@@ -128,6 +129,6 @@ class bidirectional_iterator {
 // {
 // 	return *lhs != *rhs;
 // }
-} // namespace ft
+}  // namespace ft
 
 #endif
