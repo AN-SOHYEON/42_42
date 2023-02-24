@@ -7,8 +7,8 @@ INC_PATH	= ./includes/
 SRC_PATH	= ./src/
 
 # primary
-SRC_FILE = main #vector_test
-SRC_TEST = src/ft_stl.cpp
+SRC_FILE = main
+SRC_TEST = src/ft_test.cpp
 
 SRC = $(addprefix $(SRC_PATH), $(addsuffix .cpp, $(SRC_FILE)))
 OBJ = $(SRC:.cpp=.o)
@@ -35,8 +35,7 @@ fclean	: clean
 re	: fclean all
 
 test:
-	@$(CXX) $(FLAGS) -I$(INC_PATH) $(SRC_TEST) -o TEST -O3 -g #-fsanitize=address -g3
-	# @./TEST
+	@$(CXX) $(FLAGS) -I$(INC_PATH) $(SRC_TEST) -o TEST -O3 -g 
 
 tclean	:
 	@echo "remove test..."
