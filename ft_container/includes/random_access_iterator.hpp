@@ -133,7 +133,7 @@ operator-(const random_access_iterator<Iter1> &lhs, const random_access_iterator
     return lhs.base() - rhs.base();
 }
 
-template <class Iter>  // TODO: fix!!!!!!!!!!!
+template <class Iter>
 random_access_iterator<Iter>
 operator-(typename random_access_iterator<Iter>::difference_type n, const random_access_iterator<Iter> &it) {
     return random_access_iterator<Iter>(it.base() - n);

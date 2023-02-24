@@ -2,7 +2,6 @@
 
 ## general rules
 
-
 #### Formatting and naming conventions
 - 적절한 이름의 class 파일에 각 컨테이너를 작성하세요
 - norminette은 없습니다만 동료가 이해하지 못할 코드를 작성하지 마세요. 깔끔하고 읽기 쉽게 작성하도록 최선을 다하세요.
